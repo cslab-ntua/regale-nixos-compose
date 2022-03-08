@@ -1,0 +1,14 @@
+[project]
+selected = "dev"
+    
+[g5k.options]
+nix-flags = "--impure --override-input nxc path:/home/orichard/nixos-compose/setup --override-input kapack path:/home/orichard/nur-kapack/ear"
+              
+[g5k.overrides.nur.kapack]
+ear = { src = "/home/orichard/ear" }
+
+[dev.options]
+nix-flags = "--impure --override-input nxc path:/home/auguste/dev/nixos-compose/setup --override-input kapack path:/home/auguste/dev/nur-kapack/ear"
+              
+[dev.overrides.nur.kapack]
+ear = { src = "/home/auguste/dev/ear" }
