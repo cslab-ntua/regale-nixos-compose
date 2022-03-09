@@ -13,20 +13,11 @@
     DBCommandsPassw=password
   '';
 
-  # environment.etc."post-boot-script-01-add-island0-ear-conf" = {
-  #   mode = "0755";
-  #   source = pkgs.writeText "add-island0-ear-conf" ''
-  #     #!${pkgs.bash}/bin/bash
-  #     touch /etc/yopyop
-  #     echo "Island=0 Nodes=node1[1-2]" >> /etc/ear/ear.conf 
-  #   '';
-  # };
-
   services.ear = {
     database = {
       host = "eardb";
       passwordFile = "/etc/ear-dbpassword";
     };
-    extraConfig = { Island = "0 Nodes=node1[1-2]";};
+    extraConfig = { Island = "0 DBIP=node11 DBSECIP=node12 Nodes=node1[1-2]";};
   };
 }

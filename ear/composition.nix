@@ -8,7 +8,6 @@
         imports = [ commonConfig ];
         environment.systemPackages = [  ];
         services.ear.database.enable = true;
-        services.ear.db_manager.enable = true;
       };
       
       eargm = { ... }: {
@@ -18,12 +17,14 @@
       
       node11 = { ... }: {
         imports = [ commonConfig ];
-        services.ear.daemon.enable = true;  
+        services.ear.daemon.enable = true;
+        services.ear.db_manager.enable = true;
       };
       
       node12 = { config, ... }: {
         imports = [ commonConfig ];
-        services.ear.daemon.enable = true;  
+        services.ear.daemon.enable = true;
+        services.ear.db_manager.enable = true;
       };
     };
   
