@@ -1,7 +1,7 @@
-{ pkgs, ... }: {
+{ pkgs, nur, ... }: {
   nodes =
     let
-      commonConfig = import ./common_config.nix { inherit pkgs; };
+      commonConfig = import ./common_config.nix { inherit pkgs nur; };
     in {
       
       eardb = { ... }: {
@@ -21,7 +21,7 @@
         services.ear.db_manager.enable = true;
       };
       
-      node12 = { config, ... }: {
+      node12 = { ... }: {
         imports = [ commonConfig ];
         services.ear.daemon.enable = true;
         services.ear.db_manager.enable = true;

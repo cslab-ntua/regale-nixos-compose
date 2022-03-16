@@ -1,6 +1,11 @@
-{ pkgs }:
+{ pkgs, nur }:
 {
-  environment.systemPackages = [ pkgs.nano pkgs.mariadb pkgs.cpufrequtils ];
+  imports = [ nur.repos.kapack.modules.ear ];
+
+  environment.systemPackages = [ pkgs.nano pkgs.mariadb pkgs.cpufrequtils pkgs.nur.repos.kapack.npb
+                               pkgs.openmpi ];
+
+  environment.variables.EAR_INSTALL_PATH = "${pkgs.nur.repos.kapack.ear}";
 
   users.users.user1 = { isNormalUser = true; };
   users.users.user2 = { isNormalUser = true; };

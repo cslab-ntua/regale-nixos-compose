@@ -13,28 +13,22 @@
   outputs = { self, nixpkgs, nxc, NUR, kapack}:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
-      setup = nxc.lib.setup ./setup.toml { inherit nur; };
+
       nur = nxc.lib.nur {
         inherit nixpkgs system NUR;
         repoOverrides = { inherit kapack; };
-  };
-  
-      extraConfigurations = [
-        # add nur attribute to pkgs
-        { nixpkgs.overlays = [ nur.overlay ] ++ setup.overrides; }
-        nur.repos.kapack.modules.ear
-        ];
-  
-      composition = import ./composition.nix;
-
+      };
+       
     in {
-      packages.${system} =
-        nxc.lib.compose { inherit nixpkgs system composition extraConfigurations; };
-
+      packages.${system} = nxc.lib.compose {
+        inherit nixpkgs system nur;
+        setup = ./setup.toml;
+        composition = ./composition.nix;
+      };
+      
       defaultPackage.${system} =
         self.packages.${system}."composition::nixos-test";
-   
-      devShell.${system} = pkgs.mkShell { buildInputs = [ nxc.defaultPackage.${system} ];};
+
+      devShell.${system} = nxc.devShells.${system}.nxcShell;
     };
 }
