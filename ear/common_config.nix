@@ -6,6 +6,11 @@
                                pkgs.openmpi ];
 
   environment.variables.EAR_INSTALL_PATH = "${pkgs.nur.repos.kapack.ear}";
+  environment.variables.EAR_VERBOSE = "1";
+
+  # Allow root yo use open-mpi
+  environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
+  environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
 
   users.users.user1 = { isNormalUser = true; };
   users.users.user2 = { isNormalUser = true; };
