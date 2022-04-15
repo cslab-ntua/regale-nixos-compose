@@ -4,10 +4,7 @@
       commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur; };
       node = { ... }: {
         imports = [ commonConfig ];
-        services.oar.node = {
-          enable = true;
-          register = { enable = true; };
-        };
+        services.oar.node = { enable = true; };
       };
     in {
       frontend = { ... }: {
@@ -21,7 +18,6 @@
         services.oar.dbserver.enable = true;
       };
     } // helpers.makeMany node "node" 2;
-
 
   testScript = ''
     frontend.succeed("true")
