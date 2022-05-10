@@ -16,30 +16,30 @@ We use Nixos-compose to package and pre-deploy
 ## 2. Install Nix with script helper
  - Visit: https://github.com/oar-team/nix-user-chroot-companion
  - Installation (on frontend repeat once per site)   
- ```
+ ```bash
  curl -L -O https://raw.githubusercontent.com/oar-team/nix-user-chroot-companion/master/nix-user-chroot.s 
  chmod 755 nix-user-chroot.sh
 ```
 ## 3. Use
 
-```
+```bash
 ./nix-user-chroot.sh
 ```
 
 ## 4. Install nixos-compose
-```
+```bash
 git clone https://gitlab.inria.fr/nixos-compose/nixos-compose
 cd nixos-compose
 poetry install
 ```
 
 ## 5. Clone regale-nixos-compose
-```
+```bash
 git clone git@gricad-gitlab.univ-grenoble-alpes.fr:regale/tools/regale-nixos-compose.git
 ```
 
 ## 6. Clone EAR (needed to be clone because gridcad-gitlab repo is not public, apply for other tools also)
-```
+```bash
 git clone git@gricad-gitlab.univ-grenoble-alpes.fr:regale/tools/ear.git
 ```
 
@@ -72,11 +72,9 @@ ear = { src = "/home/auguste/dev/regale-ear" }
 ```
 
 The main adpatation is to *change orichard with your username* 
-```
+```bash
 sed -i 's/orichard/'$USER'/' setup.toml
 ```
-
-
 
 ## Common steps
 
@@ -97,7 +95,7 @@ nxc build -s g5k -f g5k-ramdisk
 ```
 ### Deploy 
 
-```
+```bash
 # activate nixos-compose env
 cd nixos-compose
 poetry shell
@@ -111,7 +109,7 @@ nxc connect
 
 ## EAR
 Resources requirement: 4 nodes
-```
+```bash
 # on node12
 
 yes node12  | head -n 8 > machines && yes node11  | head -n 8 >> machines
@@ -136,7 +134,7 @@ ejob 50001 endjob
 ```
 ## OAR
 Resources requirement: 4 nodes
-```
+```bash
 # on frontend
 su user1
 cd
