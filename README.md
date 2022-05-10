@@ -43,17 +43,45 @@ git clone git@gricad-gitlab.univ-grenoble-alpes.fr:regale/tools/regale-nixos-com
 git clone git@gricad-gitlab.univ-grenoble-alpes.fr:regale/tools/ear.git
 ```
 
-(TBC)
+(To Complete)
 
 # Usage
 
 ## Preambule 
 It's recommanded to use **tmux** on frontend to cope with connection error between Grid'5000 and the outside.
 
+**setup.toml** adaptation:
+This file is present in each directory. It allows to apply some selectable parameters for image building.
+Below example with two setup g5k and dev
+
+```toml
+[project]
+selected = "dev"
+        
+[g5k.options]
+nix-flags = "--impure --override-input nxc path:/home/orichard/nixos-compose/dev --override-input kapack path:/home/orichard/nur-kapack/ear"
+          
+[g5k.overrides.nur.kapack]
+ear = { src = "/home/orichard/regale-ear" }
+
+[dev.options]
+nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/ear"
+
+[dev.overrides.nur.kapack]
+ear = { src = "/home/auguste/dev/regale-ear" }
+```
+
+The main adpatation is to *change orichard with your username* 
+```
+sed -i 's/orichard/'$USER'/' setup.toml
+```
+
+
+
 ## Common steps
 
 ### Build (ramdisk) image
-```
+```bash
 # build on dedicated node not on frontend 
 # reserve one node
 oarsub -I
@@ -82,9 +110,43 @@ nxc connect
 ```
 
 ## EAR
+Resources requirement: 4 nodes
+```
+# on node12
 
+yes node12  | head -n 8 > machines && yes node11  | head -n 8 >> machines
+   
+# on each nodes !!!
+export OAR_JOB_ID=1
+# on each nodes !!!
+ejob 50001 newjob
+
+# on node12
+mpirun --hostfile machines -np 16  --mca btl tcp,self \
+ -x LD_PRELOAD=${EAR_INSTALL_PATH}/lib/libearld.so \
+ -x OAR_EAR_LOAD_MPI_VERSION=ompi \
+ -x OAR_EAR_LOADER_VERBOSE=4 \
+ -x OAR_STEP_NUM_NODES=2 \
+ -x OAR_JOB_ID=$OAR_JOB_ID\
+ -x OAR_STEP_ID=0\
+ cg.C.mpi
+
+# on each nodes !!! 
+ejob 50001 endjob
+```
 ## OAR
+Resources requirement: 4 nodes
+```
+# on frontend
+su user1
+cd
+# ask 2 nodes in interactive mode
+oarsub -I nodes=2
+```
 
 ## EAR-OAR
+Resources requirement: 5 nodes
+(To Complete)
 
 # Development
+(To Complete)
