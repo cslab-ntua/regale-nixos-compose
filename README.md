@@ -54,7 +54,7 @@ It's recommanded to use **tmux** on frontend to cope with connection error betwe
 
 ### Build (ramdisk) image
 ```
-# build on dedicated node not on frondent 
+# build on dedicated node not on frontend 
 # reserve one node
 oarsub -I
 # activate nixos-compose env
@@ -66,6 +66,19 @@ cd
 # build EAR image
 cd regale-nixos-compose/ear
 nxc build -s g5k -f g5k-ramdisk
+```
+### Deploy 
+
+```
+# activate nixos-compose env
+cd nixos-compose
+poetry shell
+# reserve some nodes and retrieve $OAR_JOB_ID in one step
+export $(oarsub -l nodes=5,walltime=2:0 "$(nxc helper g5k_script) 2h" | grep OAR_JOB_ID)
+# deploy (use last built image)
+nxc start -m ./OAR.$OAR_JOB_ID.stdout -W
+# connect spawn new tmux
+nxc connect
 ```
 
 ## EAR
