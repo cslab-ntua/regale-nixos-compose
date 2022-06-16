@@ -21,7 +21,7 @@ let
   '';
 in {
   imports = [ nur.repos.kapack.modules.oar ];
-  
+
   environment.systemPackages = [ pkgs.python3 pkgs.nano ];
   networking.firewall.enable = false;
   users.users.user1 = { isNormalUser = true; };
@@ -39,7 +39,7 @@ in {
   environment.etc."oar-dbpassword".text = ''
     # DataBase user name
     DB_BASE_LOGIN="oar"
-      
+
     # DataBase user password
     DB_BASE_PASSWD="oar"
 
@@ -47,7 +47,7 @@ in {
     DB_BASE_LOGIN_RO="oar_ro"
 
     # DataBase read only user password
-    DB_BASE_PASSWD_RO="oar_ro" 
+    DB_BASE_PASSWD_RO="oar_ro"
   '';
   services.oar = {
     # oar db passwords
@@ -58,15 +58,15 @@ in {
       postInitCommands = ''
       num_cores=$(( $(lscpu | awk '/^Socket\(s\)/{ print $2 }') * $(lscpu | awk '/^Core\(s\) per socket/{ print $4 }') ))
       echo $num_cores > /etc/num_cores
-      
+
       if [[ -f /etc/nxc/deployment-hosts ]]; then
         num_nodes=$(grep node /etc/nxc/deployment-hosts | wc -l)
       else
         num_nodes=$(jq -r '[.nodes[] | select(contains("node"))]| length' /etc/nxc/deployment.json)
       fi
       echo $num_nodes > /etc/num_nodes
-      
-      add_resources $num_nodes $num_cores 
+
+      add_resources $num_nodes $num_cores
       '';
     };
     server.host = "server";
