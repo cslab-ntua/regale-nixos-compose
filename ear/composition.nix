@@ -11,17 +11,17 @@
       };
       
       eargm = { ... }: {
-              imports = [ commonConfig ];
-              services.ear.global_manager.enable = true;
+        imports = [ commonConfig ];
+        services.ear.global_manager.enable = true;
       };
       
-      node11 = { ... }: {
+      node1 = { ... }: {
         imports = [ commonConfig ];
         services.ear.daemon.enable = true;
         services.ear.db_manager.enable = true;
       };
       
-      node12 = { ... }: {
+      node2 = { ... }: {
         imports = [ commonConfig ];
         services.ear.daemon.enable = true;
         services.ear.db_manager.enable = true;

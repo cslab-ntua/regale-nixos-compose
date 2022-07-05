@@ -23,11 +23,17 @@
     DBCommandsPassw=password
   '';
 
+  security.pam.loginLimits = [
+    { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
+    { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
+  ]; 
+
+  
   services.ear = {
     database = {
       host = "eardb";
       passwordFile = "/etc/ear-dbpassword";
     };
-    extraConfig = { Island = "0 DBIP=node11 DBSECIP=node12 Nodes=node1[1-2]";};
+    extraConfig = { Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-2]";};
   };
 }

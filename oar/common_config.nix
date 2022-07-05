@@ -19,13 +19,25 @@ let
             time.sleep(0.25)
     resources_creation("node", int(sys.argv[1]), int(sys.argv[2]))
   '';
-in {
-  imports = [ nur.repos.kapack.modules.oar ];
 
-  environment.systemPackages = [ pkgs.python3 pkgs.nano ];
+  #openmpiNoOPA = pkgs.openmpi.override { fabricSupport = false; };
+  #npbNoOPA = pkgs.nur.repos.kapack.npb.override (oldAttrs: rec { openmpi = openmpiNoOPA; });
+  
+in {
+  imports = [ nur.repos.kapack.modules.oar ];  
+  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.nur.repos.kapack.npb  ];
+
+  # Allow root yo use open-mpi
+  environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
+  environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
+
   networking.firewall.enable = false;
   users.users.user1 = { isNormalUser = true; };
   users.users.user2 = { isNormalUser = true; };
+
+  security.pam.loginLimits = [
+    { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
+  ]; 
 
   environment.etc."privkey.snakeoil" = {
     mode = "0600";
