@@ -2,6 +2,10 @@
 Ease Regale's Prototype Deployment on Grid'5000
 ============================================================
 
+**IMPORTANT !!!**: **Rewrite of this page  is pending**
+- We are preparing a Nixos-Compose Tutorial (for the end of septembre):  https://nixos-compose.gitlabpages.inria.fr/tuto-nxc/ (WIP)
+- When Nixos-compose tutorial is finished, this page will be updated accordingly
+
 We use Nixos-compose to package and pre-deploy
 
 # Installation
