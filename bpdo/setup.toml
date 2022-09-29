@@ -1,0 +1,16 @@
+[project]
+selected = "dev"
+        
+[g5k.options]
+nix-flags = "--impure --override-input nxc path:/home/orichard/nixos-compose/master --override-input kapack path:/home/orichard/nur-kapack/regale"
+# --show-trace
+
+[g5k.build.nur.repos.kapack.bdpo]
+src = "/home/orichard/bdpo"
+              
+[dev.options]
+#nix-flags = "--impure --override-input nxc path:/home/auguste/dev/nixos-compose/dev --override-input kapack path:/home/auguste/dev/nur-kapack/ear"
+nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/regale"
+
+[dev.build.nur.repos.kapack.bdpo]
+src = "/home/auguste/dev/bdpo"
