@@ -1,14 +1,19 @@
 
-Ease Regale's Prototype Deployment on Grid'5000
-============================================================
+Ease Regale's Prototypes Deployment on Grid'5000 with NixOS-Compose
+===================================================================
 
-**IMPORTANT !!!**: **Rewrite of this page  is pending**
-- We are preparing a Nixos-Compose Tutorial (for the end of septembre):  https://nixos-compose.gitlabpages.inria.fr/tuto-nxc/ (WIP)
-- When Nixos-compose tutorial is finished, this page will be updated accordingly
+# Introduction
+Each Regale prototype is an integration of non-trivial distributed systems and applications.
+To facilitate their development and ensure their reproducibility, we propose the use of
+[NixOS-Compose (NXC)](https://gitlab.inria.fr/nixos-compose/nixos-compose).
 
-We use Nixos-compose to package and pre-deploy
+## Nixos Compose references
+- [Documentation](https://nixos-compose.gitlabpages.inria.fr/nixos-compose/)(WIP)
+- [Tutorial](https://nixos-compose.gitlabpages.inria.fr/tuto-nxc/)
+- [IEEE Cluster article](https://hal.archives-ouvertes.fr/hal-03723771)([bibtex](https://hal.archives-ouvertes.fr/hal-03723771v1/bibtex))
+# Requirements
 
-# Installation
+**IMPORTANT**: **By default we allo to Grid'5000 as target platform**
 
 ## 1. Get Grid'5000 account
  - Go https://www.grid5000.fr/w/Grid5000:Get_an_account
@@ -16,139 +21,104 @@ We use Nixos-compose to package and pre-deploy
  - Fill the form, for Grid’5000 Access Group field select datamove
  - Get some practice: 
    Getting Started page to discover Grid’5000
-   
-## 2. Install Nix with script helper
- - Visit: https://github.com/oar-team/nix-user-chroot-companion
- - Installation (on frontend repeat once per site)   
+## 2. Access to Gricad-gitlab's private repositories from Grid'5000
+As repositories in Regale/Tools are private public ssh key must be added to your Gricad-gitlab user profile.
+You can use `~/.ssh/id_rsa.pub` from your Grid'5000's home. This pubkey was automatically generated during your Grid'5000 account generation (it is use to move between sites and connect nodes w/o password).
+Alternatively you can generate a new pair of ssh keys. **Put** then in the https://gricad-gitlab.univ-grenoble-alpes.fr/-/profile/keys form
+## 3. Install Nixos Compose
+ - Installation
  ```bash
- curl -L -O https://raw.githubusercontent.com/oar-team/nix-user-chroot-companion/master/nix-user-chroot.s 
- chmod 755 nix-user-chroot.sh
-```
-## 3. Use
+ pip install nixos-compose
+ ```
+ - You might need to modify your `$PATH`:
+ ```bash
+ export PATH=$PATH:~/.local/bin
+  ```
+ - To upgrade
+ ```bash
+ pip install --upprade nixos-compose
+ ```
+# Use
+## 1. Clone regale-nixos-compose repository on Grid'5000
 
-```bash
-./nix-user-chroot.sh
-```
-
-## 4. Install nixos-compose
-```bash
-git clone https://gitlab.inria.fr/nixos-compose/nixos-compose
-cd nixos-compose
-poetry install
-```
-
-## 5. Clone regale-nixos-compose
 ```bash
 git clone git@gricad-gitlab.univ-grenoble-alpes.fr:regale/tools/regale-nixos-compose.git
 ```
-
-## 6. Clone EAR (needed to be clone because gridcad-gitlab repo is not public, apply for other tools also)
-```bash
-git clone git@gricad-gitlab.univ-grenoble-alpes.fr:regale/tools/ear.git
-```
-
-(To Complete)
-
-# Usage
-
-## Preambule 
-It's recommanded to use **tmux** on frontend to cope with connection error between Grid'5000 and the outside.
-
-**setup.toml** adaptation:
-This file is present in each directory. It allows to apply some selectable parameters for image building.
-Below example with two setup g5k and dev
-
-```toml
-[project]
-selected = "dev"
-        
-[g5k.options]
-nix-flags = "--impure --override-input nxc path:/home/orichard/nixos-compose/dev --override-input kapack path:/home/orichard/nur-kapack/ear"
-          
-[g5k.overrides.nur.kapack]
-ear = { src = "/home/orichard/regale-ear" }
-
-[dev.options]
-nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/ear"
-
-[dev.overrides.nur.kapack]
-ear = { src = "/home/auguste/dev/regale-ear" }
-```
-
-The main adpatation is to *change orichard with your username* 
-```bash
-sed -i 's/orichard/'$USER'/' setup.toml
-```
-
-## Common steps
-
-### Build (ramdisk) image
+## 2. Interactive session
+We take EAR case as example.
+### Build image to deploy
+We preconise to build on dedicated node not on frontend to advoid overloading. 
 ```bash
 # build on dedicated node not on frontend 
 # reserve one node
 oarsub -I
-# activate nixos-compose env
-cd nixos-compose
-poetry shell
-# activate nix
-cd
-./nix-user-chroot.sh
-# build EAR image
-cd regale-nixos-compose/ear
-nxc build -s g5k -f g5k-ramdisk
+# go to EAR directory
+cd reagle-nixos-compose/ear
+# build default image (flavour g5k-nfs-store)
+nxc build
 ```
-### Deploy 
+
+### Deploy image on nodes
 
 ```bash
-# activate nixos-compose env
-cd nixos-compose
-poetry shell
-# reserve some nodes and retrieve $OAR_JOB_ID in one step
-export $(oarsub -l nodes=5,walltime=2:0 "$(nxc helper g5k_script) 2h" | grep OAR_JOB_ID)
+# reserve some 4 nodes for 2 hours and retrieve $OAR_JOB_ID in one step
+export $(oarsub -l nodes=4,walltime=2:0 "$(nxc helper g5k_script) 2h" | grep OAR_JOB_ID)
 # deploy (use last built image)
 nxc start -m ./OAR.$OAR_JOB_ID.stdout -W
-# connect spawn new tmux
+# connect and spawn new tmux with pane for each node
 nxc connect
 ```
 
-## EAR
-Resources requirement: 4 nodes
+### Time to experiment
+Depends of each prototype/integration.
+See EAR's [README](ear/README.md) for concrete example.
+
+### Terminate session
 ```bash
-# on node12
-
-yes node12  | head -n 8 > machines && yes node11  | head -n 8 >> machines
-   
-# on each nodes !!!
-export OAR_JOB_ID=1
-# on each nodes !!!
-ejob 50001 newjob
-
-# on node12
-mpirun --hostfile machines -np 16  --mca btl tcp,self \
- -x LD_PRELOAD=${EAR_INSTALL_PATH}/lib/libearld.so \
- -x OAR_EAR_LOAD_MPI_VERSION=ompi \
- -x OAR_EAR_LOADER_VERBOSE=4 \
- -x OAR_STEP_NUM_NODES=2 \
- -x OAR_JOB_ID=$OAR_JOB_ID\
- -x OAR_STEP_ID=0\
- cg.C.mpi
-
-# on each nodes !!! 
-ejob 50001 endjob
+oardel $OAR_JOB_ID
 ```
-## OAR
-Resources requirement: 4 nodes
-```bash
-# on frontend
-su user1
-cd
-# ask 2 nodes in interactive mode
-oarsub -I nodes=2
+Note: `oarstat -u` to list user's jobs.
+
+## 3. Passive session
+Todo
+
+# List of prototype/integration compositions
+| Directory                  | Description      | Delivrable | Pilot |
+|----------------------------|------------------|------------|-------|
+| [BDPO/BEO](bdpo/README.md) | demo             | -          | -     |
+| [EAR](ear/README.md)       | demo             | -          | -     |
+| [OAR](oar/README.md)       | demo             | -          | -     |
+| [EAR-OAR](ear-)            | base integration | -          | -     |
+# Developments Supports
+
+
+## Build customization via setup.toml
+
+**setup.toml**: is a file present in each directory. It allows to apply some selectable parameters for image building.
+Below example with two setup **g5k** and **laptop** selectable by option `-s`, e.g. `nxc build -s g5k` or `nxc build -s laptop` 
+
+```toml
+[project]
+    
+[g5k.options]
+nix-flags = "--impure" # required when some source if not commited   
+          
+[g5k.overrides.nur.kapack]
+ear = { src = "/home/orichard/ear" }
+
+[laptop.options]
+nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/regale"
+
+[laptop.overrides.nur.kapack]
+ear = { src = "/home/auguste/dev/ear" }
 ```
+The entry `[g5k.overrides.nur.kapack]` specify that the source file for EAR is located in `/home/orichard/ear` directory.
 
-## EAR-OAR
-Resources requirement: 5 nodes
-(To Complete)
 
-# Development
-(To Complete)
+# Tips
+
+- **tumx**: It's recommended to use **tmux** on frontend to cope with connection error between Grid'5000 and the outside.
+- **Redeployment**: If the number of nodes is the same or lower than the deployed ones it not needed to submit a new job, just execute a new `nxc start -m NODES_FILE` command with `NODES_FILE` contained the apprioate number of machine.
+- 
+
+
