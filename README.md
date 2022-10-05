@@ -11,6 +11,17 @@ To facilitate their development and ensure their reproducibility, we propose the
 - [Documentation](https://nixos-compose.gitlabpages.inria.fr/nixos-compose/)(WIP)
 - [Tutorial](https://nixos-compose.gitlabpages.inria.fr/tuto-nxc/)
 - [IEEE Cluster article](https://hal.archives-ouvertes.fr/hal-03723771)([bibtex](https://hal.archives-ouvertes.fr/hal-03723771v1/bibtex))
+
+# List of prototype/integration compositions
+| Directory                  | Description      | Status | Delivrable/Pilot |
+|----------------------------|------------------|------------|-------|
+| [BDPO/BEO](bdpo/README.md) | demo             | PoC(WIP)          | -     |
+| [EAR](ear/README.md)       | demo             | PoC          | -     |
+| [EXAMON](examon/README.md)       | demo             | PoC(WIP)          | -     |
+| [OAR](oar/README.md)       | demo             | PoC          | -     |
+| [EAR-OAR](ear-oar/README.md)            | base integration | PoC          | -     |
+
+
 # Requirements
 
 **IMPORTANT**: **By default we allo to Grid'5000 as target platform**
@@ -82,13 +93,7 @@ Note: `oarstat -u` to list user's jobs.
 ## 3. Passive session
 Todo
 
-# List of prototype/integration compositions
-| Directory                  | Description      | Delivrable | Pilot |
-|----------------------------|------------------|------------|-------|
-| [BDPO/BEO](bdpo/README.md) | demo             | -          | -     |
-| [EAR](ear/README.md)       | demo             | -          | -     |
-| [OAR](oar/README.md)       | demo             | -          | -     |
-| [EAR-OAR](ear-)            | base integration | -          | -     |
+
 # Developments Supports
 
 
