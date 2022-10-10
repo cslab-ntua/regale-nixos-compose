@@ -20,7 +20,7 @@ To facilitate their development and ensure their reproducibility, we propose the
 | [EXAMON](examon/README.md)   | demo             | PoC(WIP) | -                |
 | [OAR](oar/README.md)         | demo             | PoC      | -                |
 | [EAR-OAR](ear-oar/README.md) | base integration | PoC      | -                |
-
+| [Melissa-SA](https://gitlab.inria.fr/nixos-compose/melissa) | Sensitivity Analysis version with Slumr/OAR3 | Poc      | -                | 
 
 # Requirements
 
