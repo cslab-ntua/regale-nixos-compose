@@ -13,13 +13,13 @@ To facilitate their development and ensure their reproducibility, we propose the
 - [IEEE Cluster article](https://hal.archives-ouvertes.fr/hal-03723771)([bibtex](https://hal.archives-ouvertes.fr/hal-03723771v1/bibtex))
 
 # List of prototype/integration compositions
-| Directory                  | Description      | Status | Delivrable/Pilot |
-|----------------------------|------------------|------------|-------|
-| [BDPO/BEO](bdpo/README.md) | demo             | PoC(WIP)          | -     |
-| [EAR](ear/README.md)       | demo             | PoC          | -     |
-| [EXAMON](examon/README.md)       | demo             | PoC(WIP)          | -     |
-| [OAR](oar/README.md)       | demo             | PoC          | -     |
-| [EAR-OAR](ear-oar/README.md)            | base integration | PoC          | -     |
+| Directory                    | Description      | Status   | Delivrable/Pilot |
+|------------------------------|------------------|----------|------------------|
+| [BDPO/BEO](bdpo/README.md)   | demo             | PoC(WIP) | -                |
+| [EAR](ear/README.md)         | demo             | PoC      | -                |
+| [EXAMON](examon/README.md)   | demo             | PoC(WIP) | -                |
+| [OAR](oar/README.md)         | demo             | PoC      | -                |
+| [EAR-OAR](ear-oar/README.md) | base integration | PoC      | -                |
 
 
 # Requirements
@@ -36,7 +36,7 @@ To facilitate their development and ensure their reproducibility, we propose the
 As repositories in Regale/Tools are private public ssh key must be added to your Gricad-gitlab user profile.
 You can use `~/.ssh/id_rsa.pub` from your Grid'5000's home. This pubkey was automatically generated during your Grid'5000 account generation (it is use to move between sites and connect nodes w/o password).
 Alternatively you can generate a new pair of ssh keys. **Put** then in the https://gricad-gitlab.univ-grenoble-alpes.fr/-/profile/keys form
-## 3. Install Nixos Compose
+## 3. Install Nixos-Compose
  - Installation
  ```bash
  pip install nixos-compose
@@ -49,6 +49,11 @@ Alternatively you can generate a new pair of ssh keys. **Put** then in the https
  ```bash
  pip install --upprade nixos-compose
  ```
+ ## 4. Install NIX with the help of Nixos-Compose
+ - The following command will install a standalone and static Nix version in `~/.local/bin`
+ ```bash
+ nxc helper install-nix
+ ```
 # Use
 ## 1. Clone regale-nixos-compose repository on Grid'5000
 
@@ -57,8 +62,9 @@ git clone git@gricad-gitlab.univ-grenoble-alpes.fr:regale/tools/regale-nixos-com
 ```
 ## 2. Interactive session
 We take EAR case as example.
+
 ### Build image to deploy
-We preconise to build on dedicated node not on frontend to advoid overloading. 
+We preconise to build on dedicated node not on frontend to avoid its overloading. 
 ```bash
 # build on dedicated node not on frontend 
 # reserve one node
@@ -90,12 +96,11 @@ oardel $OAR_JOB_ID
 ```
 Note: `oarstat -u` to list user's jobs.
 
-## 3. Passive session
+## 3. Non-interactive session
 Todo
 
 
-# Developments Supports
-
+# Development support
 
 ## Build customization via setup.toml
 
