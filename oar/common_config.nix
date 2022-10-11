@@ -32,8 +32,8 @@ in {
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
 
   networking.firewall.enable = false;
-  users.users.user1 = { isNormalUser = true; };
-  users.users.user2 = { isNormalUser = true; };
+  users.users.user1 = { isNormalUser = true; home = "/users/user1"; };
+  users.users.user2 = { isNormalUser = true; home = "/users/user2"; };
 
   #security.pam.loginLimits = [
   #  { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
