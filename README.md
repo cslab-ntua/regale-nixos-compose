@@ -85,6 +85,7 @@ nxc start -m ./OAR.$OAR_JOB_ID.stdout -W
 # connect and spawn new tmux with pane for each node
 nxc connect
 ```
+**Note:** *nxc connect* can be use to connect to only one node *nxc connect <node>*. Also **nxc connect** is really useful only if a minimal set of **[tmux](https://github.com/tmux/tmux/wiki/Getting-Started)**'s key bindings are mastered (like Ctrl-b + Up, Down, Right, Left to change pane, see tmux manul for other key bindings.
 
 ### Time to experiment
 Depends of each prototype/integration.
@@ -99,8 +100,7 @@ Note: `oarstat -u` to list user's jobs.
 ## 3. Non-interactive session
 Todo
 
-
-# Development support
+# Elements for development
 
 ## Build customization via setup.toml
 
@@ -127,7 +127,33 @@ The entry `[g5k.overrides.nur.kapack]` specify that the source file for EAR is l
 
 # Tips
 
-- **tumx**: It's recommended to use **tmux** on frontend to cope with connection error between Grid'5000 and the outside.
+- **tumx**: It's recommended to use **[tmux](https://github.com/tmux/tmux/wiki/Getting-Started)** on frontend to cope with connection error between Grid'5000 and the outside.
+
+Launch a new session:
+
+    tmux
+
+Attach to a previous session (typically after and broken network connection)
+    
+    tmux a
+
+Display help and keyboard shortcuts:
+
+    CTRL-b ?
+
+Some command shortcuts:
+
+    CTRL-b "          split vertically 
+    CTRL-b %          split horizontally (left/right)
+
+    CTRL-b left       go to pane on the left
+    CTRL-b right      go to pane on the right 
+    CTRL-b up         go to pane on the up 
+    CTRL-b down       go to pane on the down 
+
+    CTRL-b x          kill current pane
+
+
 - **Redeployment**: If the number of nodes is the same or lower than the deployed ones it not needed to submit a new job, just execute a new `nxc start -m NODES_FILE` command with `NODES_FILE` contained the apprioate number of machine.
 - 
 
