@@ -10,7 +10,7 @@
       node = { ... }: {
         imports = [ commonConfig ];
         fileSystems."/users" = fileSystemsNFSShared;
-        services.oar.node = { enable = true; };
+        services.oar.node.enable = true;
       };
     in {
       frontend = { ... }: {
