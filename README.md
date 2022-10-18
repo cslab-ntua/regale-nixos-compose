@@ -5,7 +5,7 @@ Ease Regale's Prototypes Deployment on Grid'5000 with NixOS-Compose
 # Introduction
 Each Regale prototype is an integration of non-trivial distributed systems and applications.
 To facilitate their development and ensure their reproducibility, we propose the use of
-[NixOS-Compose (NXC)](https://gitlab.inria.fr/nixos-compose/nixos-compose).
+[NixOS-Compose (NXC)](https://github.com/oar-team/nixos-compose).
 
 ## Nixos Compose references
 - [Documentation](https://nixos-compose.gitlabpages.inria.fr/nixos-compose/)(WIP)
