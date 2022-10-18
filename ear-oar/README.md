@@ -34,7 +34,7 @@ cd
 # interactive job
 oarsub -I -l nodes=2
 
-# launch NASA Parallel Benchmark CG
+# launch NAS Parallel Benchmark CG
 mpirun --hostfile $OAR_NODEFILE -mca pls_rsh_agent oarsh -mca btl tcp,self \
     -x LD_PRELOAD=${EAR_INSTALL_PATH}/lib/libearld.so \
     -x OAR_EAR_LOAD_MPI_VERSION=ompi \

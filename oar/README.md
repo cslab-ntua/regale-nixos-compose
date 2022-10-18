@@ -15,7 +15,7 @@ nxc build
 ## Deploy
 Nodes requirements: **5 nodes**
 ```bash
-export $(oarsub -l cluster=1/nodes=5,walltime=2:0 "$(nxc helper g5k_script) 2h" | grep OAR_JOB_ID)
+export $(oarsub -l cluster=1/nodes=4,walltime=2:0 "$(nxc helper g5k_script) 2h" | grep OAR_JOB_ID)
 nxc start -m ./OAR.$OAR_JOB_ID.stdout -W
 nxc connect
 ```
@@ -33,7 +33,7 @@ cd
 
 # interactive job
 oarsub -I -l nodes=2
-# launch a c
+# launch NAS Parallel Benchmark CG
 mpirun --hostfile $OAR_NODEFILE -mca pls_rsh_agent oarsh -mca btl tcp,self cg.C.mpi
 
 # terminate job
