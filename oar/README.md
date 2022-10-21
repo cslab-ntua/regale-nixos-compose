@@ -1,6 +1,6 @@
 # Introduction
 
-This composition proposes an environment with EAR and OAR. [NAS Parallel Benchmarks](https://www.nas.nasa.gov/software/npb.html) are provided and compiled with gcc in MPI and OpenMP variants.
+This composition proposes an environment with OAR. [NAS Parallel Benchmarks](https://www.nas.nasa.gov/software/npb.html) are provided and compiled with gcc in MPI and OpenMP variants.
 
 # Main Steps
 See main [README](../README.md) for more information about setting.
@@ -44,7 +44,7 @@ exit # or Ctrl-D
 echo "mpirun --hostfile \$OAR_NODEFILE -mca pls_rsh_agent oarsh -mca btl tcp,self cg.C.mpi" > test.sh
 chmod 755 test.sh
 # submit passive job
-oarsub -I -l nodes ./test.sh
+oarsub -l nodes=2 ./test.sh
 # display job output
 more OAR.*.stdout
 ```
