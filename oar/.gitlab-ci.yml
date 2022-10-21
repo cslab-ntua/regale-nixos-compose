@@ -1,0 +1,55 @@
+stages:
+  - build
+  - deploy
+  - test
+  
+variables:
+  MIN_NB_NODE: 4
+
+build-oar:
+  stage: build
+  tags:
+    - g5k
+  script:
+    - NXC_COMPO=oar
+    - nix --version
+    - nxc --version
+    - cd $CI_PROJECT_DIR/$NXC_COMPO
+    - nxc build -f g5k-nfs-store
+    # save build dir
+    - mv build $OAR_O_WORKDIR/var/tmp/build_$NXC_COMPO_$CI_COMMIT_SHORT_SHA
+
+deploy-oar:
+  stage: deploy
+  dependencies: 
+    - build-oar
+  tags:
+    - g5k
+  script:
+    - NXC_COMPO=oar
+    # extract NXC_OAR_JOB_ID and determine NXC_MACHINE_FILE
+    - NXC_OAR_JOB_ID=$(cat $OAR_O_WORKDIR/var/NXC_OAR_JOB_ID) && echo $NXC_OAR_JOB_ID
+    - NXC_MACHINE_FILE="${OAR_O_WORKDIR}/var/NXC_OAR_${NXC_OAR_JOB_ID}.stdout"
+    # test if there is enough nodes
+    - test $(wc -l < $NXC_MACHINE_FILE) -ge $MIN_NB_NODE
+    - echo $NXC_MACHINE_FILE && cat $NXC_MACHINE_FILE
+    - cd $CI_PROJECT_DIR/$NXC_COMPO
+    # restore build dir 
+    - mv $OAR_O_WORKDIR/var/tmp/build_$NXC_COMPO_$CI_COMMIT_SHORT_SHA build
+    # deploy
+    - nxc start -m $NXC_MACHINE_FILE
+    # save deploy dir 
+    - mv deploy $OAR_O_WORKDIR/var/tmp/deploy_$NXC_COMPO_$CI_COMMIT_SHORT_SHA
+    
+test-oar:
+  stage: test
+  dependencies: 
+    - deploy-oar
+  tags:
+    - g5k
+  script:
+    - NXC_COMPO=oar
+    - cd $CI_PROJECT_DIR/$NXC_COMPO
+    # restore deploy dir
+    - mv $OAR_O_WORKDIR/var/tmp/deploy_$NXC_COMPO_$CI_COMMIT_SHORT_SHA deploy
+    - nxc driver -t

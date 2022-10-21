@@ -1,0 +1,12 @@
+stages:
+  - triggers
+
+oar_test:
+  stage: triggers
+  trigger:
+    include: oar/.gitlab-ci.yml
+    strategy: depend
+  rules:
+    - changes:
+        - oar/*
+
