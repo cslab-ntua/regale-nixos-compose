@@ -2,6 +2,8 @@
 Ease Regale's Prototypes Deployment on Grid'5000 with NixOS-Compose
 ===================================================================
 
+[![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/main/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/main)
+
 # Introduction
 Each Regale prototype is an integration of non-trivial distributed systems and applications.
 To facilitate their development and ensure their reproducibility, we propose the use of
@@ -13,12 +15,12 @@ To facilitate their development and ensure their reproducibility, we propose the
 - [IEEE Cluster article](https://hal.archives-ouvertes.fr/hal-03723771)([bibtex](https://hal.archives-ouvertes.fr/hal-03723771v1/bibtex))
 
 # List of prototype/integration compositions
-| Directory                    | Description      | Status    | Delivrable/Pilot |
+| Directory                    | Description      | Status    | CI@Grid5000 |
 |------------------------------|------------------|-----------|------------------|
 | [BDPO/BEO](bdpo/README.md)   | demo             | PoC (WIP) | -                |
 | [EAR](ear/README.md)         | demo             | PoC       | -                |
 | [EXAMON](examon/README.md)   | demo             | PoC (WIP) | -                |
-| [OAR](oar/README.md)         | demo             | PoC       | -                |
+| [OAR](oar/README.md)         | demo             | PoC       | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/oar/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/oar)                |
 | [EAR-OAR](ear-oar/README.md) | base integration | PoC       | -                |
 | [Melissa-SA](https://gitlab.inria.fr/nixos-compose/melissa) | Sensitivity Analysis version with Slumr/OAR3 | Poc      | -                | 
 
@@ -125,7 +127,7 @@ The entry `[g5k.overrides.nur.kapack]` specify that the source file for EAR is l
 
 # Tips
 
-- **tumx**: It's recommended to use **[tmux](https://github.com/tmux/tmux/wiki/Getting-Started)** on frontend to cope with connection error between Grid'5000 and the outside.
+- **tmux**: It's recommended to use **[tmux](https://github.com/tmux/tmux/wiki/Getting-Started)** on frontend to cope with connection error between Grid'5000 and the outside.
 
 Launch a new session:
 
@@ -153,6 +155,3 @@ Some command shortcuts:
 
 
 - **Redeployment**: If the number of nodes is the same or lower than the deployed ones it not needed to submit a new job, just execute a new `nxc start -m NODES_FILE` command with `NODES_FILE` contained the apprioate number of machine.
-- 
-
-
