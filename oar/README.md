@@ -1,9 +1,9 @@
 # Introduction
 
-This composition proposes an environment with OAR. [NAS Parallel Benchmarks](https://www.nas.nasa.gov/software/npb.html) are provided and compiled with gcc in MPI and OpenMP variants.
+This composition proposes an environment with OAR. [NAS Parallel Benchmarks](https://www.nas.nasa.gov/software/npb.html) are also provided and compiled with gcc in MPI and OpenMP variants.
 
 # Main Steps
-See main [README](../README.md) for more information about setting.
+See main [README](../README.md) for more information about global installation and setting.
 
 ## Build
 ```bash
@@ -19,7 +19,7 @@ export $(oarsub -l cluster=1/nodes=4,walltime=2:0 "$(nxc helper g5k_script) 2h" 
 nxc start -m ./OAR.$OAR_JOB_ID.stdout -W
 nxc connect
 ```
-**Note:** *cluster=1* in the oarsub request allows to   
+**Note:** *cluster=1* in the oarsub request allows to request nodes belonging to the same cluster (homogeneous nodes).
 **Remainder:** *nxc connect* is based on tmux look at its manual for usefull key bindings.
 
 ## Use
