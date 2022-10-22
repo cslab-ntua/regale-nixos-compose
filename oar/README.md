@@ -13,7 +13,7 @@ nxc build
 ```
 
 ## Deploy
-Nodes requirements: **5 nodes**
+Nodes requirements: **4 nodes**
 ```bash
 export $(oarsub -l cluster=1/nodes=4,walltime=2:0 "$(nxc helper g5k_script) 2h" | grep OAR_JOB_ID)
 nxc start -m ./OAR.$OAR_JOB_ID.stdout -W
