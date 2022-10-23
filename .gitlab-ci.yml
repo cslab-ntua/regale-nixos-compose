@@ -13,8 +13,6 @@ oar-test:
 
 ear-test:
   stage: triggers
-  only:
-    - ear
   trigger:
     include: ear/.gitlab-ci.yml
     strategy: depend
