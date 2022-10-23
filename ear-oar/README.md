@@ -49,7 +49,7 @@ exit # or Ctrl-D
 
 # passive job
 # use ear-mpirun script which executes essentially the same above mpirun command
-oarsub -l nodes=2 oarsub -l nodes=2 "ear-mpirun cg.C.mpi"
+oarsub -l nodes=2 "ear-mpirun cg.C.mpi"
 
 # After some lapse of time
 ereport
