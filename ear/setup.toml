@@ -1,14 +1,13 @@
 [project]
 
-    
-[g5k.options]
+[g5k-dev.options]
 nix-flags = "--impure"    
           
-[g5k.overrides.nur.kapack]
-ear = { src = "/home/orichard/ear" }
+[g5k.build.nur.repos.kapack.ear]
+src = "/home/orichard/ear"
 
 [laptop.options]
 nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/regale"
 
-[laptop.overrides.nur.kapack]
-ear = { src = "/home/auguste/dev/ear" }
+[laptop.build.nur.repos.kapack.ear]
+src = "/home/auguste/dev/ear"
