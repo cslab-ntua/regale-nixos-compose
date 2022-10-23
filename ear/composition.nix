@@ -50,8 +50,8 @@
   #signal end of job
   node1.execute('OAR_JOB_ID=1 OAR_USER=user1 oar-ejob 50001 endjob uniq_machines')
 
-  #wait for monitoring data availability w/ timeout (5s) and save then in file
-  node1.execute("""sec=0; until [ -f result ] || [ $sec -gt 4 ]; \
+  #wait for monitoring data availability w/ timeout (10s) and save then in file
+  node1.execute("""sec=0; until [ -f result ] || [ $sec -gt 9 ]; \
   do eacct -c result; \ 
   sleep 1; \ 
   sec=$((sec + 1)); \
