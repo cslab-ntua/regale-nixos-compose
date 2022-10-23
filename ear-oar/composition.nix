@@ -39,6 +39,25 @@
     } // helpers.makeMany node "node" 2;
 
   testScript = ''
-    frontend.succeed("true")
+  # Submit job with script under user1
+  frontend.succeed('su - user1 -c "cd && oarsub -l nodes=2 \"ear-mpirun cg.C.mpi\""')
+  
+  # Wait output job file 
+  frontend.wait_for_file('/users/user1/OAR.1.stdout')
+  
+  # Check job's final state
+  frontend.succeed("oarstat -j 1 -s | grep Terminated")
+
+  # Wait for monitoring data availability w/ timeout (10s) and save then in file
+  node1.execute("""sec=0; until [ -f result ] || [ $sec -gt 9 ]; \
+  do eacct -c result; \ 
+  sleep 1; \ 
+  sec=$((sec + 1)); \
+  done
+  """)
+  
+  # Test if monitoring data file exists 
+  node1.succeed('[ -f result ]')
+
   '';
 }

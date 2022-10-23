@@ -6,7 +6,7 @@ let
 in {
   imports = [ nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear ];
   
-  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.mariadb pkgs.cpufrequtils pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk scripts.oar_ear_mpirun];
+  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.mariadb pkgs.cpufrequtils pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk scripts.ear-mpirun];
   
   environment.variables.EAR_INSTALL_PATH = "${pkgs.nur.repos.kapack.ear}";
   environment.variables.EAR_ETC = "/etc";

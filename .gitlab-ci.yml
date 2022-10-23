@@ -21,12 +21,12 @@ ear-test:
       changes:
         - ear/*
 
-# ear-oar-test:
-#   stage: triggers
-#   trigger:
-#     include: ear-oar/.gitlab-ci.yml
-#     strategy: depend
-#   rules:
-#     - changes:
-#         - ear-oar/*
-        
+ear-oar-test:
+  stage: triggers
+  trigger:
+    include: ear-oar/.gitlab-ci.yml
+    strategy: depend
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "ear-oar" || $CI_COMMIT_BRANCH == "main"'  
+      changes:
+        - ear-oar/*
