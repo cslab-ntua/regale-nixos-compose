@@ -18,10 +18,10 @@ To facilitate their development and ensure their reproducibility, we propose the
 | Directory                    | Description      | Status    | CI@Grid5000 |
 |------------------------------|------------------|-----------|------------------|
 | [BDPO/BEO](bdpo/README.md)   | demo             | PoC (WIP) | -                |
-| [EAR](ear/README.md)         | demo             | PoC       | -                |
+| [EAR](ear/README.md)         | demo             | PoC       | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/ear/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/ear)                |
 | [EXAMON](examon/README.md)   | demo             | PoC (WIP) | -                |
 | [OAR](oar/README.md)         | demo             | PoC       | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/oar/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/oar)                |
-| [EAR-OAR](ear-oar/README.md) | base integration | PoC       | -                |
+| [EAR-OAR](ear-oar/README.md) | base integration | PoC       | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/ear-oar/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/ear-oar)                |
 | [Melissa-SA](https://gitlab.inria.fr/nixos-compose/melissa) | Sensitivity Analysis version with Slumr/OAR3 | Poc      | -                | 
 
 # Requirements
@@ -104,25 +104,26 @@ Todo
 
 ## Build customization via setup.toml
 
-**setup.toml**: is a file present in each directory. It allows to apply some selectable parameters for image building.
-Below example with two setup **g5k** and **laptop** selectable by option `-s`, e.g. `nxc build -s g5k` or `nxc build -s laptop` 
+**setup.toml**: is a file present in each directory. It allows to apply some selectable parameters for image building, by example to change source for specific application (useful during development or test).
+
+Below example with two setup **g5k-dev** and **laptop** selectable by option `-s`, e.g. `nxc build -s g5k-dev` or `nxc build -s laptop` 
 
 ```toml
 [project]
     
-[g5k.options]
-nix-flags = "--impure" # required when some source if not commited   
-          
-[g5k.overrides.nur.kapack]
-ear = { src = "/home/orichard/ear" }
+[g5k-dev.options]
+nix-flags = "--impure" # required when some source if not commited
+
+[g5k-dev.build.nur.repos.kapack.ear]
+src = "/home/orichard/ear"
 
 [laptop.options]
 nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/regale"
 
-[laptop.overrides.nur.kapack]
-ear = { src = "/home/auguste/dev/ear" }
+[laptop.build.nur.repos.kapack.ear]
+src = "/home/auguste/dev/ear"
 ```
-The entry `[g5k.overrides.nur.kapack]` specify that the source file for EAR is located in `/home/orichard/ear` directory.
+The entry `[g5k-dev.build.nur.repos.kapack.ear]` specify that the source file for EAR is located in `/home/orichard/ear` directory.
 
 
 # Tips
