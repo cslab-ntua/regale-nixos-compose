@@ -55,7 +55,7 @@
   do eacct -c result; \ 
   sleep 1; \ 
   sec=$((sec + 1)); \
-  done'
+  done
   """)
   
   #test if monitoring data file exists 
