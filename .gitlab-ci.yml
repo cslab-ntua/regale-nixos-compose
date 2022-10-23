@@ -1,12 +1,34 @@
 stages:
   - triggers
 
-oar_test:
+oar-test:
   stage: triggers
   trigger:
     include: oar/.gitlab-ci.yml
     strategy: depend
   rules:
-    - changes:
+    - if: $CI_COMMIT_BRANCH == "oar" || $CI_COMMIT_BRANCH == "main" 
+      changes:
         - oar/*
 
+ear-test:
+  stage: triggers
+  only:
+    - ear
+  trigger:
+    include: ear/.gitlab-ci.yml
+    strategy: depend
+  rules:
+    - if: $CI_COMMIT_BRANCH == "ear" || $CI_COMMIT_BRANCH == "main"  
+      changes:
+        - ear/*
+
+# ear-oar-test:
+#   stage: triggers
+#   trigger:
+#     include: ear-oar/.gitlab-ci.yml
+#     strategy: depend
+#   rules:
+#     - changes:
+#         - ear-oar/*
+        
