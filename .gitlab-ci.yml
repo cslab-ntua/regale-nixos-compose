@@ -7,8 +7,7 @@ oar-test:
     include: oar/.gitlab-ci.yml
     strategy: depend
   rules:
-    - if: '$CI_COMMIT_BRANCH == "oar" || $CI_COMMIT_BRANCH == "main"' 
-      changes:
+    - changes:
         - oar/*
 
 ear-test:
@@ -17,8 +16,7 @@ ear-test:
     include: ear/.gitlab-ci.yml
     strategy: depend
   rules:
-    - if: '$CI_COMMIT_BRANCH == "ear" || $CI_COMMIT_BRANCH == "main"'  
-      changes:
+    - changes:
         - ear/*
 
 ear-oar-test:
@@ -27,6 +25,5 @@ ear-oar-test:
     include: ear-oar/.gitlab-ci.yml
     strategy: depend
   rules:
-    - if: '$CI_COMMIT_BRANCH == "ear-oar" || $CI_COMMIT_BRANCH == "main"'  
-      changes:
+    - changes:
         - ear-oar/*
