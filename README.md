@@ -47,7 +47,7 @@ Alternatively you can generate a new pair of ssh keys. **Put** then in the https
   ```
  - To upgrade
  ```bash
- pip install --upprade nixos-compose
+ pip install --upgrade nixos-compose
  ```
  ## 4. Install NIX with the help of Nixos-Compose
  - The following command will install a standalone and static Nix version in `~/.local/bin`
