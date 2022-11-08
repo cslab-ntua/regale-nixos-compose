@@ -1,0 +1,16 @@
+[project]
+selected = "dadou"
+
+[dadou.options]
+nix-flags = "--impure --override-input kapack path:/home/adfaure/Sandbox/nxc-melissa/nur-kapack"
+# --show-trace
+
+[g5k.overrides.nur.kapack]
+ear = { src = "/home/orichard/regale-ear" }
+
+[dev.options]
+#nix-flags = "--impure --override-input nxc path:/home/auguste/dev/nixos-compose/dev --override-input kapack path:/home/auguste/dev/nur-kapack/ear"
+nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/ear"
+
+[dev.overrides.nur.kapack]
+ear = { src = "/home/auguste/dev/regale-ear" }
