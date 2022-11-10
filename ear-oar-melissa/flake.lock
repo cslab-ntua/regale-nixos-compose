@@ -2,11 +2,11 @@
   "nodes": {
     "NUR": {
       "locked": {
-        "lastModified": 1668083168,
-        "narHash": "sha256-yDYNuoTZePsBbWaPcxEIj7rTOAKzmtT7NQnAynmi5as=",
+        "lastModified": 1666082537,
+        "narHash": "sha256-DHFFYPhmySbwt239oCiVaOLJe9njh+VGuNvH6E83P3E=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "c4901dc7660f78543d5877e7ad0c35ac1e22b1a7",
+        "rev": "117eeb43bca6f66f68d2ec2365b5950683096bc4",
         "type": "github"
       },
       "original": {
@@ -69,11 +69,11 @@
         "nixpkgs2111": "nixpkgs2111"
       },
       "locked": {
-        "lastModified": 1668085693,
-        "narHash": "sha256-VPh7I6jJLkneY0leDUBLW97FBx+BhD18xZWXAnR0iCs=",
+        "lastModified": 1665744734,
+        "narHash": "sha256-zAqyg0Rdehe5UkR9aRGcUEbtg0QzygySwU+kQIaX/u0=",
         "owner": "oar-team",
         "repo": "nur-kapack",
-        "rev": "c9e7f20ac7f04f5d65166929bac0e34649b56840",
+        "rev": "66a199a229a441c29445b86a0b43cd9916666ead",
         "type": "github"
       },
       "original": {
@@ -108,16 +108,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1659446231,
-        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
+        "lastModified": 1653936696,
+        "narHash": "sha256-M6bJShji9AIDZ7Kh7CPwPBPb/T7RiVev2PAcOi4fxDQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
+        "rev": "ce6aa13369b667ac2542593170993504932eb836",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "nixos-21.11",
+        "ref": "22.05",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -154,34 +154,20 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1653936696,
-        "narHash": "sha256-M6bJShji9AIDZ7Kh7CPwPBPb/T7RiVev2PAcOi4fxDQ=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "ce6aa13369b667ac2542593170993504932eb836",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "22.05",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nxc": {
       "inputs": {
         "flake-utils": "flake-utils_2",
         "kapack": "kapack_2",
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": [
+          "nixpkgs"
+        ]
       },
       "locked": {
-        "lastModified": 1667914130,
-        "narHash": "sha256-IFDVoiGPhRlAJWDr248P8D4OBeWo693Om5zSm76p+yM=",
-        "ref": "refs/heads/master",
-        "rev": "df97bed2da127b31189d1e23b4257ecd395c7f31",
-        "revCount": 455,
+        "lastModified": 1665949505,
+        "narHash": "sha256-/l/6nHE4Vx/9PpD3AUfModHJGeZb7Pb4zIufN4939eQ=",
+        "ref": "master",
+        "rev": "9dc1d173dbefc564d06a25bd9dc65c89b6d2d3e7",
+        "revCount": 433,
         "type": "git",
         "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
       },
