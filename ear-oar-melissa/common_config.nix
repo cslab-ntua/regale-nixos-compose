@@ -5,9 +5,9 @@ let
   scripts = import ./scripts/scripts.nix { inherit pkgs; };
 in {
   imports = [ nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear ];
-  
+
   environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.mariadb pkgs.cpufrequtils pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk scripts.ear-mpirun];
-  
+
   environment.variables.EAR_INSTALL_PATH = "${pkgs.nur.repos.kapack.ear}";
   environment.variables.EAR_ETC = "/etc";
   environment.variables.EAR_VERBOSE = "1";
@@ -24,7 +24,7 @@ in {
   security.pam.loginLimits = [
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
     { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
-  ]; 
+  ];
 
   environment.etc."privkey.snakeoil" = {
     mode = "0600";
@@ -40,7 +40,7 @@ in {
   environment.etc."oar-dbpassword".text = ''
     # DataBase user name
     DB_BASE_LOGIN="oar"
-      
+
     # DataBase user password
     DB_BASE_PASSWD="oar"
 
@@ -48,7 +48,7 @@ in {
     DB_BASE_LOGIN_RO="oar_ro"
 
     # DataBase read only user password
-    DB_BASE_PASSWD_RO="oar_ro" 
+    DB_BASE_PASSWD_RO="oar_ro"
   '';
 
   environment.etc."oar/ear_newjob.sh".source = scripts.ear_newjob;
@@ -66,6 +66,7 @@ in {
     privateKeyFile = "/etc/privkey.snakeoil";
     publicKeyFile = "/etc/pubkey.snakeoil";
     extraConfig = {
+      HIERARCHY_LABELS="core,resource_id";
       PROLOGUE_EXEC_FILE="/etc/oar/ear_newjob.sh";
       EPILOGUE_EXEC_FILE="/etc/oar/ear_endjob.sh";
     };
