@@ -13,23 +13,10 @@
         services.oar.node.enable = true;
         services.ear.daemon.enable = true;
         services.ear.db_manager.enable = true;
-
-        environment.systemPackages = [
-          pkgs.nur.repos.kapack.melissa-heat-pde
-          pkgs.nur.repos.kapack.melissa-launcher
-        ];
-
       };
     in {
       frontend = { ... }: {
-        imports = [ commonConfig nur ];
-        environment.variables.MELISSA_SRC = "${pkgs.nur.repos.kapack.melissa-launcher.src}";
-
-        environment.systemPackages = [
-          pkgs.nur.repos.kapack.melissa-heat-pde
-          pkgs.nur.repos.kapack.melissa-launcher
-        ];
-
+        imports = [ commonConfig ];
         fileSystems."/users" = fileSystemsNFSShared;
         services.oar.client.enable = true;
       };
