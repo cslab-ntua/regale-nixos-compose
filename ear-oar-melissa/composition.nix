@@ -2,13 +2,15 @@
   nodes =
     let
       commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur; };
+      melissaConfig = import ./melissa.nix { inherit pkgs modulesPath nur; };
+
       fileSystemsNFSShared = {
         device = "server:/";
         fsType = "nfs";
       };
 
       node = { ... }: {
-        imports = [ commonConfig ];
+        imports = [ commonConfig melissaConfig ];
         fileSystems."/users" = fileSystemsNFSShared;
         services.oar.node.enable = true;
         services.ear.daemon.enable = true;
@@ -16,7 +18,7 @@
       };
     in {
       frontend = { ... }: {
-        imports = [ commonConfig ];
+        imports = [ commonConfig melissaConfig ];
         fileSystems."/users" = fileSystemsNFSShared;
         services.oar.client.enable = true;
       };
