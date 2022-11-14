@@ -59,7 +59,7 @@ in {
     database = {
       host = "server";
       passwordFile = "/etc/oar-dbpassword";
-      initPath = [ pkgs.util-linux pkgs.gawk pkgs.jq scripts.add_resources];
+      initPath = [ pkgs.util-linux pkgs.gawk pkgs.jq scripts.add_resources scripts.wait_db];
       postInitCommands = scripts.oar_db_postInitCommands;
     };
     server.host = "server";
