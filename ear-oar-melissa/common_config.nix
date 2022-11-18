@@ -25,6 +25,7 @@ in {
   security.pam.loginLimits = [
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
     { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
+    { domain = "*"; item = "nofile"; type = "-"; value = "unlimited"; }
   ]; 
 
   environment.etc."privkey.snakeoil" = {
