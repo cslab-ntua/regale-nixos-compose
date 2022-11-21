@@ -5,10 +5,20 @@ let
   scripts = import ./scripts/scripts.nix { inherit pkgs; };
   melissa = import ./melissa.nix { inherit pkgs nur modulesPath; };
 in {
-  imports = [ nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear melissa ];
-  
-  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.mariadb pkgs.cpufrequtils pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk scripts.ear-mpirun];
-  
+  imports = [ nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear ];
+
+  environment.systemPackages = [
+    pkgs.python3
+    pkgs.nano
+    pkgs.mariadb
+    pkgs.cpufrequtils
+    pkgs.nur.repos.kapack.npb
+    pkgs.openmpi pkgs.taktuk
+    scripts.ear-mpirun
+    scripts.ear_resumeAction
+    scripts.ear_startAction
+  ];
+
   environment.variables.EAR_INSTALL_PATH = "${pkgs.nur.repos.kapack.ear}";
   environment.variables.EAR_ETC = "/etc";
   environment.variables.EAR_VERBOSE = "1";
@@ -88,7 +98,11 @@ in {
       host = "server";
       passwordFile = "/etc/ear-dbpassword";
     };
-    extraConfig = { Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-2]";};
+    extraConfig = {
+      Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-2]";
+      EARGMPowercapSuspendAction = scripts.ear_resumeAction;
+      EARGMPowercapResumeAction = scripts.ear_startAction;
+    };
   };
 
   users.users.root.password = "nixos";

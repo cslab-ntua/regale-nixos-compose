@@ -81,4 +81,46 @@ with pkgs.writers;
     -x OAR_STEP_ID=0 \
     $@
   '';
+
+  ear_startAction = writeBashBin "ear_startaction"
+  ''
+  echo "###############################################################"																					>> $EAR_TMP/ear_power_save.log
+  echo "EAR powercap suspend action: current_power $1 current_limit $2 total_idle_nodes $3 total_idle_power $4"		>> $EAR_TMP/ear_power_save.log
+  echo "###############################################################"																					>> $EAR_TMP/ear_power_save.log
+  if [ $3 -eq 0 ]; then
+  	exit
+  fi
+
+  echo "`date` Suspend invoked " >> $EAR_TMP/ear_power_save.log
+  export HOSTLIST="$(echo $(cat $EAR_TMP/nodelist.txt))"
+
+  # rm -f $EAR_TMP/ear_stopped_nodes.txt
+  for i in $${HOSTLIST}
+  do
+  		echo $${i} >> $EAR_TMP/ear_stopped_nodes.txt
+  		echo "Node $${i} set to DRAIN " >> $EAR_TMP/ear_power_save.log
+  done
+  # rm -f $EAR_TMP/idle.txt
+  # rm -f $EAR_TMP/nodelist.txt
+  '';
+
+  ear_resumeAction = writeBashBin "ear_resumeaction"
+  ''
+  export EAR_TMP=/var/lib/ear
+
+  echo "###############################################################" >> $EAR_TMP/ear_power_save.log
+  echo "EAR powercap resume action: current_power $1 current_limit $2 total_idle_nodes $3 total_idle_power $4" >> $EAR_TMP/ear_power_save.log
+  echo "###############################################################" >> $EAR_TMP/ear_power_save.log
+  echo "`date` Resume invoked " >> $EAR_TMP/ear_power_save.log
+
+  export HOSTLIST="$(echo $(cat $EAR_TMP/ear_stopped_nodes.txt))"
+
+  for i in $${HOSTLIST}
+  do
+      echo "Setting idle node=$${i}" >> $EAR_TMP/ear_power_save.log
+  done
+  rm -f $EAR_TMP/ear_stopped_nodes.txt
+  '';
+
+
 }
