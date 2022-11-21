@@ -5,7 +5,7 @@ let
   scripts = import ./scripts/scripts.nix { inherit pkgs; };
   melissa = import ./melissa.nix { inherit pkgs nur modulesPath; };
 in {
-  imports = [ nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear ];
+  imports = [ melissa nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear];
 
   environment.systemPackages = [
     pkgs.python3
