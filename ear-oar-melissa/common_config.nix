@@ -5,7 +5,7 @@ let
   scripts = import ./scripts/scripts.nix { inherit pkgs; };
   melissa = import ./melissa.nix { inherit pkgs nur modulesPath; };
 in {
-  imports = [ melissa nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear];
+  imports = [ melissa nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear ];
 
   environment.systemPackages = [
     pkgs.python3
@@ -14,9 +14,10 @@ in {
     pkgs.cpufrequtils
     pkgs.nur.repos.kapack.npb
     pkgs.openmpi pkgs.taktuk
+
     scripts.ear-mpirun
+    scripts.ear_suspendAction
     scripts.ear_resumeAction
-    scripts.ear_startAction
   ];
 
   environment.variables.EAR_INSTALL_PATH = "${pkgs.nur.repos.kapack.ear}";
@@ -36,7 +37,7 @@ in {
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
     { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
     { domain = "*"; item = "nofile"; type = "-"; value = "unlimited"; }
-  ]; 
+  ];
 
   environment.etc."privkey.snakeoil" = {
     mode = "0600";
@@ -52,7 +53,7 @@ in {
   environment.etc."oar-dbpassword".text = ''
     # DataBase user name
     DB_BASE_LOGIN="oar"
-      
+
     # DataBase user password
     DB_BASE_PASSWD="oar"
 
@@ -60,7 +61,7 @@ in {
     DB_BASE_LOGIN_RO="oar_ro"
 
     # DataBase read only user password
-    DB_BASE_PASSWD_RO="oar_ro" 
+    DB_BASE_PASSWD_RO="oar_ro"
   '';
 
   environment.etc."oar/ear_newjob.sh".source = scripts.ear_newjob;
@@ -100,8 +101,10 @@ in {
     };
     extraConfig = {
       Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-2]";
-      EARGMPowercapSuspendAction = scripts.ear_resumeAction;
-      EARGMPowercapResumeAction = scripts.ear_startAction;
+      EARGMPowerLimit=1;
+      # EARGMPeriodT2=120;
+      EARGMPowercapSuspendAction = "${scripts.ear_suspendAction}/bin/ear_suspendaction";
+      EARGMPowercapResumeAction = "${scripts.ear_resumeAction}/bin/ear_resumeaction";
     };
   };
 

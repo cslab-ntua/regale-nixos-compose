@@ -82,7 +82,7 @@ with pkgs.writers;
     $@
   '';
 
-  ear_startAction = writeBashBin "ear_startaction"
+  ear_suspendAction = writeBashBin "ear_suspendaction"
   ''
   echo "###############################################################"																					>> $EAR_TMP/ear_power_save.log
   echo "EAR powercap suspend action: current_power $1 current_limit $2 total_idle_nodes $3 total_idle_power $4"		>> $EAR_TMP/ear_power_save.log
