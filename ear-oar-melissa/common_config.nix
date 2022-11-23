@@ -13,6 +13,8 @@ in {
     pkgs.mariadb
     pkgs.cpufrequtils
     pkgs.nur.repos.kapack.npb
+    pkgs.nur.repos.kapack.ear
+
     pkgs.openmpi pkgs.taktuk
 
     scripts.ear-mpirun
