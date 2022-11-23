@@ -97,6 +97,7 @@ in {
   '';
 
   services.ear = {
+    install_configuration.enable = true;
     database = {
       host = "server";
       passwordFile = "/etc/ear-dbpassword";
