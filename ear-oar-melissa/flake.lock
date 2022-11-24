@@ -69,11 +69,11 @@
         "nixpkgs2111": "nixpkgs2111"
       },
       "locked": {
-        "lastModified": 1669221805,
-        "narHash": "sha256-HwNzpM0m1x3RJBns3hCR4A/3FIPDsZzNsradp44KRDE=",
+        "lastModified": 1669309604,
+        "narHash": "sha256-3v+ng1o7ZZUdLee5JWFeB6PzKWNfftjmohogO+XHOGs=",
         "owner": "oar-team",
         "repo": "nur-kapack",
-        "rev": "7c43baa3ea5ce4a892b9918f20bd644d48e2d54f",
+        "rev": "e7398ef543bfc8b2761fd71dab9df72405ce6e68",
         "type": "github"
       },
       "original": {
