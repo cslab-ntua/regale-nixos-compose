@@ -84,8 +84,8 @@ in {
     privateKeyFile = "/etc/privkey.snakeoil";
     publicKeyFile = "/etc/pubkey.snakeoil";
     extraConfig = {
-      PROLOGUE_EXEC_FILE="/etc/oar/bdpo_prolog-debug.sh";
-      EPILOGUE_EXEC_FILE="/etc/oar/bdpo_epilog-debug.sh";
+      PROLOGUE_EXEC_FILE="/etc/oar/bdpo_prolog.sh";
+      EPILOGUE_EXEC_FILE="/etc/oar/bdpo_epilog.sh";
     };
   };
 

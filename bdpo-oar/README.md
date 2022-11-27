@@ -30,10 +30,16 @@ nxc connect
 # On frontend
 #
 su user1
+
 cd
+echo  BDPO_PFM_INSTRUCTIONS_PER_CYCLE_PROFILING=on > params.txt
 
 # interactive job
-oarsub -I -l nodes=2
+oarsub -I -t bdpo=monitor_and_optimize,params.txt -l nodes=2
 
-# TO COMPLETE ...
+exit 1
+
+ls bdpo_results_*
+
+# TO COMPLETE, ADD bdpo_translate ...
 ```

@@ -36,20 +36,19 @@ with pkgs.writers;
   '' 
     # OAR_JOB_TYPES defined for testing purposes only
     # OAR_JOB_TYPES="bdpo=monitor_and_optimize,bdpo_params.txt;..."
-    NODES=$(cat $OAR_NODEFILE | tr '\n' ' ')
+    uniq $OAR_FILE_NODES > "/tmp/uniq_oar_nodes_$OAR_JOB_ID"
 
     if [[ ";$OAR_JOB_TYPES;" =~ \;bdpo=(.*)\; ]]; then 
       IFS=',' read -ra BDPO_ARRAY <<< "''${BASH_REMATCH[1]}"
       BDPO_OAR_MODE=''${BDPO_ARRAY[0]}
       BDPO_PARAMS_FILE=''${BDPO_ARRAY[1]}
     fi
-    echo yop > /tmp/yop
+
     # Building the command line to execute remotely on all the nodes.
     CLI="/etc/oar/bdpo_oar.sh prolog $OAR_WORKDIR/$BDPO_PARAMS_FILE"
     # Starting BDPO on the specified nodes.
     if [[ "$BDPO_OAR_MODE" == "monitor_and_optimize" ]]; then
-      echo  ${pkgs.python3Packages.clustershell}/bin/clush -w "$NODES" -O ssh_options="-p 6667" "$CLI" >> /tmp/yop
-	    ${pkgs.python3Packages.clustershell}/bin/clush -w "$NODES" -O "ssh_options=-p 6667" "$CLI" &
+	    ${pkgs.python3Packages.clustershell}/bin/clush --hostfile="/tmp/uniq_oar_nodes_$OAR_JOB_ID" -O "ssh_options=-p 6667" "$CLI" &
     
     fi
   '';
@@ -67,11 +66,11 @@ with pkgs.writers;
     fi
 
     # Building the command line to execute remotely on all the nodes.
-    CLI="/etc/oar/bdpo_oar.sh epilog $OAR_JOB_USER $OAR_JOB_ID $OAR_WORKDIR $OAR_WORKDIR/$BDPO_PARAMS_FILE"
+    CLI="/etc/oar/bdpo_oar.sh epilog $OAR_USER $OAR_JOB_ID $OAR_WORKDIR $OAR_WORKDIR/$BDPO_PARAMS_FILE"
 
     # Terminating BDPO on the specified nodes.
     if [[ "$BDPO_OAR_MODE" == "monitor_and_optimize" ]]; then
-	    ${pkgs.python3Packages.clustershell}/clush -w "$NODES" -O "ssh_options=-p 6667" "$CLI" &
+	    ${pkgs.python3Packages.clustershell}/bin/clush --hostfile="/tmp/uniq_oar_nodes_$OAR_JOB_ID" -O "ssh_options=-p 6667" "$CLI" &
     fi
   '';
   
@@ -79,7 +78,7 @@ with pkgs.writers;
   ''
     COMMAND=$1
     BDPO_PARAMS_FILE=$2
-    OAR_JOB_USER=$2
+    OAR_USER=$2
     OAR_JOBID=$3
     OAR_WORKDIR=$4
     BDPO_PARAMS_FILE=$5
@@ -111,7 +110,7 @@ with pkgs.writers;
 
       # Create bdpo dir for aggrated results
       BDPO_RESDIR="$OAR_WORKDIR/bdpo_results_$OAR_JOBID"
-      OARDO_BECOME_USER=$OAR_JOB_USER
+      OARDO_BECOME_USER=$OAR_USER
       oardodo mkdir -p "$BDPO_RESDIR"  
       unset OARDO_BECOME_USER
 
@@ -119,7 +118,7 @@ with pkgs.writers;
       oardodo ${pkgs.nur.repos.kapack.bdpo}/bin/bdpo_aggregate -o "$BDPO_RESDIR"
       for file in "$BDPO_RESDIR/$(hostname)-"*
       do
-        oardodo chown "$OAR_JOB_USER" "$file"          
+        oardodo chown "$OAR_USER" "$file"          
         oardodo chgrp users "$file"
       done
     else
