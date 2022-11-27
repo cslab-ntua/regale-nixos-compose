@@ -3,7 +3,7 @@
   imports = [ nur.repos.kapack.modules.bdpo ];
 
   environment.systemPackages = [
-    pkgs.clustershell
+    pkgs.python3Packages.clustershell
     pkgs.nano pkgs.cpufrequtils
     pkgs.python3
     pkgs.nur.repos.kapack.npb
