@@ -17,12 +17,13 @@ To facilitate their development and ensure their reproducibility, we propose the
 # List of prototype/integration compositions
 | Directory                    | Description      | Status    | CI@Grid5000 |
 |------------------------------|------------------|-----------|------------------|
-| [BDPO/BEO](bdpo/README.md)   | demo             | PoC (WIP) | -                |
-| [EAR](ear/README.md)         | demo             | PoC       | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/ear/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/ear)                |
+| [BDPO](bdpo/README.md)   | demo             | PoC (WIP) | -                |
+| [BDPO-OAR](bdpo-oar/README.md)   | demo             | PoC (WIP) | -                |
+| [EAR](ear/README.md)         | demo             |        | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/ear/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/ear)                |
 | [EXAMON](examon/README.md)   | demo             | PoC (WIP) | -                |
-| [OAR](oar/README.md)         | demo             | PoC       | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/oar/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/oar)                |
+| [OAR](oar/README.md)         | demo             |        | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/oar/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/oar)                |
 | [EAR-OAR](ear-oar/README.md) | base integration | PoC       | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/ear-oar/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/ear-oar)                |
-| [Melissa-SA](https://gitlab.inria.fr/nixos-compose/melissa) | Sensitivity Analysis version with Slumr/OAR3 | Poc      | -                | 
+| [Melissa-EAR-OAR](melissa-ear-oar/README.md)   | demo             | (WIP) | -                |
 
 # Requirements
 
