@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, nur }:
+{ pkgs, modulesPath, nur, setup }:
 let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
@@ -103,7 +103,7 @@ in {
       passwordFile = "/etc/ear-dbpassword";
     };
     extraConfig = {
-      Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-2]";
+      Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-${builtins.toString setup.params.nb_nodes}]";
       EARGMPowerLimit=1;
       # EARGMPeriodT2=120;
       EARGMPowercapSuspendAction = "${scripts.ear_suspendAction}/bin/ear_suspendaction";
