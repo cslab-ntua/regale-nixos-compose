@@ -8,7 +8,7 @@ See main [README](../README.md) for more information about setting.
 ## Build
 ```bash
 oarsub -I
-cd regale-nixos-compose/ear
+cd regale-nixos-compose/bdpo-oar
 nxc build
 ```
 
@@ -34,12 +34,26 @@ su user1
 cd
 echo  BDPO_PFM_INSTRUCTIONS_PER_CYCLE_PROFILING=on > params.txt
 
-# interactive job
+# Interactive job
 oarsub -I -t bdpo=monitor_and_optimize,params.txt -l nodes=2
+# launch NAS Parallel Benchmark CG
+mpirun --hostfile $OAR_NODEFILE -mca pls_rsh_agent oarsh -mca btl tcp,self cg.C.mpi
 
-exit 1
+# terminate job
+exit # or Ctrl-D
 
+# list bdpo results
 ls bdpo_results_*
 
-# TO COMPLETE, ADD bdpo_translate ...
+# passive job
+echo "mpirun --hostfile \$OAR_NODEFILE -mca pls_rsh_agent oarsh -mca btl tcp,self cg.C.mpi" > test.sh
+chmod 755 test.sh
+# submit passive job
+oarsub -l nodes=2 -t bdpo=monitor_and_optimize,params.txt 
+
+# display job output
+more OAR.*.stdout
+# 
+ls bdpo_results_*
+
 ```

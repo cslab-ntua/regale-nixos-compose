@@ -31,7 +31,7 @@ nxc connect
 su user1
 cd
 
-# interactive job
+# Interactive job
 oarsub -I -l nodes=2
 # launch NAS Parallel Benchmark CG
 mpirun --hostfile $OAR_NODEFILE -mca pls_rsh_agent oarsh -mca btl tcp,self cg.C.mpi
