@@ -1,7 +1,7 @@
-{ pkgs, modulesPath, nur, helpers, ... }: {
+{ pkgs, modulesPath, nur, helpers, setup, ... }: {
   nodes =
     let
-      commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur; };
+      commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur setup; };
       fileSystemsNFSShared = {
         device = "server:/";
         fsType = "nfs";
@@ -39,7 +39,7 @@
         imports = [ commonConfig ];
         services.ear.global_manager.enable = true;
       };
-    } // helpers.makeMany node "node" 2;
+    } // helpers.makeMany node "node" setup.params.nb_nodes;
 
   testScript = ''
   # Submit job with script under user1
