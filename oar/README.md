@@ -48,3 +48,31 @@ oarsub -l nodes=2 ./test.sh
 # display job output
 more OAR.*.stdout
 ```
+
+## Install drawgantt and monika
+
+The OAR web interfaces monika and drawgantt can be activated and accessed for the OAR3 of the composition.
+
+The first step is to enable the related services (dranwgantt and monika) into the `composition.nix` file under the frontend role.
+
+```nix
+  frontend = { ... }: {
+    [ .. ]
+    services.oar.web.enable = true;
+    services.oar.web.drawgantt.enable = true;
+    services.oar.web.monika.enable = true;
+  };
+```
+
+After a (re-)build and a fresh deployment, the frontend should have the services activated.
+
+The next step is to find which G5K node runs the frontend. This information is located into the deployment file into the `deploy` folder.
+In the case of a the `g5k-nfs-store` flavour, the file should be: `deploy/composition\:\:g5k-nfs-store.json`.
+
+For instance, this command retrieve the host that runs the frontend:
+```
+host $(cat deploy/composition\:\:g5k-nfs-store.json  | jq -r '.deployment | to_entries[] | select(.value.role == "frontend") | "\(.key)"')
+```
+
+Following this [tutorial](https://www.grid5000.fr/w/HTTP/HTTPs_access), the drawgantt interface should be accessible at the `/drawgantt` url.
+For instance, if the frontend is deployed on the node `dahu-32`, the final url will be `https://dahu-32.grenoble.http.proxy.grid5000.fr/drawgantt`.
