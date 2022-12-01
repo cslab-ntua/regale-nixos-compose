@@ -38,7 +38,7 @@ in {
   security.pam.loginLimits = [
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
     { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
-    { domain = "*"; item = "nofile"; type = "-"; value = "unlimited"; }
+    # { domain = "*"; item = "nofile"; type = "-"; value = "unlimited"; }
   ];
 
   environment.etc."privkey.snakeoil" = {
@@ -104,10 +104,12 @@ in {
     };
     extraConfig = {
       Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-${builtins.toString setup.params.nb_nodes}]";
-      EARGMPowerLimit=1;
-      # EARGMPeriodT2=120;
+      EARGMPowerLimit= setup.params.nb_nodes * 260;
+
       EARGMPowercapSuspendAction = "${scripts.ear_suspendAction}/bin/ear_suspendaction";
+      EARGMPowercapSuspendLimit=90;
       EARGMPowercapResumeAction = "${scripts.ear_resumeAction}/bin/ear_resumeaction";
+      EARGMPowercapResumeLimit=50;
     };
   };
 

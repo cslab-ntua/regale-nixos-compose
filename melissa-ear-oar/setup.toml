@@ -1,4 +1,5 @@
 [project]
+selected = "laptop"
 
 [params]
 nb_nodes = 3

@@ -20,8 +20,7 @@
         setup = ./setup.toml;
         composition = ./composition.nix;
         };
-      
+
       devShell.${system} = nxc.devShells.${system}.nxcShell;
      };
 }
-     

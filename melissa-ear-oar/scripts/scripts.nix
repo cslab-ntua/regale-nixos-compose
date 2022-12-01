@@ -84,43 +84,48 @@ with pkgs.writers;
 
   ear_suspendAction = writeBashBin "ear_suspendaction"
   ''
-  echo "###############################################################"																					>> $EAR_TMP/ear_power_save.log
-  echo "EAR powercap suspend action: current_power $1 current_limit $2 total_idle_nodes $3 total_idle_power $4"		>> $EAR_TMP/ear_power_save.log
-  echo "###############################################################"																					>> $EAR_TMP/ear_power_save.log
-  if [ $3 -eq 0 ]; then
-  	exit
-  fi
+export EAR_TMP=/var/lib/ear
 
-  echo "`date` Suspend invoked " >> $EAR_TMP/ear_power_save.log
-  export HOSTLIST="$(echo $(cat $EAR_TMP/nodelist.txt))"
+echo "###############################################################" >> $EAR_TMP/ear_power_save.log
+echo "EAR powercap suspend action: current_power $1 current_limit $2 total_idle_nodes $3 total_idle_power $4"   >> $EAR_TMP/ear_power_save.log
+echo "###############################################################"  >> $EAR_TMP/ear_power_save.log
 
-  # rm -f $EAR_TMP/ear_stopped_nodes.txt
-  for i in $${HOSTLIST}
-  do
-  		echo $${i} >> $EAR_TMP/ear_stopped_nodes.txt
-  		echo "Node $${i} set to DRAIN " >> $EAR_TMP/ear_power_save.log
-  done
-  # rm -f $EAR_TMP/idle.txt
-  # rm -f $EAR_TMP/nodelist.txt
+
+echo $(whoami) >> $EAR_TMP/ear_power_save.log
+echo "`date` Suspend invoked " >> $EAR_TMP/ear_power_save.log
+
+export HOSTLIST=$( ${pkgs.openssh}/bin/ssh server oarnodes | grep  "network_address: " | uniq | sort -hr | sed 's/network_address: //g' | head -n 1)
+
+for i in $${HOSTLIST}
+do
+                echo $${i} >> $EAR_TMP/ear_stopped_nodes.txt
+                echo "Node $${i} set to DRAIN " >> $EAR_TMP/ear_power_save.log
+                echo ${pkgs.openssh}/bin/ssh server oarnodesetting -h $${i} -s Absent -p available_upto=0 >> $EAR_TMP/ear_power_save.log
+                ${pkgs.openssh}/bin/ssh server oarnodesetting -h $${i} -s Absent -p available_upto=0
+done
   '';
 
   ear_resumeAction = writeBashBin "ear_resumeaction"
   ''
-  export EAR_TMP=/var/lib/ear
+set -x
 
-  echo "###############################################################" >> $EAR_TMP/ear_power_save.log
-  echo "EAR powercap resume action: current_power $1 current_limit $2 total_idle_nodes $3 total_idle_power $4" >> $EAR_TMP/ear_power_save.log
-  echo "###############################################################" >> $EAR_TMP/ear_power_save.log
-  echo "`date` Resume invoked " >> $EAR_TMP/ear_power_save.log
+export EAR_TMP=/var/lib/ear
 
-  export HOSTLIST="$(echo $(cat $EAR_TMP/ear_stopped_nodes.txt))"
+echo "###############################################################" >> $EAR_TMP/ear_power_save.log
+echo "EAR powercap resume action: current_power $1 current_limit $2 total_idle_nodes $3 total_idle_power $4" >> $EAR_TMP/ear_power_save.log
+echo "###############################################################" >> $EAR_TMP/ear_power_save.log
+echo "`date` Resume invoked " >> $EAR_TMP/ear_power_save.log
 
-  for i in $${HOSTLIST}
-  do
-      echo "Setting idle node=$${i}" >> $EAR_TMP/ear_power_save.log
-  done
-  rm -f $EAR_TMP/ear_stopped_nodes.txt
+export HOSTLIST="$(echo $(cat $EAR_TMP/ear_stopped_nodes.txt))"
+
+
+for i in $${HOSTLIST}
+do
+    echo "Setting idle node=$${i}" >> $EAR_TMP/ear_power_save.log
+    ${pkgs.openssh}/bin/ssh server oarnodesetting -h $${i} -s Alive -p available_upto=2147483647 >> $EAR_TMP/ear_power_save.log
+done
+
+rm -f $EAR_TMP/ear_stopped_nodes.txt
   '';
-
 
 }
