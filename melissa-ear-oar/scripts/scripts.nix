@@ -96,12 +96,12 @@ echo "`date` Suspend invoked " >> $EAR_TMP/ear_power_save.log
 
 export HOSTLIST=$( ${pkgs.openssh}/bin/ssh server oarnodes | grep  "network_address: " | uniq | sort -hr | sed 's/network_address: //g' | head -n 1)
 
-for i in $${HOSTLIST}
+for i in $HOSTLIST
 do
-                echo $${i} >> $EAR_TMP/ear_stopped_nodes.txt
-                echo "Node $${i} set to DRAIN " >> $EAR_TMP/ear_power_save.log
-                echo ${pkgs.openssh}/bin/ssh server oarnodesetting -h $${i} -s Absent -p available_upto=0 >> $EAR_TMP/ear_power_save.log
-                ${pkgs.openssh}/bin/ssh server oarnodesetting -h $${i} -s Absent -p available_upto=0
+                echo $i >> $EAR_TMP/ear_stopped_nodes.txt
+                echo "Node $i set to DRAIN " >> $EAR_TMP/ear_power_save.log
+                echo ${pkgs.openssh}/bin/ssh server oarnodesetting -h $i -s Absent -p available_upto=0 >> $EAR_TMP/ear_power_save.log
+                ${pkgs.openssh}/bin/ssh server oarnodesetting -h $i -s Absent -p available_upto=0
 done
   '';
 
@@ -119,10 +119,10 @@ echo "`date` Resume invoked " >> $EAR_TMP/ear_power_save.log
 export HOSTLIST="$(echo $(cat $EAR_TMP/ear_stopped_nodes.txt))"
 
 
-for i in $${HOSTLIST}
+for i in $HOSTLIST
 do
-    echo "Setting idle node=$${i}" >> $EAR_TMP/ear_power_save.log
-    ${pkgs.openssh}/bin/ssh server oarnodesetting -h $${i} -s Alive -p available_upto=2147483647 >> $EAR_TMP/ear_power_save.log
+    echo "Setting idle node=$i" >> $EAR_TMP/ear_power_save.log
+    ${pkgs.openssh}/bin/ssh server oarnodesetting -h $i -s Alive -p available_upto=2147483647 >> $EAR_TMP/ear_power_save.log
 done
 
 rm -f $EAR_TMP/ear_stopped_nodes.txt
