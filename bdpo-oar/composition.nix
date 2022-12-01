@@ -19,6 +19,9 @@
         imports = [ commonConfig ];
         fileSystems."/users" = fileSystemsNFSShared;
         services.oar.client.enable = true;
+	services.oar.web.enable = true;
+    	services.oar.web.drawgantt.enable = true;
+    	services.oar.web.monika.enable = true;
       };
       server = { ... }: {
         imports = [ commonConfig ];
