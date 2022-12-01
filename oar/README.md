@@ -66,12 +66,11 @@ The first step is to enable the related services (dranwgantt and monika) into th
 
 After a (re-)build and a fresh deployment, the frontend should have the services activated.
 
-The next step is to find which G5K node runs the frontend. This information is located into the deployment file into the `deploy` folder.
-In the case of a the `g5k-nfs-store` flavour, the file should be: `deploy/composition\:\:g5k-nfs-store.json`.
+The next step is to find which G5K node runs the frontend, this can be done with the helper `nxc helper ip <role>`.
 
 For instance, this command retrieve the host that runs the frontend:
 ```
-host $(cat deploy/composition\:\:g5k-nfs-store.json  | jq -r '.deployment | to_entries[] | select(.value.role == "frontend") | "\(.key)"')
+host $(nxc helper ip frontend)
 ```
 
 Following this [tutorial](https://www.grid5000.fr/w/HTTP/HTTPs_access), the drawgantt interface should be accessible at the `/drawgantt` url.
