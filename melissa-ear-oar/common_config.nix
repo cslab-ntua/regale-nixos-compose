@@ -104,12 +104,12 @@ in {
     };
     extraConfig = {
       Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-${builtins.toString setup.params.nb_nodes}]";
-      EARGMPowerLimit= setup.params.nb_nodes * 260;
+      EARGMPowerLimit= setup.params.nb_nodes * 180;
 
       EARGMPowercapSuspendAction = "${scripts.ear_suspendAction}/bin/ear_suspendaction";
       EARGMPowercapSuspendLimit=90;
       EARGMPowercapResumeAction = "${scripts.ear_resumeAction}/bin/ear_resumeaction";
-      EARGMPowercapResumeLimit=50;
+      EARGMPowercapResumeLimit=70;
     };
   };
 
