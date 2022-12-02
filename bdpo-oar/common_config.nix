@@ -18,6 +18,8 @@ in {
     pkgs.openmpi
     pkgs.python3Packages.clustershell
     pkgs.taktuk
+    pkgs.htop
+    pkgs.tree
   ];
 
   #

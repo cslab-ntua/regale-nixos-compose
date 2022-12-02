@@ -45,7 +45,7 @@ with pkgs.writers;
     fi
 
     # Building the command line to execute remotely on all the nodes.
-    CLI="/etc/oar/bdpo_oar.sh prolog $OAR_WORKDIR/$BDPO_PARAMS_FILE"
+    CLI=". /etc/oar/bdpo_oar.sh prolog $OAR_WORKDIR/$BDPO_PARAMS_FILE"
     # Starting BDPO on the specified nodes.
     if [[ "$BDPO_OAR_MODE" == "monitor_and_optimize" ]]; then
 	    ${pkgs.python3Packages.clustershell}/bin/clush --hostfile="/tmp/uniq_oar_nodes_$OAR_JOB_ID" -O "ssh_options=-p 6667" "$CLI" &
@@ -66,7 +66,7 @@ with pkgs.writers;
     fi
 
     # Building the command line to execute remotely on all the nodes.
-    CLI="/etc/oar/bdpo_oar.sh epilog $OAR_USER $OAR_JOB_ID $OAR_WORKDIR $OAR_WORKDIR/$BDPO_PARAMS_FILE"
+    CLI=". /etc/oar/bdpo_oar.sh epilog $OAR_USER $OAR_JOB_ID $OAR_WORKDIR $OAR_WORKDIR/$BDPO_PARAMS_FILE"
 
     # Terminating BDPO on the specified nodes.
     if [[ "$BDPO_OAR_MODE" == "monitor_and_optimize" ]]; then
@@ -94,35 +94,34 @@ with pkgs.writers;
       if [[ $line =~ ^([^=]+)=(.*)$ ]]; then
         name="''${BASH_REMATCH[1]}"
         value="''${BASH_REMATCH[2]}"
-        if [[ $name == BDPO_* ]]; then
+        if [[ "''${name:0:5}" == BDPO_ ]]; then
           printf -v "$name" %s "$value"
           export "$name"
-          #echo $name $value
         fi    
       fi
     done < <(oardodo cat $BDPO_PARAMS_FILE)
 
     if [[ "$COMMAND" == "prolog" ]]; then
-      screen -dm oardodo stdbuf -o0 ${pkgs.nur.repos.kapack.bdpo}/bin/bdpo > /tmp/bdpo_$(date +%s).log
+      nohup 2> /dev/null oardodo stdbuf -o0 ${pkgs.nur.repos.kapack.bdpo}/bin/bdpo &
     elif [[ "$COMMAND" == "epilog" ]]; then
       # Terminate bdpo process
       oardodo kill $(cat /var/run/bdpo.pid)
 
       # Create bdpo dir for aggrated results
       BDPO_RESDIR="$OAR_WORKDIR/bdpo_results_$OAR_JOBID"
-      OARDO_BECOME_USER=$OAR_USER
       oardodo mkdir -p "$BDPO_RESDIR"  
-      unset OARDO_BECOME_USER
+      oardodo chown "$OAR_USER" "$BDPO_RESDIR"
+      oardodo chgrp users "$BDPO_RESDIR"
 
       # Aggregate results and transfer files' ownership
       oardodo ${pkgs.nur.repos.kapack.bdpo}/bin/bdpo_aggregate -o "$BDPO_RESDIR"
-      for file in "$BDPO_RESDIR/$(hostname)-"*
+      for file in "$(oardodo find "$BDPO_RESDIR" -type f -name "$(hostname)-*")
       do
         oardodo chown "$OAR_USER" "$file"          
         oardodo chgrp users "$file"
       done
     else
-      echo "Unknow command: $COMMAND"
+      echo "Unknown command: $COMMAND"
       exit 1
     fi
   '';  
