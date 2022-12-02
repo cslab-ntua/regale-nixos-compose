@@ -115,7 +115,7 @@ with pkgs.writers;
 
       # Aggregate results and transfer files' ownership
       oardodo ${pkgs.nur.repos.kapack.bdpo}/bin/bdpo_aggregate -o "$BDPO_RESDIR"
-      for file in "$(oardodo find "$BDPO_RESDIR" -type f -name "$(hostname)-*")
+      for file in $(oardodo find "$BDPO_RESDIR" -type f -name "$(hostname)-*")
       do
         oardodo chown "$OAR_USER" "$file"          
         oardodo chgrp users "$file"
