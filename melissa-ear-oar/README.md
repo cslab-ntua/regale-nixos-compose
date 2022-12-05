@@ -32,7 +32,7 @@ First connect to the frontend, and clone melissa repository.
 nxc connect frontend
 su user1
 
-# Your g5k home is accessible so you ca do this step only once
+# Your g5k home is accessible so you can do this step only once
 cd /home/<you-g5k-user>/ && git clone git@gitlab.inria.fr:melissa/melissa-combined.git
 
 cd melissa-combined/examples/heat-pde-sa
@@ -89,4 +89,4 @@ Edit the file config_oar.json with this content:
 }
 ```
 
-Then start the melissa simulation with `melissa-launcer --project_dir $PWD --config_name config_oar`.
+Then start the melissa simulation with `melissa-launcher --project_dir $PWD --config_name config_oar`.
