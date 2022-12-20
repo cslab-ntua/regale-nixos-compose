@@ -1,5 +1,5 @@
 { pkgs, nur, ... }: {
-  nodes =
+  roles =
     let
       commonConfig = import ./common_config.nix { inherit pkgs nur; };
     in {
@@ -15,18 +15,14 @@
         services.ear.global_manager.enable = true;
       };
       
-      node1 = { ... }: {
-        imports = [ commonConfig ];
-        services.ear.daemon.enable = true;
-        services.ear.db_manager.enable = true;
-      };
-      
-      node2 = { ... }: {
+      node = { ... }: {
         imports = [ commonConfig ];
         services.ear.daemon.enable = true;
         services.ear.db_manager.enable = true;
       };
     };
+  
+  rolesDistribution = { node = 2; };
   
   testScript = ''
   #prepare machine files for mpirun and eat

@@ -12,8 +12,7 @@
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
 
-  users.users.user1 = { isNormalUser = true; };
-  users.users.user2 = { isNormalUser = true; };
+  nxc.users = { names = ["user1" "user2"]; };
 
   environment.etc."ear-dbpassword".text = ''
     DBUser=ear_daemon
