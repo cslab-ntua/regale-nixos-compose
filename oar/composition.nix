@@ -1,38 +1,33 @@
 { pkgs, modulesPath, nur, helpers, ... }: {
-  nodes =
+  roles =
     let
-      commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur; };
-      fileSystemsNFSShared = {
-        device = "server:/";
-        fsType = "nfs";
-      };
-
-      node = { ... }: {
-        imports = [ commonConfig ];
-        fileSystems."/users" = fileSystemsNFSShared;
-        services.oar.node.enable = true;
-      };
+      commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur; };  
     in {
       frontend = { ... }: {
         imports = [ commonConfig ];
-        fileSystems."/users" = fileSystemsNFSShared;
+        nxc.sharedDirs."/users".server = "server";
+        
         services.oar.client.enable = true;
       };
 
       server = { ... }: {
         imports = [ commonConfig ];
+        nxc.sharedDirs."/users".export = true;
+        
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
-        # NFS shared users' home
-        services.nfs.server.enable = true;
-        services.nfs.server.exports = ''
-          /users *(rw,no_subtree_check,fsid=0,no_root_squash)
-        '';
-        nxc.postBootCommands = "mkdir -p /users && chmod 777 /users";
-
       };
-    } // helpers.makeMany node "node" 2;
+      
+      node = { ... }: {
+        imports = [ commonConfig ];
+        nxc.sharedDirs."/users".server = "server";
+        
+        services.oar.node.enable = true;
+      };
+    };
 
+  rolesDistribution = { node = 2; };
+  
   testScript = ''
     # Prepare a simple script which execute cg.C.mpi 
     frontend.succeed('echo "mpirun --hostfile \$OAR_NODEFILE -mca pls_rsh_agent oarsh -mca btl tcp,self cg.C.mpi" > /users/user1/test.sh')

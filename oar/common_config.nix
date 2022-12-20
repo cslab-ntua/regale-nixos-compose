@@ -18,23 +18,18 @@ let
             print("DB is not ready")
             time.sleep(0.25)
     resources_creation("node", int(sys.argv[1]), int(sys.argv[2]))
-  '';
-
-  #openmpiNoOPA = pkgs.openmpi.override { fabricSupport = false; };
-  #npbNoOPA = pkgs.nur.repos.kapack.npb.override (oldAttrs: rec { openmpi = openmpiNoOPA; });
-  
+  '';  
 in {
-  imports = [ nur.repos.kapack.modules.oar ];  
-  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.nur.repos.kapack.npb pkgs.openmpi];
+  imports = [ nur.repos.kapack.modules.oar  ];  
+  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.nur.repos.kapack.npb pkgs.openmpi ];
 
   # Allow root yo use open-mpi
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
+  
+  nxc.users = { names = ["user1" "user2"]; prefixHome = "/users"; };
 
-  networking.firewall.enable = false;
-  users.users.user1 = { isNormalUser = true; home = "/users/user1"; };
-  users.users.user2 = { isNormalUser = true; home = "/users/user2"; };
-
+  # Warning trigger issue w/ flavour Docker (su user1 denied)
   security.pam.loginLimits = [
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
     { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
@@ -86,7 +81,4 @@ in {
     privateKeyFile = "/etc/privkey.snakeoil";
     publicKeyFile = "/etc/pubkey.snakeoil";
   };
-
-  users.users.root.password = "nixos";
-  services.openssh.permitRootLogin = "yes";
 }
