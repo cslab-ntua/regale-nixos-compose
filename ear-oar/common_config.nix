@@ -18,8 +18,7 @@ in {
 
   networking.firewall.enable = false;
 
-  users.users.user1 = { isNormalUser = true; home = "/users/user1"; };
-  users.users.user2 = { isNormalUser = true; home = "/users/user2"; };
+  nxc.users = { names = ["user1" "user2"]; prefixHome = "/users"; };
 
   security.pam.loginLimits = [
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
@@ -87,7 +86,4 @@ in {
     };
     extraConfig = { Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-2]";};
   };
-
-  users.users.root.password = "nixos";
-  services.openssh.permitRootLogin = "yes";
 }
