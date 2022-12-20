@@ -84,6 +84,9 @@ in {
       host = "server";
       passwordFile = "/etc/ear-dbpassword";
     };
-    extraConfig = { Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-2]";};
+    extraConfigCommands = ''
+      NB_NODES=$(grep -c node /etc/hosts)
+      echo "Island=0 DBIP=node1 DBSECIP=node2 Nodes=node[1-$NB_NODES]" >> /etc/ear/ear.conf
+    '';
   };
 }
