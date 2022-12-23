@@ -10,30 +10,16 @@ in {
   environment.systemPackages = [
     pkgs.python3
     pkgs.nano
-    pkgs.mariadb
     pkgs.cpufrequtils
     pkgs.nur.repos.kapack.npb
-    pkgs.nur.repos.kapack.ear
-
     pkgs.openmpi pkgs.taktuk
-
-    scripts.ear-mpirun
-    scripts.ear_suspendAction
-    scripts.ear_resumeAction
   ];
-
-  environment.variables.EAR_INSTALL_PATH = "${pkgs.nur.repos.kapack.ear}";
-  environment.variables.EAR_ETC = "/etc";
-  environment.variables.EAR_VERBOSE = "1";
 
   # Allow root yo use open-mpi
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
 
-  networking.firewall.enable = false;
-
-  users.users.user1 = { isNormalUser = true; home = "/users/user1"; };
-  users.users.user2 = { isNormalUser = true; home = "/users/user2"; };
+nxc.users = { names = ["user1" "user2"]; prefixHome = "/users"; };
 
   security.pam.loginLimits = [
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
@@ -66,9 +52,6 @@ in {
     DB_BASE_PASSWD_RO="oar_ro"
   '';
 
-  environment.etc."oar/ear_newjob.sh".source = scripts.ear_newjob;
-  environment.etc."oar/ear_endjob.sh".source = scripts.ear_endjob;
-
   services.oar = {
     # oar db passwords
     database = {
@@ -86,33 +69,4 @@ in {
       EPILOGUE_EXEC_FILE="/etc/oar/ear_endjob.sh";
     };
   };
-
-  # Ear base configuration
-  environment.etc."ear-dbpassword".text = ''
-    DBUser=ear_daemon
-    DBPassw=password
-    # User and password for usermode querys.
-    DBCommandsUser=ear_commands
-    DBCommandsPassw=password
-  '';
-
-  services.ear = {
-    ear_commands.enable = true;
-    database = {
-      host = "server";
-      passwordFile = "/etc/ear-dbpassword";
-    };
-    extraConfig = {
-      Island = "0 DBIP=node1 DBSECIP=node2 Nodes=node[1-${builtins.toString setup.params.nb_nodes}]";
-      EARGMPowerLimit= setup.params.nb_nodes * 180;
-
-      EARGMPowercapSuspendAction = "${scripts.ear_suspendAction}/bin/ear_suspendaction";
-      EARGMPowercapSuspendLimit=90;
-      EARGMPowercapResumeAction = "${scripts.ear_resumeAction}/bin/ear_resumeaction";
-      EARGMPowercapResumeLimit=70;
-    };
-  };
-
-  users.users.root.password = "nixos";
-  services.openssh.permitRootLogin = "yes";
 }
