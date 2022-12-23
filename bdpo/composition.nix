@@ -1,16 +1,14 @@
 { pkgs, lib, nur, ... }: {
-  nodes =
+  roles =
     let
       commonConfig = import ./common_config.nix { inherit pkgs lib nur; };
     in {
-      node1 = { ... }: {
+      node = { ... }: {
         imports = [ commonConfig ];
       };
-      
-      #node2 = { ... }: {
-      #  imports = [ commonConfig ];
-      #};
     };
+
+  rolesDistribution = { node = 2; };
   
   testScript = ''
   # TODO as exercice ;)      
