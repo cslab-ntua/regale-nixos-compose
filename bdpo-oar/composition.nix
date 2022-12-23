@@ -19,7 +19,6 @@
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
       };
-
       node = { ... }: {
         imports = [ commonConfig ];
         nxc.sharedDirs."/users".server = "server";
@@ -30,6 +29,8 @@
       };
     };
 
+  rolesDistribution = { node = 2; };
+  
   testScript = ''
   # Submit job with script under user1
   frontend.succeed('su - user1 -c "cd && oarsub -l nodes=2 \"mpirun cg.C.mpi\""')

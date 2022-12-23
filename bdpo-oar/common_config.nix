@@ -87,7 +87,4 @@ in {
       EPILOGUE_EXEC_FILE="/etc/oar/bdpo_epilog.sh";
     };
   };
-
-  users.users.root.password = "nixos";
-  services.openssh.permitRootLogin = "yes";
 }
