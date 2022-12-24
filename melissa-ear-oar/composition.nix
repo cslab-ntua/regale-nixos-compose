@@ -2,22 +2,11 @@
   nodes =
     let
       commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur setup; };
-      fileSystemsNFSShared = {
-        device = "server:/";
-        fsType = "nfs";
-      };
-
-      node = { ... }: {
-        imports = [ commonConfig ];
-        fileSystems."/users" = fileSystemsNFSShared;
-        services.oar.node.enable = true;
-        services.ear.daemon.enable = true;
-        services.ear.db_manager.enable = true;
-      };
     in {
       frontend = { ... }: {
         imports = [ commonConfig ];
-        fileSystems."/users" = fileSystemsNFSShared;
+        nxc.sharedDirs."/users".server = "server";
+        
         services.oar.client.enable = true;
         services.oar.web.enable = true;
         services.oar.web.drawgantt.enable = true;
@@ -25,21 +14,30 @@
       };
       server = { ... }: {
         imports = [ commonConfig ];
+        nxc.sharedDirs."/users".export = true;
+        
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
         services.ear.database.enable = true;
-        # NFS shared users' home
-        services.nfs.server.enable = true;
-        services.nfs.server.exports = ''
-          /users *(rw,no_subtree_check,fsid=0,no_root_squash)
-        '';
-        nxc.postBootCommands = "mkdir -p /users && chmod 777 /users";
       };
       eargm = { ... }: {
         imports = [ commonConfig ];
+        nxc.sharedDirs."/users".server = "server";
+        
         services.ear.global_manager.enable = true;
       };
-    } // helpers.makeMany node "node" setup.params.nb_nodes;
+      
+      node = { ... }: {
+        imports = [ commonConfig ];
+        nxc.sharedDirs."/users".server = "server";
+        
+        services.oar.node.enable = true;
+        services.ear.daemon.enable = true;
+        services.ear.db_manager.enable = true;
+      };
+    };
+  
+  rolesDistribution = { node = 2; };
 
   testScript = ''
   # Submit job with script under user1

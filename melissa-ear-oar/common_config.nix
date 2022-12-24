@@ -30,10 +30,7 @@ in {
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
 
-  networking.firewall.enable = false;
-
-  users.users.user1 = { isNormalUser = true; home = "/users/user1"; };
-  users.users.user2 = { isNormalUser = true; home = "/users/user2"; };
+  nxc.users = { names = ["user1" "user2"]; prefixHome = "/users"; };
 
   security.pam.loginLimits = [
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
@@ -112,7 +109,4 @@ in {
       EARGMPowercapResumeLimit=70;
     };
   };
-
-  users.users.root.password = "nixos";
-  services.openssh.permitRootLogin = "yes";
 }
