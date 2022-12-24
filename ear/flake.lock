@@ -2,11 +2,11 @@
   "nodes": {
     "NUR": {
       "locked": {
-        "lastModified": 1671529459,
-        "narHash": "sha256-DTW+FZ4xkjAFgkC3Yuj2JT1oX9I0QsIVRgsOGFh1Rf8=",
+        "lastModified": 1671882360,
+        "narHash": "sha256-vTa5luC2FnDN5Z/zVv0lHynzaA8MC+/BJOmXFrmzHVs=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "8aef3f7f5c66f5a1d847303878a584561c4cf41f",
+        "rev": "3e531640bcdaaed1293fde20958c76a66acfb797",
         "type": "github"
       },
       "original": {
@@ -69,11 +69,11 @@
         "nixpkgs2111": "nixpkgs2111"
       },
       "locked": {
-        "lastModified": 1670263098,
-        "narHash": "sha256-XgcnMwiziFtoRRd+rtQzck0WQ59PXzMKaCBQa2J+PZk=",
+        "lastModified": 1671535253,
+        "narHash": "sha256-staCByCEx6XuhCnZReONmfHokKXpUhPop9QEJMk2PVM=",
         "owner": "oar-team",
         "repo": "nur-kapack",
-        "rev": "0f9cabd7f073fff6b23d11192843c2da0a9f8727",
+        "rev": "a3ffbe612bca6302fccb8aadc08a39bfe3f4f08e",
         "type": "github"
       },
       "original": {
@@ -163,11 +163,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1671096121,
-        "narHash": "sha256-JC/EsDQXBqWR5ReM1RGgQjNOi7yyb8H4DHYmaB9cKgs=",
+        "lastModified": 1671716393,
+        "narHash": "sha256-nZ2+AH0VbGPkXvlyotwF6B1JdPr19LctvLZSwhznZoE=",
         "ref": "refs/heads/master",
-        "rev": "905e3fd9395e43aa4aee3675d8a8b133b629de97",
-        "revCount": 508,
+        "rev": "be49d5f5bd6298558df39c1c2fead74ef93418d0",
+        "revCount": 509,
         "type": "git",
         "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
       },
