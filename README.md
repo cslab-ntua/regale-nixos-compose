@@ -17,12 +17,12 @@ To facilitate their development and ensure their reproducibility, we propose the
 # List of prototype/integration compositions
 | Directory                    | Description      | Status    | CI@Grid5000 |
 |------------------------------|------------------|-----------|------------------|
-| [BDPO](bdpo/README.md)   | demo             | PoC (WIP) | -                |
-| [BDPO-OAR](bdpo-oar/README.md)   | demo             | PoC (WIP) | -                |
-| [EAR](ear/README.md)         | demo             |        | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/ear/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/ear)                |
+| [BDPO](bdpo/README.md)       | demo             | PoC (WIP) | -                |
+| [BDPO-OAR](bdpo-oar/README.md) | demo           | PoC (WIP) | -                |
+| [EAR](ear/README.md)         | demo             |        |  :white_check_mark:  |
 | [EXAMON](examon/README.md)   | demo             | PoC (WIP) | -                |
-| [OAR](oar/README.md)         | demo             |        | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/oar/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/oar)                |
-| [EAR-OAR](ear-oar/README.md) | base integration | PoC       | [![pipeline status](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/badges/ear-oar/pipeline.svg)](https://gricad-gitlab.univ-grenoble-alpes.fr/regale/tools/regale-nixos-compose/-/commits/ear-oar)                |
+| [OAR](oar/README.md)         | demo             |        |  :white_check_mark:  |
+| [EAR-OAR](ear-oar/README.md) | base integration | PoC       | :white_check_mark:  |
 | [Melissa-EAR-OAR](melissa-ear-oar/README.md)   | demo             | (WIP) | -                |
 
 # Requirements
@@ -113,18 +113,19 @@ Below example with two setup **g5k-dev** and **laptop** selectable by option `-s
 [project]
     
 [g5k-dev.options]
-nix-flags = "--impure" # required when some source if not commited
+nix-flags = "--impure" # required when source is not committed (here in /home/orichard/ear)
 
 [g5k-dev.build.nur.repos.kapack.ear]
 src = "/home/orichard/ear"
 
 [laptop.options]
-nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/regale"
+nix-flags = "--impure"
 
 [laptop.build.nur.repos.kapack.ear]
 src = "/home/auguste/dev/ear"
 ```
 The entry `[g5k-dev.build.nur.repos.kapack.ear]` specify that the source file for EAR is located in `/home/orichard/ear` directory.
+
 
 
 # Tips
