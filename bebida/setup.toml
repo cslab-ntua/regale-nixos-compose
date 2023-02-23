@@ -1,0 +1,5 @@
+[project]
+
+[g5k.options]
+nix-flags = "--impure --override-input nxc path:/home/orichard/nixos-compose/master --override-input kapack path:/home/orichard/nur-kapack/regale"
+
