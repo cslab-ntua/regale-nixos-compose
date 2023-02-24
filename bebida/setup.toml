@@ -2,7 +2,12 @@
 [options]
 kernel-params = "systemd.unified_cgroup_hierarchy=0"
 
-[g5k.options]
-nix-flags = "--impure --override-input nxc path:/home/orichard/nixos-compose/master --override-input kapack path:/home/orichard/nur-kapack/regale"
+#[g5k.options]
+#nix-flags = "--impure --override-input nxc path:/home/orichard/nixos-compose/master --override-input kapack path:/home/orichard/nur-kapack/regale"
+#
+#[local.build.nur.repos.kapack.oar]
+#src = "/home/mmercier/Projects/oar3"
 
+#[local.options]
+#nix-flags = "--impure --verbose"
 
