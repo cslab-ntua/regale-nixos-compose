@@ -1,5 +1,8 @@
 [project]
+[options]
+kernel-params = "systemd.unified_cgroup_hierarchy=0"
 
 [g5k.options]
 nix-flags = "--impure --override-input nxc path:/home/orichard/nixos-compose/master --override-input kapack path:/home/orichard/nur-kapack/regale"
+
 

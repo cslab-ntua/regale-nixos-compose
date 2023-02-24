@@ -18,15 +18,15 @@ let
             print("DB is not ready")
             time.sleep(0.25)
     resources_creation("node", int(sys.argv[1]), int(sys.argv[2]))
-  '';  
+  '';
 in {
-  imports = [ nur.repos.kapack.modules.oar  ];  
+  imports = [ nur.repos.kapack.modules.oar  ];
   environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.nur.repos.kapack.npb pkgs.openmpi ];
 
   # Allow root yo use open-mpi
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
-  
+
   nxc.users = { names = ["user1" "user2"]; prefixHome = "/users"; };
 
   # Warning trigger issue w/ flavour Docker (su user1 denied)

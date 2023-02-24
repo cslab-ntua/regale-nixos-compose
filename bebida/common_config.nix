@@ -3,7 +3,6 @@ let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
   scripts = import ./scripts/scripts.nix { inherit pkgs; };
-  tokenFile = pkgs.writeText "token" "p@s$w0rd";
 in
 {
   imports = [
@@ -25,6 +24,8 @@ in
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
 
   nxc.users = { names = [ "user1" "user2" ]; prefixHome = "/users"; };
+
+  systemd.enableUnifiedCgroupHierarchy = false;
 
   security.pam.loginLimits = [
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
@@ -58,7 +59,6 @@ in
 
   environment.etc."oar/bebida_prolog.sh".source = scripts.bebida_prolog;
   environment.etc."oar/bebida_epilog.sh".source = scripts.bebida_epilog;
-  environment.etc."oar/bebida_oar.sh".source = scripts.bebida_oar;
 
   services.oar = {
     # oar db passwords
@@ -71,9 +71,9 @@ in
     server.host = "server";
     privateKeyFile = "/etc/privkey.snakeoil";
     publicKeyFile = "/etc/pubkey.snakeoil";
-    extraConfig = {
-      PROLOGUE_EXEC_FILE = "/etc/oar/bebida_prolog.sh";
-      EPILOGUE_EXEC_FILE = "/etc/oar/bebida_epilog.sh";
-    };
+    #extraConfig = {
+    #  PROLOGUE_EXEC_FILE = "/etc/oar/bebida_prolog.sh";
+    #  EPILOGUE_EXEC_FILE = "/etc/oar/bebida_epilog.sh";
+    #};
   };
 }

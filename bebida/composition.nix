@@ -2,6 +2,7 @@
   roles =
     let
       commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur; };
+      tokenFile = pkgs.writeText "token" "p@s$w0rd";
     in
     {
       frontend = { ... }: {
@@ -28,17 +29,16 @@
           enable = true;
           role = "server";
           package = pkgs.k3s;
-          extraFlags = "--bind-address 192.168.1.2 --node-external-ip 192.168.1.2";
+          # FIXME: WARNING: These IP adresses are static values that only work for VM flavor and 2 nodes
+          extraFlags = "--bind-address 192.168.1.4 --node-external-ip 192.168.1.4";
         };
-
       };
+
       node = { ... }: {
         imports = [ commonConfig ];
         nxc.sharedDirs."/users".server = "server";
 
         services.oar.node.enable = true;
-        # initial bdpo config setting
-        services.bdpo.enable = true;
 
         services.k3s = {
           inherit tokenFile;
