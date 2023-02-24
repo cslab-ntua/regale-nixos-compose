@@ -1,5 +1,5 @@
 {
-  description = "BDPO-OAR";
+  description = "Bebida-K8s-OAR";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/22.05";
