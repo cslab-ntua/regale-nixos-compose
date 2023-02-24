@@ -35,16 +35,32 @@
 
   bebida_prolog = pkgs.writeShellScript "bebida_prolog"
     ''
-      for node in $(uniq $OAR_FILE_NODES)
+      export PATH=$PATH:/run/current-system/sw/bin:/run/wrappers/bin
+      (
+      echo Enter BEBIDA prolog
+      printenv
+      id
+      for node in $(oarstat -J -j "$OAR_JOB_ID" -p | jq ".[\"$OAR_JOB_ID\"][] | .network_address" -r)
       do
-          oardodo kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml drain --force --grace-period=5 --ignore-daemonsets --delete-local-data $node
+        echo == Removing node $node
+        oardodo kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml drain --force --grace-period=5 --ignore-daemonsets --delete-emptydir-data $node
+        echo == Removed node $node
       done
+      ) > /tmp/oar-''${OAR_JOB_ID}-prolog-logs 2> /tmp/oar-''${OAR_JOB_ID}-prolog-logs
     '';
   bebida_epilog = pkgs.writeShellScript "bebida_epilog"
     ''
-      for node in $(uniq $OAR_FILE_NODES)
+      export PATH=$PATH:/run/current-system/sw/bin:/run/wrappers/bin
+      (
+      echo BEBIDA epilog
+      printenv
+      id
+      for node in $(oarstat -J -j "$OAR_JOB_ID" -p | jq ".[\"$OAR_JOB_ID\"][] | .network_address" -r)
       do
-          oardodo kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml uncordon $node
+        echo == Adding node $node
+        oardodo kubectl --kubeconfig /etc/rancher/k3s/k3s.yaml uncordon $node
+        echo == Added node $node
       done
+      ) > /tmp/oar-''${OAR_JOB_ID}-epilog-logs 2> /tmp/oar-''${OAR_JOB_ID}-epilog-logs
     '';
 }

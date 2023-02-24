@@ -19,13 +19,16 @@ in
     pkgs.tree
   ];
 
+  environment.shellAliases = {
+    k = "k3s kubectl";
+    kgp = "k3s kubectl get pods -A";
+  };
+
   # Allow root yo use open-mpi
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
 
   nxc.users = { names = [ "user1" "user2" ]; prefixHome = "/users"; };
-
-  systemd.enableUnifiedCgroupHierarchy = false;
 
   security.pam.loginLimits = [
     { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
@@ -71,9 +74,9 @@ in
     server.host = "server";
     privateKeyFile = "/etc/privkey.snakeoil";
     publicKeyFile = "/etc/pubkey.snakeoil";
-    #extraConfig = {
-    #  PROLOGUE_EXEC_FILE = "/etc/oar/bebida_prolog.sh";
-    #  EPILOGUE_EXEC_FILE = "/etc/oar/bebida_epilog.sh";
-    #};
+    extraConfig = {
+      SERVER_PROLOGUE_EXEC_FILE = "/etc/oar/bebida_prolog.sh";
+      SERVER_EPILOGUE_EXEC_FILE = "/etc/oar/bebida_epilog.sh";
+    };
   };
 }
