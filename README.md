@@ -17,6 +17,7 @@ To facilitate their development and ensure their reproducibility, we propose the
 # List of prototype/integration compositions
 | Directory                    | Description      | Status    | CI@Grid5000 |
 |------------------------------|------------------|-----------|------------------|
+| [BEBIDA-OAR](bebidate/README.md) |              | WIP       | TODO             |
 | [BDPO](bdpo/README.md)       | demo             | PoC (WIP) | -                |
 | [BDPO-OAR](bdpo-oar/README.md) | demo           | PoC (WIP) | -                |
 | [EAR](ear/README.md)         | demo             |        |  :white_check_mark:  |
