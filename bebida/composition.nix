@@ -24,13 +24,17 @@
         # K3s utils
         environment.systemPackages = with pkgs; [ gzip jq kubectl ];
 
+        system.activationScripts.k3s-config = ''
+          SERVER=$( grep server /etc/nxc/deployment-hosts | ${pkgs.gawk}/bin/awk '{ print $1 }')
+          echo 'bind-address: "'$SERVER'"' > /etc/k3s.yaml  
+          echo 'node-external-ip: "'$SERVER'"' >> /etc/k3s.yaml
+        '';
+        
         services.k3s = {
           inherit tokenFile;
           enable = true;
           role = "server";
-          package = pkgs.k3s;
-          # FIXME: WARNING: These IP adresses are static values that only work for VM flavor and 2 nodes
-          extraFlags = "--bind-address 192.168.1.4 --node-external-ip 192.168.1.4";
+          configPath = "/etc/k3s.yaml";
         };
       };
 
