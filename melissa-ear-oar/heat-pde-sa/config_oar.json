@@ -1,0 +1,46 @@
+{
+    "server_filename": "heatpde_sa_server.py",
+    "server_class": "HeatPDEServerSA",
+    "output_dir": "out",
+    "study_options": {
+        "field_names": [
+            "temperature"
+        ],
+        "parameter_sweep_size": 100,
+        "num_samples": 100,
+        "nb_parameters": 5,
+        "parameter_range": [100, 200],
+        "simulation_timeout": 400,
+        "checkpoint_interval": 300,
+        "crashes_before_redraw": 1000
+    },
+    "sa_config": {
+        "mean": true,
+        "variance": true,
+        "skewness": true,
+        "kurtosis": true,
+        "sobol_indices": false
+    },
+    "launcher_config": {
+        "scheduler": "oar",
+        "scheduler_arg_server": [
+            "core=12,walltime=01:00:00"
+        ],
+        "scheduler_arg_client": [
+            "core=12,walltime=00:30:00"
+        ],
+        "fault_tolerance": false,
+        "verbosity": 2
+    },
+    "server_config": {
+      "melissa_server_env": "/home/afaure/code/melissa/examples/heat-pde/heat-pde-sa"
+    },
+    "client_config": {
+        "melissa_client_env": "/home/afaure/code/melissa/examples/heat-pde/heat-pde-sa",
+        "executable_command": "heatc 100 100 300",
+        "preprocessing_commands": [
+            "echo bash commands",
+            "echo go here"
+        ]
+    }
+}
