@@ -1,5 +1,4 @@
 [project]
-selected = "dev-alex"
     
 [options.build.nur.repos.kapack.ear.attrs]    
 meta.broken = false
