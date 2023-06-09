@@ -1,4 +1,5 @@
 [project]
+selected = "dev-alex"
 
 [params]
 nb_nodes = 3

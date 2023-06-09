@@ -69,11 +69,11 @@
         "nixpkgs2111": "nixpkgs2111"
       },
       "locked": {
-        "lastModified": 1671535253,
-        "narHash": "sha256-staCByCEx6XuhCnZReONmfHokKXpUhPop9QEJMk2PVM=",
+        "lastModified": 1686122393,
+        "narHash": "sha256-VA0qEf9D7uqA+U3qtA620sUZRcyI50Go/2DZERUIhkU=",
         "owner": "oar-team",
         "repo": "nur-kapack",
-        "rev": "a3ffbe612bca6302fccb8aadc08a39bfe3f4f08e",
+        "rev": "9ae116666b401eb4c880f3b938fdeb57d4ad6d40",
         "type": "github"
       },
       "original": {
@@ -164,9 +164,9 @@
       },
       "locked": {
         "lastModified": 1671716393,
-        "narHash": "sha256-nZ2+AH0VbGPkXvlyotwF6B1JdPr19LctvLZSwhznZoE=",
+        "narHash": "sha256-ZnijV8PYVZrAnsuit/e5BFjNKHQOMARTEunxIKJm6UQ=",
         "ref": "refs/heads/master",
-        "rev": "be49d5f5bd6298558df39c1c2fead74ef93418d0",
+        "rev": "7bc87046ebc0a3967c29e75adba344524386b668",
         "revCount": 509,
         "type": "git",
         "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"

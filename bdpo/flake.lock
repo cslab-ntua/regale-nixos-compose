@@ -108,16 +108,16 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1653936696,
-        "narHash": "sha256-M6bJShji9AIDZ7Kh7CPwPBPb/T7RiVev2PAcOi4fxDQ=",
+        "lastModified": 1669833724,
+        "narHash": "sha256-/HEZNyGbnQecrgJnfE8d0WC5c1xuPSD2LUpB6YXlg4c=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "ce6aa13369b667ac2542593170993504932eb836",
+        "rev": "4d2b37a84fad1091b9de401eb450aae66f1a741e",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "22.05",
+        "ref": "22.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -164,9 +164,9 @@
       },
       "locked": {
         "lastModified": 1671716393,
-        "narHash": "sha256-nZ2+AH0VbGPkXvlyotwF6B1JdPr19LctvLZSwhznZoE=",
+        "narHash": "sha256-ZnijV8PYVZrAnsuit/e5BFjNKHQOMARTEunxIKJm6UQ=",
         "ref": "refs/heads/master",
-        "rev": "be49d5f5bd6298558df39c1c2fead74ef93418d0",
+        "rev": "7bc87046ebc0a3967c29e75adba344524386b668",
         "revCount": 509,
         "type": "git",
         "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"

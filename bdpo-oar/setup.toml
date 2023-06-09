@@ -3,3 +3,8 @@
 [g5k.options]
 nix-flags = "--impure --override-input nxc path:/home/orichard/nixos-compose/master --override-input kapack path:/home/orichard/nur-kapack/regale"
 
+[dev-alex.options]
+nix-flags = "--impure --override-input kapack path:/home/alex/dev/nur-kappack-regale/regale-2211"
+
+[dev-alex.build.nur.repos.kapack]
+oar = { src = "/home/alex/dev/oar-versions/oar3" }
