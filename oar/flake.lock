@@ -2,11 +2,11 @@
   "nodes": {
     "NUR": {
       "locked": {
-        "lastModified": 1671882360,
-        "narHash": "sha256-vTa5luC2FnDN5Z/zVv0lHynzaA8MC+/BJOmXFrmzHVs=",
+        "lastModified": 1686314097,
+        "narHash": "sha256-gti9KHLDijZtwUvoCyh2xGYc6zQMw4l5h9b7uKJfwVg=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "3e531640bcdaaed1293fde20958c76a66acfb797",
+        "rev": "17a218d22e68ab0eff74e1681d412a24165f187c",
         "type": "github"
       },
       "original": {
@@ -17,11 +17,11 @@
     },
     "flake-utils": {
       "locked": {
-        "lastModified": 1653893745,
-        "narHash": "sha256-0jntwV3Z8//YwuOjzhV2sgJJPt+HY6KhU7VZUL0fKZQ=",
+        "lastModified": 1667395993,
+        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
         "owner": "numtide",
         "repo": "flake-utils",
-        "rev": "1ed9fb1935d260de5fe1c2f7ee0ebaae17ed2fa1",
+        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
         "type": "github"
       },
       "original": {
@@ -177,11 +177,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1671716393,
+        "lastModified": 1685588145,
         "narHash": "sha256-ZnijV8PYVZrAnsuit/e5BFjNKHQOMARTEunxIKJm6UQ=",
         "ref": "refs/heads/master",
         "rev": "7bc87046ebc0a3967c29e75adba344524386b668",
-        "revCount": 509,
+        "revCount": 535,
         "type": "git",
         "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
       },
