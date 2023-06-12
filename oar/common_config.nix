@@ -1,4 +1,4 @@
-{ pkgs, modulesPath, nur }:
+{ pkgs, modulesPath, nur, flavour }:
 let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
@@ -7,33 +7,116 @@ let
     libraries = [ pkgs.nur.repos.kapack.oar ]; } ''
     from oar.lib.tools import get_date
     from oar.lib.resource_handling import resources_creation
+    from oar.lib.globals import init_and_get_session
     import sys
     import time
     r = True
+
+    session = init_and_get_session()
+
     while r:
         try:
-            print(get_date())  # date took from db (test connection)
+            print(get_date(session))  # date took from db (test connection)
             r = False
         except Exception:
             print("DB is not ready")
             time.sleep(0.25)
-    resources_creation("node", int(sys.argv[1]), int(sys.argv[2]))
+
+    resources_creation(session, "node", int(sys.argv[1]), int(sys.argv[2]))
+    print("resource created")
   '';
+
+  #openmpiNoOPA = pkgs.openmpi.override { fabricSupport = false; };
+  #npbNoOPA = pkgs.nur.repos.kapack.npb.override (oldAttrs: rec { openmpi = openmpiNoOPA; });
+
+  prepare_cgroup = pkgs.writeShellScript "prepare_cgroup"
+  ''
+  # This script prepopulates OAR cgroup directory hierarchy, as used in the
+  # job_resource_manager_cgroups.pl script, in order to have nodes use different
+  # subdirectories and avoid conflitcs due to having all nodes actually running on
+  # the same host machine
+
+  OS_CGROUPS_PATH="/sys/fs/cgroup"
+  CGROUP_SUBSYSTEMS="cpuset cpu cpuacct devices freezer blkio"
+  if [ -e "$OS_CGROUPS_PATH/memory" ]; then
+    CGROUP_SUBSYSTEMS="$CGROUP_SUBSYSTEMS memory"
+  fi
+  CGROUP_DIRECTORY_COLLECTION_LINKS="/dev/oar_cgroups_links"
+
+
+  if [ "$1" = "init" ]; then
+      mkdir -p $CGROUP_DIRECTORY_COLLECTION_LINKS && \
+      for s in $CGROUP_SUBSYSTEMS; do
+        mkdir -p $OS_CGROUPS_PATH/$s/oardocker/$HOSTNAME
+        ln -s $OS_CGROUPS_PATH/$s/oardocker/$HOSTNAME $CGROUP_DIRECTORY_COLLECTION_LINKS/$s
+      done
+      ln -s $OS_CGROUPS_PATH/cpuset/oardocker/$HOSTNAME /dev/cpuset
+
+      cat $OS_CGROUPS_PATH/cpuset/cpuset.cpus > $OS_CGROUPS_PATH/cpuset/oardocker/cpuset.cpus
+      cat $OS_CGROUPS_PATH/cpuset/cpuset.mems > $OS_CGROUPS_PATH/cpuset/oardocker/cpuset.mems
+      /bin/echo 0 > $OS_CGROUPS_PATH/cpuset/oardocker/cpuset.cpu_exclusive
+      /bin/echo 1000 > $OS_CGROUPS_PATH/cpuset/oardocker/notify_on_release
+
+      cat $OS_CGROUPS_PATH/cpuset/oardocker/cpuset.cpus > $OS_CGROUPS_PATH/cpuset/oardocker/$HOSTNAME/cpuset.cpus
+      cat $OS_CGROUPS_PATH/cpuset/oardocker/cpuset.mems > $OS_CGROUPS_PATH/cpuset/oardocker/$HOSTNAME/cpuset.mems
+      /bin/echo 0 > $OS_CGROUPS_PATH/cpuset/oardocker/$HOSTNAME/cpuset.cpu_exclusive
+      /bin/echo 0 > $OS_CGROUPS_PATH/cpuset/oardocker/$HOSTNAME/notify_on_release
+      /bin/echo 1000 > $OS_CGROUPS_PATH/blkio/oardocker/$HOSTNAME/blkio.weight
+  elif [ "$1" = "clean" ]; then
+      if [ "$HOSTNAME" = "node1" ]; then
+          CGROOT="$OS_CGROUPS_PATH/cpuset/oardocker/"
+
+          if ! [ -d $CGROOT ]; then
+            echo "No such directory: $CGROOT"
+            exit 0;
+          fi
+
+          echo "kill all cgroup tasks"
+          while read task; do
+              echo "kill -9 $task"
+              kill -9 $task
+          done < <(find $CGROOT -name tasks -exec cat {} \;)
+
+          wait
+          echo "Wipe all cgroup content"
+          find $CGROOT -depth -type d -exec rmdir {} \;
+
+          echo "Cgroup is cleanded!"
+      fi
+  fi
+
+  exit 0
+  '';
+
 in {
-  imports = [ nur.repos.kapack.modules.oar  ];
-  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.nur.repos.kapack.npb pkgs.openmpi ];
+  imports = [ nur.repos.kapack.modules.oar ];
+  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.vim pkgs.nur.repos.kapack.oar pkgs.jq ];
 
-  # Allow root yo use open-mpi
-  environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
-  environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
+  networking.firewall.enable = false;
 
-  nxc.users = { names = ["user1" "user2"]; prefixHome = "/users"; };
+  users.users.user1 = { isNormalUser = true; };
+  users.users.user2 = { isNormalUser = true; };
 
-  # Warning trigger issue w/ flavour Docker (su user1 denied)
-  security.pam.loginLimits = [
-    { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
-    { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
-  ];
+  systemd.services.oar-cgroup = {
+    enable = flavour.name == "docker";
+    serviceConfig = {
+       ExecStart = "${prepare_cgroup} init";
+       ExecStop = "${prepare_cgroup} clean";
+       KillMode = "process";
+       RemainAfterExit = "on";
+    };
+    wantedBy = [ "network.target" ];
+    before = [ "network.target" ];
+    serviceConfig.Type = "oneshot";
+  };
+
+  services.openssh.extraConfig = ''
+     AuthorizedKeysCommand /usr/bin/sss_ssh_authorizedkeys
+     AuthorizedKeysCommandUser nobody
+  '';
+  # security.pam.loginLimits = [
+  #   { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
+  # ];
 
   environment.etc."privkey.snakeoil" = {
     mode = "0600";
@@ -44,6 +127,7 @@ in {
     #source = snakeOilPublicKey;
     text = snakeOilPublicKey;
   };
+
   environment.etc."oar-dbpassword".text = ''
     # DataBase user name
     DB_BASE_LOGIN="oar"
@@ -57,7 +141,14 @@ in {
     # DataBase read only user password
     DB_BASE_PASSWD_RO="oar_ro"
   '';
+
   services.oar = {
+    #clipackage =  pkgs.nur.repos.kapack.oars;
+    extraConfig = {
+      LOG_LEVEL = "3";
+      HIERARCHY_LABELS = "resource_id,network_address,cpuset";
+    };
+
     # oar db passwords
     database = {
       host = "server";
@@ -81,4 +172,7 @@ in {
     privateKeyFile = "/etc/privkey.snakeoil";
     publicKeyFile = "/etc/pubkey.snakeoil";
   };
+
+  users.users.root.password = "nixos";
+  services.openssh.permitRootLogin = "yes";
 }

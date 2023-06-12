@@ -1,22 +1,29 @@
 [project]
-    
-[options.build.nur.repos.kapack.ear.attrs]    
-meta.broken = false
 
-[g5k-dev.options]
-nix-flags = "--impure"    
-          
-[g5k-dev.build.nur.repos.kapack]
-ear = { src = "/home/orichard/ear" }
+# [g5k.options]
+# nix-flags = "--impure" # --override-input kapack github:adfaure/nur-kapack?ref=master"
 
-[dev.options]
-nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/regale"
-
-[dev.build.nur.repos.kapack]
-oar = { src = "/home/auguste/dev/oar" }
+[laptop.options]
+nix-flags = "--impure --override-input kapack path:/home/adfaure/code/nur-kapack/"
 
 [dev-alex.options]
 nix-flags = "--impure --override-input kapack path:/home/alex/dev/nur-kapack-regale/regale-2211"
 
-[dev-alex.build.nur.repos.kapack]
-oar = { src = "/home/alex/dev/oar-versions/oar3" }
+# [laptop.build.nur.repos.kapack.oar]
+# src = "/home/adfaure/code/oar3"
+
+# [laptop.build.nur.repos.kapack.oar3]
+# src = "/home/adfaure/code/oar3"
+
+# [laptop.build.nur.repos.kapack.oar-plugins]
+# src = "/home/adfaure/code/oar3-plugins"
+
+# [g5k.build.nur.repos.kapack.oar.src.fetchFromGitHub]
+# owner = "oar-team"
+# repo = "oar3"
+# rev = "237e37ca83b4be3b8a1e6930199d4ad21222ece6"
+# sha256 = "sha256-8l0jcuV+FbFpCWktqzgbvu+K+/Rh/5fCX8VvH0JaG7E="
+
+# for((i=1;i<=50;i+=2)); do oarsub -l "resource_id=1" "sleep 10m"; done
+#  for((i=0;i<50;i+=1)); do oarsub -l "resource_id=1" -t besteffort -t idempotent "sleep 1m"; done
+

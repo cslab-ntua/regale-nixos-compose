@@ -1,32 +1,34 @@
-{ pkgs, modulesPath, nur, helpers, flavour, ... }: {
-  dockerPorts.frontend = [ "8443:443" "8000:80" ];
-  nodes =
+{ pkgs, modulesPath, nur, helpers, ... }: {
+  roles =
     let
-      nodes_number = 2;
-      commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur flavour; };
-      node = { ... }: {
-        imports = [ commonConfig ];
-        services.oar.node = { enable = true; };
-      };
-    in
-    {
+      commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur; };  
+    in {
       frontend = { ... }: {
         imports = [ commonConfig ];
-        # services.phpfpm.phpPackage = pkgs.php74;
+        nxc.sharedDirs."/users".server = "server";
+        
         services.oar.client.enable = true;
-        services.oar.web.enable = true;
-        services.oar.web.drawgantt.enable = true;
-
       };
+
       server = { ... }: {
         imports = [ commonConfig ];
+        nxc.sharedDirs."/users".export = true;
+        
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
       };
-    } // helpers.makeMany node "node" nodes_number;
+      
+      node = { ... }: {
+        imports = [ commonConfig ];
+        nxc.sharedDirs."/users".server = "server";
+        
+        services.oar.node.enable = true;
+      };
+    };
 
+  rolesDistribution = { node = 2; };
+  
   testScript = ''
-    frontend.succeed("true")
     # Prepare a simple script which execute cg.C.mpi 
     frontend.succeed('echo "mpirun --hostfile \$OAR_NODEFILE -mca pls_rsh_agent oarsh -mca btl tcp,self cg.C.mpi" > /users/user1/test.sh')
     # Set rigth and owner of script
