@@ -1,5 +1,4 @@
 [project]
-selected = "dev-alex"
     
 [options.build.nur.repos.kapack.ear.attrs]    
 meta.broken = false
@@ -17,7 +16,7 @@ nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/
 src = "/home/auguste/dev/ear"
 
 [dev-alex.options]
-nix-flags = "--impure --override-input kapack path:/home/alex/dev/nur-kappack-regale/regale-2211"
+nix-flags = "--impure --override-input kapack path:/home/alex/dev/nur-kapack-regale/regale-2211"
 
-[dev-alex.build.nur.repos.kapack]
-oar = { src = "/home/alex/dev/oar-versions/oar3" }
+# [dev-alex.build.nur.repos.kapack]
+# oar = { src = "/home/alex/dev/oar-versions/oar3" }
