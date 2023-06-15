@@ -142,11 +142,21 @@ in {
     DB_BASE_PASSWD_RO="oar_ro"
   '';
 
-  services.oar = {
+
+  services.oar = let
+    quotas = pkgs.writeTextFile {
+      name="qotas.json";
+      text=''
+
+      '';
+    };
+  in{
     #clipackage =  pkgs.nur.repos.kapack.oars;
     extraConfig = {
       LOG_LEVEL = "3";
       HIERARCHY_LABELS = "resource_id,network_address,cpuset";
+      QUOTAS = "yes";
+      QUOTAS_CONF_FILE="${quotas}";
     };
 
     # oar db passwords
