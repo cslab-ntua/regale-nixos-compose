@@ -21,11 +21,11 @@ in {
 
 nxc.users = { names = ["user1" "user2"]; prefixHome = "/users"; };
 
-  security.pam.loginLimits = [
-    { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
-    { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
-    # { domain = "*"; item = "nofile"; type = "-"; value = "unlimited"; }
-  ];
+  # security.pam.loginLimits = [
+  #   { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
+  #   { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
+  #   # { domain = "*"; item = "nofile"; type = "-"; value = "unlimited"; }
+  # ];
 
   environment.etc."privkey.snakeoil" = {
     mode = "0600";
