@@ -143,20 +143,25 @@ in {
   '';
 
 
-  services.oar = let
-    quotas = pkgs.writeTextFile {
-      name="qotas.json";
-      text=''
-
+  environment.etc."oar-quotas.json" = {
+    text = ''
+        {
+          "quotas": {
+            "*,*,*,*": [-1,2,-1],
+            "*,*,*,user1": [2,-1,-1]
+          }
+        }
       '';
-    };
-  in{
+    mode = "pas-simplink";
+  };
+
+  services.oar = {
     #clipackage =  pkgs.nur.repos.kapack.oars;
     extraConfig = {
       LOG_LEVEL = "3";
       HIERARCHY_LABELS = "resource_id,network_address,cpuset";
       QUOTAS = "yes";
-      QUOTAS_CONF_FILE="${quotas}";
+      QUOTAS_CONF_FILE="/etc/oar-quotas.json";
     };
 
     # oar db passwords
