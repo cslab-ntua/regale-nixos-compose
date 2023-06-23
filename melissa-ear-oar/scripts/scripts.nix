@@ -4,11 +4,18 @@ with pkgs.writers;
   wait_db = pkgs.writers.writePython3Bin "wait_db" {
     libraries = [ pkgs.nur.repos.kapack.oar ]; } ''
     from oar.lib.tools import get_date
+    from oar.lib.resource_handling import resources_creation
+    from oar.lib.globals import init_and_get_session
+    import sys
     import time
+
     r = True
+
+    session = init_and_get_session()
+
     while r:
         try:
-            print(get_date())  # date took from db (test connection)
+            print(get_date(session))  # date took from db (test connection)
             r = False
         except Exception:
             print("DB is not ready")
@@ -17,23 +24,15 @@ with pkgs.writers;
 
   add_resources = pkgs.writers.writePython3Bin "add_resources" {
     libraries = [ pkgs.nur.repos.kapack.oar ]; } ''
-    from oar.lib import db, Resource
+    from oar.lib.tools import get_date
+    from oar.lib.resource_handling import resources_creation
+    from oar.lib.globals import init_and_get_session
     import sys
+    import time
 
+    session = init_and_get_session()
 
-    def create_res(node_name, nb_nodes, nb_core=1, vfactor=1):
-        for i in range(nb_nodes * nb_core * vfactor):
-            Resource.create(
-                network_address=f"{node_name}{int(i/(nb_core * vfactor)+1)}",
-                cpuset=i % nb_core,
-                core=i + 1,
-                state="Alive",
-            )
-        db.commit()
-
-
-    db.reflect()
-    create_res("node", int(sys.argv[1]), int(sys.argv[2]))
+    resources_creation(session, "node", int(sys.argv[1]), int(sys.argv[2]))
   '';
 
   oar_db_postInitCommands = ''
