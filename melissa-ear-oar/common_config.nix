@@ -5,7 +5,9 @@ let
   scripts = import ./scripts/scripts.nix { inherit pkgs; };
   melissa = import ./melissa.nix { inherit pkgs nur modulesPath; };
 in {
-  imports = [ melissa nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear ];
+  imports = [ melissa nur.repos.kapack.modules.oar nur.repos.kapack.modules.ear  ];
+
+  systemd.enableUnifiedCgroupHierarchy = false;
 
   environment.systemPackages = [
     pkgs.python3
@@ -20,6 +22,10 @@ in {
     scripts.ear-mpirun
     scripts.ear_suspendAction
     scripts.ear_resumeAction
+
+    # scripts.oar_db_postInitCommands
+    scripts.wait_db
+    scripts.add_resources
   ];
 
   environment.variables.EAR_INSTALL_PATH = "${pkgs.nur.repos.kapack.ear}";
@@ -32,11 +38,11 @@ in {
 
   nxc.users = { names = ["user1" "user2"]; prefixHome = "/users"; };
 
-  security.pam.loginLimits = [
-    { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
-    { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
-    # { domain = "*"; item = "nofile"; type = "-"; value = "unlimited"; }
-  ];
+  # security.pam.loginLimits = [
+  #   { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
+  #   { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
+  #   # { domain = "*"; item = "nofile"; type = "-"; value = "unlimited"; }
+  # ];
 
   environment.etc."privkey.snakeoil" = {
     mode = "0600";

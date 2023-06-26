@@ -1,10 +1,11 @@
 [project]
+selected = "g5k"
 
 [params]
 nb_nodes = 3
 
 [g5k.options]
-nix-flags = "--impure --override-input kapack path:/home/afaure/regale-nixos-compose/nur-kapack"
+nix-flags = "--impure --override-input kapack path:/home/afaure/code/nur-kapack"
 
 [laptop.options]
 nix-flags = "--impure --override-input kapack path:/home/adfaure/Sandbox/nxc-melissa/nur-kapack"

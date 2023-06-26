@@ -1,28 +1,27 @@
 {
   description = "OAR - basic setup";
-
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/22.11";
-    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git";
+    nixpkgs.url = "github:NixOS/nixpkgs/23.05";
+    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=2305";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
     NUR.url = "github:nix-community/NUR";
-    #kapack.url = "github:oar-team/nur-kapack/regale-2211"; # Branch does exist anymore
-    kapack.url = "github:oar-team/nur-kapack?ref=regale";
+    kapack.url = "github:oar-team/nur-kapack?ref=nixpkgs-2305";
+    # kapack.url = "github:oar-team/nur-kapack/regale-2211";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, nxc, NUR, kapack }:
-  let
-    system = "x86_64-linux";
-    pkgs = nixpkgs.legacyPackages.${system};
-  in {
-    packages.${system} = nxc.lib.compose {
-      inherit nixpkgs system NUR;
-      repoOverrides = { inherit kapack; };
-      composition = ./composition.nix;
-      setup = ./setup.toml;
-    };
+  outputs = { self, nixpkgs, nxc, NUR, kapack}:
+    let
+      system = "x86_64-linux";
+    in {
+      packages.${system} = nxc.lib.compose {
+        inherit nixpkgs system NUR;
+        repoOverrides = { inherit kapack; };
+        setup = ./setup.toml;
+        composition = ./composition.nix;
+        };
 
-    devShell.${system} = nxc.devShells.${system}.nxcShellFull;
-  };
+      devShell.${system} = nxc.devShells.${system}.nxcShell;
+     };
 }
+

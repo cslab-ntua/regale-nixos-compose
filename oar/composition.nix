@@ -2,7 +2,7 @@
   dockerPorts.frontend = [ "8443:443" "8000:80" ];
   nodes =
     let
-      nodes_number = 2;
+      nodes_number = 1;
       commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur flavour; };
       node = { ... }: {
         imports = [ commonConfig ];

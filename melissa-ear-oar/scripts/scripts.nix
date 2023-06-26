@@ -4,9 +4,7 @@ with pkgs.writers;
   wait_db = pkgs.writers.writePython3Bin "wait_db" {
     libraries = [ pkgs.nur.repos.kapack.oar ]; } ''
     from oar.lib.tools import get_date
-    from oar.lib.resource_handling import resources_creation
     from oar.lib.globals import init_and_get_session
-    import sys
     import time
 
     r = True
@@ -15,7 +13,10 @@ with pkgs.writers;
 
     while r:
         try:
-            print(get_date(session))  # date took from db (test connection)
+            d = get_date(session)
+            print(d)  # date took from db (test connection)
+            print("DB ready at", d)
+
             r = False
         except Exception:
             print("DB is not ready")
@@ -24,11 +25,9 @@ with pkgs.writers;
 
   add_resources = pkgs.writers.writePython3Bin "add_resources" {
     libraries = [ pkgs.nur.repos.kapack.oar ]; } ''
-    from oar.lib.tools import get_date
     from oar.lib.resource_handling import resources_creation
     from oar.lib.globals import init_and_get_session
     import sys
-    import time
 
     session = init_and_get_session()
 

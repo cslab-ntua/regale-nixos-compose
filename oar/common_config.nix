@@ -26,8 +26,8 @@ let
     print("resource created")
   '';
 
-  #openmpiNoOPA = pkgs.openmpi.override { fabricSupport = false; };
-  #npbNoOPA = pkgs.nur.repos.kapack.npb.override (oldAttrs: rec { openmpi = openmpiNoOPA; });
+  # openmpiNoOPA = pkgs.openmpi.override { fabricSupport = false; };
+  # npbNoOPA = pkgs.nur.repos.kapack.npb.override (oldAttrs: rec { openmpi = openmpiNoOPA; });
 
   prepare_cgroup = pkgs.writeShellScript "prepare_cgroup"
   ''
@@ -97,23 +97,24 @@ in {
   users.users.user1 = { isNormalUser = true; };
   users.users.user2 = { isNormalUser = true; };
 
-  systemd.services.oar-cgroup = {
-    enable = flavour.name == "docker";
-    serviceConfig = {
-       ExecStart = "${prepare_cgroup} init";
-       ExecStop = "${prepare_cgroup} clean";
-       KillMode = "process";
-       RemainAfterExit = "on";
-    };
-    wantedBy = [ "network.target" ];
-    before = [ "network.target" ];
-    serviceConfig.Type = "oneshot";
-  };
+  # systemd.services.oar-cgroup = {
+  #   enable = flavour.name == "docker";
+  #   serviceConfig = {
+  #      ExecStart = "${prepare_cgroup} init";
+  #      ExecStop = "${prepare_cgroup} clean";
+  #      KillMode = "process";
+  #      RemainAfterExit = "on";
+  #   };
+  #   wantedBy = [ "network.target" ];
+  #   before = [ "network.target" ];
+  #   serviceConfig.Type = "oneshot";
+  # };
 
   services.openssh.extraConfig = ''
      AuthorizedKeysCommand /usr/bin/sss_ssh_authorizedkeys
      AuthorizedKeysCommandUser nobody
   '';
+
   # security.pam.loginLimits = [
   #   { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
   # ];
@@ -188,6 +189,5 @@ in {
     publicKeyFile = "/etc/pubkey.snakeoil";
   };
 
-  users.users.root.password = "nixos";
-  services.openssh.permitRootLogin = "yes";
+  # users.users.root.password = "nixos";
 }

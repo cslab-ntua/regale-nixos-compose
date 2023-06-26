@@ -30,7 +30,7 @@
       node = { ... }: {
         imports = [ commonConfig ];
         nxc.sharedDirs."/users".server = "server";
-        
+        systemd.enableUnifiedCgroupHierarchy = false;       
         services.oar.node.enable = true;
         services.ear.daemon.enable = true;
         services.ear.db_manager.enable = true;
