@@ -2,11 +2,11 @@
   "nodes": {
     "NUR": {
       "locked": {
-        "lastModified": 1687772701,
-        "narHash": "sha256-EH/8oD6lRvWysalSAjdNNyjAb+D7EdyLr4rAFN+3S68=",
+        "lastModified": 1687866297,
+        "narHash": "sha256-E31NvkGGDuUWmvm8a/OjFdNbKG8WlmjH8dQW0lggWiQ=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "f0286202acfbb57e33fdbe703a6c8cdeccc08272",
+        "rev": "ae65761a01233b1c929dcae66e6c6a70b81c2cb4",
         "type": "github"
       },
       "original": {
@@ -163,18 +163,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1687771858,
-        "narHash": "sha256-+zyTcniOPy+QiBErz/xQtHTDp5X9m8yaC2lYfxqdKY8=",
-        "ref": "2305",
-        "rev": "36d807d044bc41992604613c12e0316321b4c176",
-        "revCount": 537,
+        "lastModified": 1687868702,
+        "narHash": "sha256-nHRzihst1bk1WMM82vJWa1XzUoef7B9PHfwA191aqD8=",
+        "ref": "refs/heads/nixpkgs-2305",
+        "rev": "655beff3956a045e45f1b6070a75f3769cdff457",
+        "revCount": 540,
         "type": "git",
-        "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
+        "url": "file:///home/afaure/code/nixos-compose"
       },
       "original": {
-        "ref": "2305",
         "type": "git",
-        "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
+        "url": "file:///home/afaure/code/nixos-compose"
       }
     },
     "root": {

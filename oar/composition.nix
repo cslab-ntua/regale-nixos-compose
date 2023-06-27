@@ -2,7 +2,7 @@
   dockerPorts.frontend = [ "8443:443" "8000:80" ];
   nodes =
     let
-      nodes_number = 1;
+      nodes_number = 2;
       commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur flavour; };
       node = { ... }: {
         imports = [ commonConfig ];
@@ -23,7 +23,7 @@
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
       };
-    } // helpers.makeMany node "node" nodes_number;
+    } // helpers.makeMany node "nodo" nodes_number;
 
   testScript = ''
     frontend.succeed("true")
