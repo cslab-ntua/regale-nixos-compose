@@ -11,19 +11,25 @@ let
     import sys
     import time
     r = True
+    n_try = 10000
 
-    session = init_and_get_session()
 
-    while r:
+    session = None
+    while n_try > 0 and r:
+        n_try = n_try - 1
         try:
+            session = init_and_get_session()
             print(get_date(session))  # date took from db (test connection)
             r = False
         except Exception:
             print("DB is not ready")
             time.sleep(0.25)
 
-    resources_creation(session, "node", int(sys.argv[1]), int(sys.argv[2]))
-    print("resource created")
+    if session:
+        resources_creation(session, "node", int(sys.argv[1]), int(sys.argv[2]))
+        print("resource created")
+    else:
+        print("resource creation failed")
   '';
 
   # openmpiNoOPA = pkgs.openmpi.override { fabricSupport = false; };
@@ -153,7 +159,7 @@ in {
           }
         }
       '';
-    mode = "pas-simplink";
+    mode = "0777";
   };
 
   services.oar = {
@@ -169,7 +175,7 @@ in {
     database = {
       host = "server";
       passwordFile = "/etc/oar-dbpassword";
-      initPath = [ pkgs.util-linux pkgs.gawk pkgs.jq add_resources];
+      initPath = [ pkgs.util-linux pkgs.gawk pkgs.jq add_resources ];
       postInitCommands = ''
       num_cores=$(( $(lscpu | awk '/^Socket\(s\)/{ print $2 }') * $(lscpu | awk '/^Core\(s\) per socket/{ print $4 }') ))
       echo $num_cores > /etc/num_cores

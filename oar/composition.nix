@@ -23,7 +23,7 @@
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
       };
-    } // helpers.makeMany node "nodo" nodes_number;
+    } // helpers.makeMany node "node" nodes_number;
 
   testScript = ''
     frontend.succeed("true")
