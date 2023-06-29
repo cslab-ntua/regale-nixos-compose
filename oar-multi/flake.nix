@@ -8,8 +8,6 @@
     kapack.url = "github:oar-team/nur-kapack?ref=nixpkgs-2305";
     # kapack.url = "github:oar-team/nur-kapack/regale-2211";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
-
-    util.url = "../util";
   };
 
   outputs = {
@@ -18,7 +16,6 @@
     nxc,
     NUR,
     kapack,
-    util,
   }: let
     system = "x86_64-linux";
   in {
@@ -27,7 +24,6 @@
       repoOverrides = {inherit kapack;};
       setup = ./setup.toml;
       compositions = ./compositions.nix;
-      overlays = [util.overlay];
     };
 
     devShell.${system} = nxc.devShells.${system}.nxcShell;
