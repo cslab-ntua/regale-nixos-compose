@@ -6,16 +6,15 @@
   flavour,
   ...
 }: {
-  dockerPorts.frontend = ["8443:443" "8000:80"];
-  nodes = let
-    nodes_number = 2;
+  roles = let
+    dockerPorts.frontend = ["8443:443" "8000:80"];
     commonConfig = import ../oar_config.nix {inherit pkgs modulesPath nur flavour;};
-    node = {...}: {
-      imports = [commonConfig];
-      services.oar.node = {enable = true;};
-    };
   in
     {
+      node = {...}: {
+        imports = [commonConfig];
+        services.oar.node = {enable = true;};
+      };
       frontend = {...}: {
         imports = [commonConfig];
 
@@ -29,8 +28,8 @@
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
       };
-    }
-    // helpers.makeMany node "node" nodes_number;
+    };
+    rolesDistribution = { node = 3; };
 
   testScript = ''
     frontend.succeed("true")
