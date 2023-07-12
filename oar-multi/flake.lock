@@ -2,11 +2,11 @@
   "nodes": {
     "NUR": {
       "locked": {
-        "lastModified": 1687866297,
-        "narHash": "sha256-E31NvkGGDuUWmvm8a/OjFdNbKG8WlmjH8dQW0lggWiQ=",
+        "lastModified": 1689147969,
+        "narHash": "sha256-Pd+jwdXVZgGm6mtjTVhXCZBQXhVYDT76L2kNU+qKRwk=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "ae65761a01233b1c929dcae66e6c6a70b81c2cb4",
+        "rev": "d59dd40aca0adb34f628e6981b95bf33eb23ccab",
         "type": "github"
       },
       "original": {
@@ -69,11 +69,11 @@
         "nixpkgs2111": "nixpkgs2111"
       },
       "locked": {
-        "lastModified": 1687508885,
-        "narHash": "sha256-azWCb2UHGYOTgxvlWUDpeWDdZe0KhM2lTpMgZ78D3PI=",
+        "lastModified": 1689150667,
+        "narHash": "sha256-TbAncec/ljEmRh1S51M7ddsz8/K+0AMN1e1UCNLLNEc=",
         "owner": "oar-team",
         "repo": "nur-kapack",
-        "rev": "eac322b32fdca63fd8dc8509858dd6e1e4a184e5",
+        "rev": "cbea6572da9b0a08bf4ddc5086653a8051104d1f",
         "type": "github"
       },
       "original": {
