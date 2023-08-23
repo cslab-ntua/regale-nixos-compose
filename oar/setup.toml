@@ -1,5 +1,4 @@
 [project]
-selected = "g5k"
 
 [params]
 nb_nodes = 2

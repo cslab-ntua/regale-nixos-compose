@@ -1,12 +1,20 @@
-{ pkgs, nur, ... }: {
+{
+  pkgs,
+  modulesPath,
+  nur,
+  helpers,
+  setup,
+  flavour,
+  ...
+}: {
   roles =
     let
-      commonConfig = import ./common_config.nix { inherit pkgs nur; };
+      commonConfig = pkgs.regale.ear-config {inherit pkgs modulesPath nur setup;};
     in {
       
       eardb = { ... }: {
         imports = [ commonConfig ];
-        environment.systemPackages = [  ];
+
         services.ear.database.enable = true;
       };
       
