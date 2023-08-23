@@ -1,5 +1,5 @@
 {
-  description = "EAR-OAR";
+  description = "OAR and melissa composition";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/23.05";

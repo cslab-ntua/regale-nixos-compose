@@ -1,5 +1,5 @@
 {
-  description = "OAR - basic setup";
+  description = "EAR - basic setup";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/23.05";
     nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=2305";
