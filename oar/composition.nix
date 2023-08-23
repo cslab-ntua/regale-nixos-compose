@@ -1,41 +1,47 @@
-{ pkgs, modulesPath, nur, helpers, flavour, ... }: {
-  dockerPorts.frontend = [ "8443:443" "8000:80" ];
-  nodes =
-    let
-      nodes_number = 2;
-      commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur flavour; };
-      node = { ... }: {
-        imports = [ commonConfig ];
-        services.oar.node = { enable = true; };
-      };
-    in
+{
+  pkgs,
+  modulesPath,
+  nur,
+  helpers,
+  flavour,
+  ...
+}: {
+  roles = let
+    dockerPorts.frontend = ["8443:443" "8000:80"];
+    commonConfig = pkgs.regale.oar-config {inherit pkgs modulesPath nur flavour;};
+  in
     {
-      frontend = { ... }: {
-        imports = [ commonConfig ];
-        # services.phpfpm.phpPackage = pkgs.php74;
+      node = {...}: {
+        imports = [commonConfig];
+        services.oar.node = {enable = true;};
+      };
+      frontend = {...}: {
+        imports = [commonConfig];
+
         services.oar.client.enable = true;
         services.oar.web.enable = true;
         services.oar.web.drawgantt.enable = true;
-
       };
-      server = { ... }: {
-        imports = [ commonConfig ];
+      server = {...}: {
+        imports = [commonConfig];
+
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
       };
-    } // helpers.makeMany node "node" nodes_number;
+    };
+    rolesDistribution = { node = 3; };
 
   testScript = ''
     frontend.succeed("true")
-    # Prepare a simple script which execute cg.C.mpi 
+    # Prepare a simple script which execute cg.C.mpi
     frontend.succeed('echo "mpirun --hostfile \$OAR_NODEFILE -mca pls_rsh_agent oarsh -mca btl tcp,self cg.C.mpi" > /users/user1/test.sh')
     # Set rigth and owner of script
     frontend.succeed("chmod 755 /users/user1/test.sh && chown user1 /users/user1/test.sh")
     # Submit job with script under user1
     frontend.succeed('su - user1 -c "cd && oarsub -l nodes=2 ./test.sh"')
-    # Wait output job file 
+    # Wait output job file
     frontend.wait_for_file('/users/user1/OAR.1.stdout')
     # Check job's final state
     frontend.succeed("oarstat -j 1 -s | grep Terminated")
   '';
-}
+} 

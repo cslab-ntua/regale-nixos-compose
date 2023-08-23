@@ -15,6 +15,21 @@
         "type": "github"
       }
     },
+    "NUR_2": {
+      "locked": {
+        "lastModified": 1689248747,
+        "narHash": "sha256-ASHAMhmMWz4Dts59BNzpVMumCM71gTypYqv0SADL53E=",
+        "owner": "nix-community",
+        "repo": "NUR",
+        "rev": "025e490df817184f825db4e7cf3d10ba1c29d714",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "NUR",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1667395993,
@@ -52,6 +67,21 @@
         "owner": "numtide",
         "repo": "flake-utils",
         "rev": "1ed9fb1935d260de5fe1c2f7ee0ebaae17ed2fa1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_4": {
+      "locked": {
+        "lastModified": 1667395993,
+        "narHash": "sha256-nuEHfE/LcWyuSWnS8t12N1wc105Qtau+/OdUAjtQ0rA=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "5aed5285a952e0b949eb3ba02c12fa4fcfef535f",
         "type": "github"
       },
       "original": {
@@ -106,6 +136,30 @@
         "type": "github"
       }
     },
+    "kapack_3": {
+      "inputs": {
+        "flake-utils": "flake-utils_4",
+        "nixpkgs": [
+          "regale",
+          "nixpkgs"
+        ],
+        "nixpkgs2111": "nixpkgs2111_3"
+      },
+      "locked": {
+        "lastModified": 1689245921,
+        "narHash": "sha256-dSYqoJ3DOBtnugtoBiaOBinmrf+ZgCEfDOkLevNHcYs=",
+        "owner": "oar-team",
+        "repo": "nur-kapack",
+        "rev": "731febd859a4b9e2dd0d3227df2b24ae6817d4a8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oar-team",
+        "ref": "regale",
+        "repo": "nur-kapack",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1685566663,
@@ -154,6 +208,38 @@
         "type": "github"
       }
     },
+    "nixpkgs2111_3": {
+      "locked": {
+        "lastModified": 1659446231,
+        "narHash": "sha256-hekabNdTdgR/iLsgce5TGWmfIDZ86qjPhxDg/8TlzhE=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "eabc38219184cc3e04a974fe31857d8e0eac098d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-21.11",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1685566663,
+        "narHash": "sha256-btHN1czJ6rzteeCuE/PNrdssqYD2nIA4w48miQAFloM=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "4ecab3273592f27479a583fb6d975d4aba3486fe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "23.05",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nxc": {
       "inputs": {
         "flake-utils": "flake-utils_2",
@@ -163,14 +249,35 @@
         ]
       },
       "locked": {
-        "lastModified": 1687868702,
-        "narHash": "sha256-OZ7aakAoIwsOl1lvZjXbpUzfIvb/litTirrOeLNAMcM=",
+        "lastModified": 1687771858,
+        "narHash": "sha256-+zyTcniOPy+QiBErz/xQtHTDp5X9m8yaC2lYfxqdKY8=",
+        "ref": "2305",
+        "rev": "36d807d044bc41992604613c12e0316321b4c176",
+        "revCount": 537,
         "type": "git",
-        "url": "file:///home/afaure/code/nixos-compose"
+        "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
       },
       "original": {
+        "ref": "2305",
         "type": "git",
-        "url": "file:///home/afaure/code/nixos-compose"
+        "url": "https://gitlab.inria.fr/nixos-compose/nixos-compose.git"
+      }
+    },
+    "regale": {
+      "inputs": {
+        "NUR": "NUR_2",
+        "kapack": "kapack_3",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1,
+        "narHash": "sha256-bBeB0gV1+YawERQP2c+1FU4wHoFI6FSqhvEs4h6kZlM=",
+        "path": "/nix/store/i8wzgq0r1zxg0x6gq3qw59rf7xl0vlji-source/regale-library",
+        "type": "path"
+      },
+      "original": {
+        "path": "/nix/store/i8wzgq0r1zxg0x6gq3qw59rf7xl0vlji-source/regale-library",
+        "type": "path"
       }
     },
     "root": {
@@ -178,7 +285,8 @@
         "NUR": "NUR",
         "kapack": "kapack",
         "nixpkgs": "nixpkgs",
-        "nxc": "nxc"
+        "nxc": "nxc",
+        "regale": "regale"
       }
     }
   },
