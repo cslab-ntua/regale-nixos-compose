@@ -24,7 +24,6 @@
     server = {...}: {
       imports = [commonConfig earConfig melissa];
       nxc.sharedDirs."/users".export = true;
-
       services.oar.server.enable = true;
       services.oar.dbserver.enable = true;
       services.ear.database.enable = true;
@@ -32,7 +31,6 @@
     eargm = {...}: {
       imports = [commonConfig earConfig];
       nxc.sharedDirs."/users".server = "server";
-
       services.ear.global_manager.enable = true;
     };
 
