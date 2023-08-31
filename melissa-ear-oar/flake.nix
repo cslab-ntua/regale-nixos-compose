@@ -10,7 +10,7 @@
     NUR.url = "github:nix-community/NUR";
     kapack.url = "github:oar-team/nur-kapack?ref=regale";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
-    regale.url = "/home/afaure/code/regale-nixos-compose/regale-library";
+    regale.url = "/home/adfaure/code/regale-nixos-compose/regale-library";
   };
 
   outputs = { self, nixpkgs, nxc, NUR, kapack, regale }:

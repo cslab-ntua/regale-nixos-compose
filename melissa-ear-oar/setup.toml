@@ -1,4 +1,5 @@
 [project]
+selected = "laptop"
 
 [params]
 nb_nodes = 3
@@ -7,7 +8,7 @@ nb_nodes = 3
 nix-flags = "--impure --override-input kapack path:/home/afaure/code/nur-kapack"
 
 [laptop.options]
-nix-flags = "--impure --override-input kapack path:/home/adfaure/Sandbox/nxc-melissa/nur-kapack"
+nix-flags = "--impure" # --override-input kapack path:/home/adfaure/code/nur-kapack"
 
 # [laptop.overrides.nur.kapack]
 # ear = { src = "/home/auguste/dev/ear" }
