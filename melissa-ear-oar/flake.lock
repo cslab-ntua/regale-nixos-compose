@@ -2,11 +2,11 @@
   "nodes": {
     "NUR": {
       "locked": {
-        "lastModified": 1693486613,
-        "narHash": "sha256-TnXVPU109xjrybwMo33BtrdMlZ/vlDdYh2gas6VjkAI=",
+        "lastModified": 1693565297,
+        "narHash": "sha256-vsLSVlmvKWAROf/GVnH1BGeKqR2U2YyqvF7dnMpaj+M=",
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "d14e5b89bff0494d7a4cd2bc2577f136a2cbc985",
+        "rev": "89f429014bf6d1df56df530a780909ac7cad1c95",
         "type": "github"
       },
       "original": {
@@ -102,11 +102,11 @@
         "nixpkgs2111": "nixpkgs2111"
       },
       "locked": {
-        "lastModified": 1693487422,
-        "narHash": "sha256-vaod0ih+lfeWIDQ1BFcpqcsac/axwt8lW8Wc19twGnk=",
+        "lastModified": 1693571306,
+        "narHash": "sha256-KMz63AX5pDtaYtFPmTy31zpJDrPH5mDnC1yDOZ9ysF4=",
         "owner": "oar-team",
         "repo": "nur-kapack",
-        "rev": "0b658aa3701a9d6f9a2098d28632c48496ce23f3",
+        "rev": "99eef97540a9185227a53022a4acdaedf3617a06",
         "type": "github"
       },
       "original": {
@@ -274,10 +274,11 @@
       },
       "locked": {
         "dir": "regale-library",
-        "dirtyRev": "862cb6d29347b406b04b8789a05cd890eb0ceda4-dirty",
-        "dirtyShortRev": "862cb6d-dirty",
-        "lastModified": 1693486639,
-        "narHash": "sha256-8yuPbuClac0eP6YykhG9jWxy2hXlJAK0i2A0Lob6qpg=",
+        "lastModified": 1693488801,
+        "narHash": "sha256-Pg8lIuJHUXHiiSckKEpEab88AqCNkfUD+QpRHrLF2J8=",
+        "ref": "refs/heads/nixpkgs-2305",
+        "rev": "fa9461198ccbdcc142371d491649ce4d674a170c",
+        "revCount": 167,
         "type": "git",
         "url": "file:///home/adfaure/code/regale-nixos-compose?dir=regale-library"
       },
