@@ -1,20 +1,17 @@
 {
-  description = ''
-    Composition containing OAR, EAR and melissa all together.
-    This is the most complete composition.
-  '';
+  description = "EAR-OAR";
+
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/23.05";
     nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=2305";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
     NUR.url = "github:nix-community/NUR";
-    kapack.url = "github:oar-team/nur-kapack?ref=regale";
+    kapack.url = "github:oar-team/nur-kapack?ref=nixpkgs-2305";
+    # kapack.url = "github:oar-team/nur-kapack/regale-2211";
     kapack.inputs.nixpkgs.follows = "nixpkgs";
-    regale.url = "/home/adfaure/code/regale-nixos-compose/regale-library";
   };
 
-  outputs = { self, nixpkgs, nxc, NUR, kapack, regale }:
-
+  outputs = { self, nixpkgs, nxc, NUR, kapack}:
     let
       system = "x86_64-linux";
     in {
@@ -23,10 +20,7 @@
         repoOverrides = { inherit kapack; };
         setup = ./setup.toml;
         composition = ./composition.nix;
-        overlays = [ 
-          regale.overlay 
-        ];
-      };
+        };
 
       devShell.${system} = nxc.devShells.${system}.nxcShell;
      };

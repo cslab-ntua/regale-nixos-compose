@@ -1,20 +1,14 @@
 [project]
 
-[params]
-nb_nodes = 3
+    
+[g5k-dev.options]
+nix-flags = "--impure"    
+          
+[g5k-dev.build.nur.repos.kapack]
+ear = { src = "/home/orichard/ear" }
 
-[g5k.options]
-nix-flags = "--impure --override-input kapack path:/home/afaure/code/nur-kapack"
+[dev.options]
+nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/regale"
 
-[laptop.options]
-nix-flags = "--impure --override-input kapack path:/home/adfaure/Sandbox/nxc-melissa/nur-kapack"
-
-# [laptop.overrides.nur.kapack]
-# ear = { src = "/home/auguste/dev/ear" }
-
-[dev-alex.options]
-nix-flags = "--impure --override-input kapack path:/home/alex/dev/nur-kapack-regale/regale-2211"
-
-# [dev-alex.build.nur.repos.kapack]
-# oar = { src = "/home/alex/dev/oar-versions/oar3" }
-
+[dev.build.nur.repos.kapack]
+ear = { src = "/home/auguste/dev/ear" }

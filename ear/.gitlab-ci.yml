@@ -4,14 +4,14 @@ stages:
   - test
   
 variables:
-  MIN_NB_NODE: 5
+  MIN_NB_NODE: 4
 
-build-ear-oar:
+build-ear:
   stage: build
   tags:
     - g5k
   script:
-    - NXC_COMPO=ear-oar
+    - NXC_COMPO=ear
     - nix --version
     - nxc --version
     - cd $CI_PROJECT_DIR/$NXC_COMPO
@@ -19,14 +19,14 @@ build-ear-oar:
     # save build dir
     - mv build $OAR_O_WORKDIR/var/tmp/build_$NXC_COMPO_$CI_COMMIT_SHORT_SHA
 
-deploy-ear-oar:
+deploy-ear:
   stage: deploy
   dependencies: 
-    - build-ear-oar
+    - build-ear
   tags:
     - g5k
   script:
-    - NXC_COMPO=ear-oar
+    - NXC_COMPO=ear
     # extract NXC_OAR_JOB_ID and determine NXC_MACHINE_FILE
     - NXC_OAR_JOB_ID=$(cat $OAR_O_WORKDIR/var/NXC_OAR_JOB_ID) && echo $NXC_OAR_JOB_ID
     - NXC_MACHINE_FILE="${OAR_O_WORKDIR}/var/NXC_OAR_${NXC_OAR_JOB_ID}.stdout"
@@ -41,14 +41,14 @@ deploy-ear-oar:
     # save deploy dir 
     - mv deploy $OAR_O_WORKDIR/var/tmp/deploy_$NXC_COMPO_$CI_COMMIT_SHORT_SHA
     
-test-ear-oar:
+test-ear:
   stage: test
   dependencies: 
-    - deploy-ear-oar
+    - deploy-ear
   tags:
     - g5k
   script:
-    - NXC_COMPO=ear-oar
+    - NXC_COMPO=ear
     - cd $CI_PROJECT_DIR/$NXC_COMPO
     # restore deploy dir
     - mv $OAR_O_WORKDIR/var/tmp/deploy_$NXC_COMPO_$CI_COMMIT_SHORT_SHA deploy

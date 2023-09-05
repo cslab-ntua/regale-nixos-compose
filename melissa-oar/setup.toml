@@ -1,14 +1,23 @@
 [project]
+selected = "dev"
 
 [params]
 nb_nodes = 2
 
 [g5k.options]
-nix-flags = "--impure --override-input kapack path:/home/afaure/code/nur-kapack"
-kernel-params = "systemd.unified_cgroup_hierarchy=0"
+nix-flags = "--impure --override-input kapack path:/home/afaure/regale-nixos-compose/nur-kapack"
 
 [laptop.options]
-nix-flags = "--impure" # --override-input kapack path:/home/adfaure/Sandbox/nxc-melissa/nur-kapack"
+nix-flags = "--impure --override-input kapack path:/home/adfaure/Sandbox/nxc-melissa/nur-kapack"
+[dev.options]
+nix-flags = "--impure"
+nix-flags = "--impure --override-input kapack path:/home/auguste/dev/nur-kapack/regale"
+        
+[dev.build.nur.repos.kapack]
+melissa.src = "/home/auguste/dev/melissa-combined"
+melissa-launcher.src = "/home/auguste/dev/melissa-combined" 
+melissa-heat-pde.src = "/home/auguste/dev/melissa-combined"
 
-[dev-alex.options]
-nix-flags = "--impure --override-input kapack path:/home/alex/dev/nur-kapack-regale/regale-221"
+
+
+

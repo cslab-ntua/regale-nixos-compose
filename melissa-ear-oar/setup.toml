@@ -1,5 +1,5 @@
 [project]
-selected = "laptop"
+selected = "g5k"
 
 [params]
 nb_nodes = 3
