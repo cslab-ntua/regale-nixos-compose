@@ -8,7 +8,7 @@
 }: {
   roles = let
     dockerPorts.frontend = ["8443:443" "8000:80"];
-    commonConfig = import ../oar_config.nix {inherit pkgs modulesPath nur flavour;};
+    commonConfig = import ../lib/oar_config.nix {inherit pkgs modulesPath nur flavour;};
   in
     {
       node = {...}: {

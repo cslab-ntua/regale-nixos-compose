@@ -8,8 +8,20 @@
   ...
 }: {
   nodes = let
-    commonConfig = import ../oar_config.nix {inherit pkgs modulesPath nur flavour;};
-    earConfig = import ../ear_config.nix {inherit pkgs modulesPath nur setup;};
+    commonConfig = import ../lib/oar_config.nix {inherit pkgs modulesPath nur flavour;};
+    earConfig = import ../lib/ear_config.nix {inherit pkgs modulesPath nur setup;};
+    melissa = {
+      pkgs,
+      modulesPath,
+      nur,
+      ...
+    }: {
+      environment.variables.MELISSA_SRC = "${pkgs.nur.repos.kapack.melissa-launcher.src}";
+      environment.systemPackages = [
+        pkgs.nur.repos.kapack.melissa-heat-pde
+        pkgs.nur.repos.kapack.melissa-launcher
+      ];
+    };
   in {
     frontend = {...}: {
       imports = [commonConfig earConfig];

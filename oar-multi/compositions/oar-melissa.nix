@@ -10,7 +10,7 @@
   dockerPorts.frontend = ["8443:443" "8000:80"];
 
   roles = let
-    commonConfig = import ../oar_config.nix {inherit pkgs modulesPath nur flavour;};
+    commonConfig = import ../lib/oar_config.nix {inherit pkgs modulesPath nur flavour;};
     melissa = {
       pkgs,
       modulesPath,
