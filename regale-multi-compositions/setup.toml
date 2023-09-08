@@ -1,10 +1,10 @@
 [project]
+selected = "g5k"
 
 [params]
 nb_nodes = 2
 
 [g5k.options]
-nix-flags = "--impure --override-input kapack path:/home/afaure/code/nur-kapack"
 kernel-params = "systemd.unified_cgroup_hierarchy=0"
 
 # [g5k.build.nur.repos.kapack.oar]
