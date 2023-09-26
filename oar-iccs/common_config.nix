@@ -96,7 +96,11 @@ let
 
 in {
   imports = [ nur.repos.kapack.modules.oar ];
-  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.vim pkgs.nur.repos.kapack.oar pkgs.jq ];
+  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.vim pkgs.nur.repos.kapack.oar pkgs.jq pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk];
+
+  # Allow root yo use open-mpi
+  environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
+  environment.variables.OMPI_ALLOW_RUN_AS_ROOT_CONFIRM = "1";
 
   networking.firewall.enable = false;
 
