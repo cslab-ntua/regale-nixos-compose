@@ -24,6 +24,7 @@
         services.oar.dbserver.enable = true;
       };
     } // helpers.makeMany node "node" nodes_number;
+    rolesDistribution = { nodes = 2; };
 
   testScript = ''
     frontend.succeed("true")

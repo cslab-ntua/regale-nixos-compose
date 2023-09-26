@@ -1,8 +1,4 @@
 [project]
-selected = "iccs"
-
-[params]
-nb_nodes = 2 # Idk if this parameter works
 
 [iccs.options]
 nix-flags = "--impure" # --override-input kapack path:/home/adfaure/code/nur-kapack"
