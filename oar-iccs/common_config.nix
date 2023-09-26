@@ -154,13 +154,17 @@ in {
     text = ''
         {
           "quotas": {
-            "*,*,*,*": [-1,2,-1],
-            "*,*,*,user1": [2,-1,-1]
+            "*,*,*,*": [-1,-1,-1],
           }
         }
       '';
     mode = "0777";
   };
+
+  security.pam.loginLimits = [
+      { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
+      { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
+  ];
 
   services.oar = {
     #clipackage =  pkgs.nur.repos.kapack.oars;
