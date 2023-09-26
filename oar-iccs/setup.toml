@@ -1,0 +1,16 @@
+[project]
+selected = "iccs"
+
+[params]
+nb_nodes = 2 # Idk if this parameter works
+
+[iccs.options]
+nix-flags = "--impure" # --override-input kapack path:/home/adfaure/code/nur-kapack"
+kernel-params = "systemd.unified_cgroup_hierarchy=0"
+
+[iccs.build.nur.repos.kapack.oar.src.fetchFromGitHub]
+owner = "cslab-ntua"
+repo = "oar3"
+rev = "b7499f64677c86852b9324e0d71df3c0ec001554"
+sha256 = "sha256-jHUOHVy66cy5uHWBkNOV3OL0QJLudeLPhGs6v5tLVpM="
+
