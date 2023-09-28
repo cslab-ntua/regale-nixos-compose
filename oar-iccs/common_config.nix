@@ -26,7 +26,8 @@ let
             time.sleep(0.25)
 
     if session:
-        resources_creation(session, "node", int(sys.argv[1]), int(sys.argv[2]))
+        resources_creation(session, "node", int(sys.argv[1]), int(sys.argv[2]),
+                           int(sys.argv[3]))
         print("resource created")
     else:
         print("resource creation failed")
@@ -196,7 +197,7 @@ in {
       fi
       echo $num_nodes > /etc/num_nodes
 
-      add_resources $num_nodes $num_cores
+      add_resources $num_nodes $num_cores 2
       '';
     };
     server.host = "server";
