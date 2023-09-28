@@ -1,4 +1,5 @@
 [project]
+selected = "iccs"
 
 [iccs.options]
 nix-flags = "--impure" # --override-input kapack path:/home/adfaure/code/nur-kapack"
@@ -6,7 +7,7 @@ kernel-params = "systemd.unified_cgroup_hierarchy=0"
 
 
 [iccs.build.nur.repos.kapack]
-oar = { src = "/home/ntriantafyllis/ICCS-OAR3/oar3" }
+oar = { src = "/home/nikos/Desktop/regale_working_dir/oar/oar3" }
 
 
 #[iccs.build.nur.repos.kapack.oar.src.fetchFromGitHub]

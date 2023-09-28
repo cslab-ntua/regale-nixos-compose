@@ -175,7 +175,7 @@ in {
     #clipackage =  pkgs.nur.repos.kapack.oars;
     extraConfig = {
       LOG_LEVEL = "3";
-      HIERARCHY_LABELS = "resource_id,network_address,cpuset";
+      HIERARCHY_LABELS = "resource_id,network_address,cpu,core"; # HIERARCHY_LABELS = "resource_id,network_address,cpuset";
       QUOTAS = "yes";
       QUOTAS_CONF_FILE="/etc/oar-quotas.json";
     };
