@@ -25,6 +25,7 @@ To facilitate their development and ensure their reproducibility, we propose the
 | [OAR](oar/README.md)         | demo             |        |  :white_check_mark:  |
 | [EAR-OAR](ear-oar/README.md) | base integration | PoC       | :white_check_mark:  |
 | [Melissa-EAR-OAR](melissa-ear-oar/README.md)   | demo             | (WIP) | -                |
+| [OAR-ICCS](oar-iccs/README.md)   | demo             | (WIP) |  :white_check_mark:  |
 
 # Requirements
 
