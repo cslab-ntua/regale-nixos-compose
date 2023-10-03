@@ -126,10 +126,6 @@ in {
      AuthorizedKeysCommandUser nobody
   '';
 
-  # security.pam.loginLimits = [
-  #   { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
-  # ];
-
   environment.etc."privkey.snakeoil" = {
     mode = "0600";
     source = snakeOilPrivateKey;
@@ -154,7 +150,6 @@ in {
     DB_BASE_PASSWD_RO="oar_ro"
   '';
 
-
   environment.etc."oar-quotas.json" = {
     text = ''
         {
@@ -167,10 +162,10 @@ in {
     mode = "0777";
   };
 
-  security.pam.loginLimits = [
+  security.pam.loginLimits = if flavour.name != "docker" then [
       { domain = "*"; item = "memlock"; type = "-"; value = "unlimited"; }
       { domain = "*"; item = "stack"; type = "-"; value = "unlimited"; }
-  ];
+  ] else [];
 
   services.oar = {
     #clipackage =  pkgs.nur.repos.kapack.oars;
