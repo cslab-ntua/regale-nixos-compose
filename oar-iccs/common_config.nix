@@ -192,12 +192,17 @@ in {
       fi
       echo $num_nodes > /etc/num_nodes
 
-      add_resources $num_nodes $num_cores 2
+      add_resources $num_nodes $num_cores 1
       '';
     };
     server.host = "server";
     privateKeyFile = "/etc/privkey.snakeoil";
     publicKeyFile = "/etc/pubkey.snakeoil";
+ 
+    package = pkgs.nur.repos.kapack.oar.overrideAttrs (old: {
+        propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.python3Packages.joblib ];
+    });
+
   };
 
   # users.users.root.password = "nixos";
