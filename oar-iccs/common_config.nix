@@ -4,7 +4,7 @@ let
     snakeOilPrivateKey snakeOilPublicKey;
 
   oar_override = pkgs.nur.repos.kapack.oar.overrideAttrs (old: prev: {
-      propagatedBuildInputs = prev.propagatedBuildInputs ++ ([ pkgs.python3Packages.joblib ]);
+      propagatedBuildInputs = prev.propagatedBuildInputs ++ ([ pkgs.python3Packages.joblib pkgs.python3Packages.numpy pkgs.python3Packages.pandas ]);
     });
 
   add_resources = pkgs.writers.writePython3Bin "add_resources" {
