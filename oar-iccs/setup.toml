@@ -7,7 +7,7 @@ kernel-params = "systemd.unified_cgroup_hierarchy=0"
 
 
 [iccs.build.nur.repos.kapack]
-oar = { src = "/home/nikos/Desktop/regale_working_dir/oar/oar3" }
+oar = { src = "/tmp/iccs-est/oar3" }
 
 
 #[iccs.build.nur.repos.kapack.oar.src.fetchFromGitHub]

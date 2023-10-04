@@ -3,8 +3,12 @@ let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
 
+  oar_override = pkgs.nur.repos.kapack.oar.overrideAttrs (old: prev: {
+      propagatedBuildInputs = prev.propagatedBuildInputs ++ ([ pkgs.python3Packages.joblib ]);
+    });
+
   add_resources = pkgs.writers.writePython3Bin "add_resources" {
-    libraries = [ pkgs.nur.repos.kapack.oar ]; } ''
+    libraries = [ oar_override ]; } ''
     from oar.lib.tools import get_date
     from oar.lib.resource_handling import resources_creation
     from oar.lib.globals import init_and_get_session
@@ -97,7 +101,10 @@ let
 
 in {
   imports = [ nur.repos.kapack.modules.oar ];
-  environment.systemPackages = [ pkgs.python3 pkgs.nano pkgs.vim pkgs.nur.repos.kapack.oar pkgs.jq pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk];
+  environment.systemPackages = [
+    pkgs.python3 pkgs.nano pkgs.vim
+    oar_override pkgs.jq
+    pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk];
 
   # Allow root yo use open-mpi
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
@@ -176,6 +183,9 @@ in {
       QUOTAS_CONF_FILE="/etc/oar-quotas.json";
     };
 
+
+    package = oar_override;
+
     # oar db passwords
     database = {
       host = "server";
@@ -198,10 +208,7 @@ in {
     server.host = "server";
     privateKeyFile = "/etc/privkey.snakeoil";
     publicKeyFile = "/etc/pubkey.snakeoil";
- 
-    package = pkgs.nur.repos.kapack.oar.overrideAttrs (old: {
-        propagatedBuildInputs = old.propagatedBuildInputs ++ [ pkgs.python3Packages.joblib ];
-    });
+
 
   };
 
