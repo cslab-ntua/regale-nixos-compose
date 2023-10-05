@@ -4,7 +4,10 @@ let
     snakeOilPrivateKey snakeOilPublicKey;
 
   oar_override = pkgs.nur.repos.kapack.oar.overrideAttrs (old: prev: {
-      propagatedBuildInputs = prev.propagatedBuildInputs ++ ([ pkgs.python3Packages.joblib pkgs.python3Packages.numpy pkgs.python3Packages.pandas ]);
+      propagatedBuildInputs = prev.propagatedBuildInputs ++ ([ pkgs.python3Packages.joblib pkgs.python3Packages.numpy pkgs.python3Packages.pandas pkgs.python3Packages.scikit-learn ]);
+      postInstall = prev.postInstall + ''
+      cp etc/oar/admission_rules.d/trainedGradientBoostingRegressor.model $out/admission_rules.d
+      '';
     });
 
   add_resources = pkgs.writers.writePython3Bin "add_resources" {
