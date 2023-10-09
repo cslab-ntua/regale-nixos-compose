@@ -3,15 +3,17 @@ let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
 
+  # needs to go!
   oar_override = pkgs.nur.repos.kapack.oar.overrideAttrs (old: prev: {
       propagatedBuildInputs = prev.propagatedBuildInputs ++ ([ pkgs.python3Packages.joblib pkgs.python3Packages.numpy pkgs.python3Packages.pandas pkgs.python3Packages.scikit-learn ]);
       postInstall = prev.postInstall + ''
       cp etc/oar/admission_rules.d/trainedGradientBoostingRegressor.model $out/admission_rules.d
+      cp etc/oar/admission_rules.d/nas-oar-db.csv $out/admission_rules.d
       '';
     });
 
   add_resources = pkgs.writers.writePython3Bin "add_resources" {
-    libraries = [ oar_override ]; } ''
+    libraries = [ pkgs.python3Packages.joblib pkgs.python3Packages.pandas oar_override ]; } ''
     from oar.lib.tools import get_date
     from oar.lib.resource_handling import resources_creation
     from oar.lib.globals import init_and_get_session
@@ -19,7 +21,6 @@ let
     import time
     r = True
     n_try = 10000
-
 
     session = None
     while n_try > 0 and r:
@@ -38,6 +39,62 @@ let
         print("resource created")
     else:
         print("resource creation failed")
+  '';
+
+  add_ml_model = pkgs.writers.writePython3Bin "add_ml_model" {
+    libraries = [ pkgs.python3Packages.joblib pkgs.python3Packages.scikit-learn pkgs.python3Packages.pandas oar_override ]; } ''
+    from oar.lib.tools import get_date
+    from oar.lib.resource_handling import ml_model_creation
+    from oar.lib.globals import init_and_get_session
+    import sys
+    import time
+    r = True
+    n_try = 10000
+
+    session = None
+    while n_try > 0 and r:
+        n_try = n_try - 1
+        try:
+            session = init_and_get_session()
+            print(get_date(session))  # date took from db (test connection)
+            r = False
+        except Exception:
+            print("DB is not ready")
+            time.sleep(0.25)
+
+    if session:
+        ml_model_creation(session, sys.argv[1], sys.argv[2], sys.argv[3])
+        print("ML model created")
+    else:
+        print("ML model creation failed")
+  '';
+
+  add_performance_counters = pkgs.writers.writePython3Bin "add_performance_counters" {
+    libraries = [ pkgs.python3Packages.joblib pkgs.python3Packages.scikit-learn pkgs.python3Packages.pandas oar_override ]; } ''
+    from oar.lib.tools import get_date
+    from oar.lib.resource_handling import performance_counters_creation
+    from oar.lib.globals import init_and_get_session
+    import sys
+    import time
+    r = True
+    n_try = 10000
+
+    session = None
+    while n_try > 0 and r:
+        n_try = n_try - 1
+        try:
+            session = init_and_get_session()
+            print(get_date(session))  # date took from db (test connection)
+            r = False
+        except Exception:
+            print("DB is not ready")
+            time.sleep(0.25)
+
+    if session:
+        performance_counters_creation(session, sys.argv[1])
+        print("Performance Counters created")
+    else:
+        print("Perofrmance Counters creation failed")
   '';
 
   # openmpiNoOPA = pkgs.openmpi.override { fabricSupport = false; };
@@ -105,7 +162,7 @@ let
 in {
   imports = [ nur.repos.kapack.modules.oar ];
   environment.systemPackages = [
-    pkgs.python3 pkgs.nano pkgs.vim
+    pkgs.python3 pkgs.nano pkgs.vim pkgs.python3Packages.joblib
     oar_override pkgs.jq
     pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk];
 
@@ -193,7 +250,7 @@ in {
     database = {
       host = "server";
       passwordFile = "/etc/oar-dbpassword";
-      initPath = [ pkgs.util-linux pkgs.gawk pkgs.jq add_resources ];
+      initPath = [ pkgs.util-linux pkgs.gawk pkgs.jq add_resources add_ml_model add_performance_counters ];
       postInitCommands = ''
       num_cores=$(( $(lscpu | awk '/^Socket\(s\)/{ print $2 }') * $(lscpu | awk '/^Core\(s\) per socket/{ print $4 }') ))
       echo $num_cores > /etc/num_cores
@@ -206,6 +263,10 @@ in {
       echo $num_nodes > /etc/num_nodes
 
       add_resources $num_nodes $num_cores 1
+
+      add_ml_model 'iccs_v1' 'GradientBoosting Regressor' '/etc/oar/admission_rules.d/trainedGradientBoostingRegressor.model'
+      add_performance_counters '/etc/oar/admission_rules.d/nas-oar-db.csv'
+
       '';
     };
     server.host = "server";
