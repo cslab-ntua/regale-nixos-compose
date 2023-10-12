@@ -3,7 +3,6 @@ let
   inherit (import "${toString modulesPath}/tests/ssh-keys.nix" pkgs)
     snakeOilPrivateKey snakeOilPublicKey;
 
-  # needs to go!
   oar_override = pkgs.nur.repos.kapack.oar.overrideAttrs (old: prev: {
       propagatedBuildInputs = prev.propagatedBuildInputs ++ ([ pkgs.python3Packages.joblib pkgs.python3Packages.numpy pkgs.python3Packages.pandas pkgs.python3Packages.scikit-learn ]);
       postInstall = prev.postInstall + ''
@@ -97,6 +96,56 @@ let
         print("Perofrmance Counters creation failed")
   '';
 
+  # Create a package of wcohen/libpfm4 repo
+  libpfm4 = pkgs.stdenv.mkDerivation {
+      buildInputs = [ pkgs.libpfm ];
+      name = "libpfm4";
+      version = "4.8.0";
+      src = pkgs.fetchFromGitHub {
+        owner = "wcohen";
+        repo = "libpfm4";
+        rev = "70b5b4c82912471b43c7ddf0d1e450c4e0ef477e";
+        hash = "sha256-5sahaY3w/1hnFW1QwNizqoYW4+AVV6FCMs38w2cSyjw=";
+      };
+
+      # Translate all the necessary binaries
+      # to gather performance counters
+      buildPhase = ''
+          echo "Building libpfm4"
+          make
+      '';
+
+      installPhase = ''
+          mkdir -p $out/bin
+          cp examples/showevtinfo $out/bin
+          cp examples/check_events $out/bin
+      '';
+  };
+
+  # Create a package of mpiP repo
+  mpip = pkgs.stdenv.mkDerivation {
+      buildInputs = [ pkgs.python3 pkgs.openmpi pkgs.libunwind ];
+  LOGNAME = "your_username_here";
+      name = "mpiP-3.5";
+      version = "3.5.0";
+      src = pkgs.fetchFromGitHub {
+          owner = "LLNL";
+          repo = "mpiP";
+          rev = "3.5";
+          sha256 = "0mv2ww3m0867h8nsdawhpd9zzwzf53qs5rbsskgfx9npdsszzrmy";
+      };
+
+      phases = ["unpackPhase" "installPhase"];
+
+      installPhase = ''
+          mkdir -p $out/bin
+          ./configure --prefix=$out
+          make
+          make install
+          cp $out/lib/libmpiP.so $out/bin/
+      '';
+  };
+
   # openmpiNoOPA = pkgs.openmpi.override { fabricSupport = false; };
   # npbNoOPA = pkgs.nur.repos.kapack.npb.override (oldAttrs: rec { openmpi = openmpiNoOPA; });
 
@@ -162,6 +211,8 @@ let
 in {
   imports = [ nur.repos.kapack.modules.oar ];
   environment.systemPackages = [
+    libpfm4 mpip
+    pkgs.linuxPackages_latest.perf
     pkgs.python3 pkgs.nano pkgs.vim pkgs.python3Packages.joblib
     oar_override pkgs.jq
     pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk];
