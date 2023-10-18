@@ -8,6 +8,7 @@ let
       postInstall = prev.postInstall + ''
       cp etc/oar/admission_rules.d/trainedGradientBoostingRegressor.model $out/admission_rules.d
       cp etc/oar/admission_rules.d/nas-oar-db.csv $out/admission_rules.d
+      cp etc/oar/admission_rules.d/epilogue $out/admission_rules.d
       '';
     });
 
@@ -292,6 +293,7 @@ in {
       HIERARCHY_LABELS = "resource_id,network_address,cpu,core"; # HIERARCHY_LABELS = "resource_id,network_address,cpuset";
       QUOTAS = "yes";
       QUOTAS_CONF_FILE="/etc/oar-quotas.json";
+      SERVER_EPILOGUE_EXEC_FILE = "etc/oar/admission_rules.d/epilogue";
     };
 
 
