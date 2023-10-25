@@ -294,6 +294,7 @@ in {
       QUOTAS = "yes";
       QUOTAS_CONF_FILE="/etc/oar-quotas.json";
       SERVER_EPILOGUE_EXEC_FILE = "etc/oar/admission_rules.d/epilogue";
+      SCHEDULER_RESOURCE_ORDER="scheduler_priority ASC, state_num ASC, available_upto DESC, suspended_jobs ASC, resource_id ASC, network_address ASC";
     };
 
 
