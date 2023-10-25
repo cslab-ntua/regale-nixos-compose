@@ -1,5 +1,6 @@
 { pkgs, modulesPath, nur, helpers, flavour, ... }: {
   dockerPorts.frontend = [ "8443:443" "8000:80" ];
+  dockerPorts.server = [ "5050:5050" ];
   nodes =
     let
       nodes_number = 2;
@@ -23,6 +24,15 @@
         imports = [ commonConfig ];
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
+        services.pgadmin = {
+            enable = true;
+            port = 5050;
+            initialEmail = "test@oar.gr";
+            initialPasswordFile = pkgs.writeText "pgadmin4-password.txt" "testoar";
+            settings = {
+                DEFAULT_SERVER = "0.0.0.0";
+            };
+        };
       };
     } // helpers.makeMany node "node" nodes_number;
     rolesDistribution = { nodes = 2; };

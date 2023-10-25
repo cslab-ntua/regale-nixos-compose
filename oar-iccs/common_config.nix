@@ -294,6 +294,7 @@ in {
       QUOTAS = "yes";
       QUOTAS_CONF_FILE="/etc/oar-quotas.json";
       SERVER_EPILOGUE_EXEC_FILE = "etc/oar/admission_rules.d/epilogue";
+      SCHEDULER_RESOURCE_ORDER="scheduler_priority ASC, state_num ASC, available_upto DESC, suspended_jobs ASC, resource_id ASC, network_address ASC";
     };
 
 
@@ -305,6 +306,7 @@ in {
       passwordFile = "/etc/oar-dbpassword";
       initPath = [ pkgs.util-linux pkgs.gawk pkgs.jq add_resources add_ml_model add_performance_counters ];
       postInitCommands = ''
+      num_cpus=$(( $(lscpu | awk '/^Socket\(s\)/{ print $2 }') ))
       num_cores=$(( $(lscpu | awk '/^Socket\(s\)/{ print $2 }') * $(lscpu | awk '/^Core\(s\) per socket/{ print $4 }') ))
       echo $num_cores > /etc/num_cores
 
@@ -315,7 +317,7 @@ in {
       fi
       echo $num_nodes > /etc/num_nodes
 
-      add_resources $num_nodes $num_cores 1
+      add_resources $num_nodes $num_cores $num_cpus
 
       add_ml_model 'iccs_v1' 'GradientBoosting Regressor' '/etc/oar/admission_rules.d/trainedGradientBoostingRegressor.model'
       add_performance_counters '/etc/oar/admission_rules.d/nas-oar-db.csv'
