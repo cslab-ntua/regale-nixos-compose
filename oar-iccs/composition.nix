@@ -1,8 +1,13 @@
-{ pkgs, modulesPath, nur, helpers, flavour, ... }: {
+{ pkgs, modulesPath, nur, helpers, flavour, ... }: 
+let
+  compute_nodes = 16;
+
+in {
   dockerPorts.frontend = [ "8443:443" "8000:80" ];
+  dockerPorts.server = [ "5050:5050" ];
   nodes =
     let
-      nodes_number = 2;
+      nodes_number = compute_nodes;
       commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur flavour; };
       node = { ... }: {
         imports = [ commonConfig ];
@@ -25,7 +30,7 @@
         services.oar.dbserver.enable = true;
       };
     } // helpers.makeMany node "node" nodes_number;
-    rolesDistribution = { nodes = 2; };
+    rolesDistribution = { nodes = compute_nodes; };
 
   testScript = ''
     frontend.succeed("true")
