@@ -8,15 +8,16 @@ in {
   nodes =
     let
       nodes_number = compute_nodes;
+      nfsConfigs = import ./nfs.nix { inherit flavour; };
       commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur flavour; };
       node = { ... }: {
-        imports = [ commonConfig ];
+        imports = [ commonConfig nfsConfigs.client ];
         services.oar.node = { enable = true; };
       };
     in
     {
       frontend = { ... }: {
-        imports = [ commonConfig ];
+        imports = [ commonConfig nfsConfigs.client ];
         # services.phpfpm.phpPackage = pkgs.php74;
         services.oar.client.enable = true;
         services.oar.web.enable = true;
@@ -25,7 +26,7 @@ in {
 
       };
       server = { ... }: {
-        imports = [ commonConfig ];
+        imports = [ commonConfig nfsConfigs.server ];
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
       };
