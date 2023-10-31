@@ -6,11 +6,18 @@ let
       chmod 777 -R /tmp/shared
     '';
   };
+  permission_docker = {
+    boot.postBootCommands = ''
+      mkdir /var/nxc/shared/u1
+      chown user1 users -R /var/nxc/shared/u1
+      chmod 777 -R /var/nxc/shared/u1
+    '';
+  };
   nfsDockerServer = {
-    imports = [ permission ];
+    imports = [ permission_docker ];
     fileSystems = {
       "/home/user1" = {
-        device = "/tmp/shared";
+        device = "/var/nxc/shared/u1";
         options = [ "bind" ];
       };
     };
@@ -18,7 +25,7 @@ let
   nfsDockerClient = {
     fileSystems = {
       "/home/user1" = {
-        device = "/tmp/shared";
+        device = "/var/nxc/shared/u1";
         options = [ "bind" ];
       };
     };
