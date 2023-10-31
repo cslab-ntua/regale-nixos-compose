@@ -227,6 +227,19 @@ in {
   users.users.user1 = { isNormalUser = true; };
   users.users.user2 = { isNormalUser = true; };
 
+  # Service dedicated to the gros cluster at nancy
+  # that has nodes configured with two network interfaces.
+  # The stage 1 configures both interface with ip in the same network, 
+  # leading openmpi to not being able to start jobs.
+  systemd.services.shutdown-eno2np1 = {
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" "network-online.target" ];
+    serviceConfig.Type = "oneshot";
+    script = ''
+  	  ${pkgs.iproute2}/bin/ip link set dev eno2np1 down
+    '';
+  };
+
   # systemd.services.oar-cgroup = {
   #   enable = flavour.name == "docker";
   #   serviceConfig = {
