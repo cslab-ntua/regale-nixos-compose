@@ -25,7 +25,20 @@ in {
         services.oar.web.monika.enable = true;
 
       };
-      server = { ... }: {
+      server = if flavour.name == "docker" then { ... }: {
+        imports = [ commonConfig nfsConfigs.server ];
+        services.oar.server.enable = true;
+        services.oar.dbserver.enable = true;
+        services.pgadmin = {
+            enable = true;
+            port = 5050;
+            initialEmail = "test@oar.gr";
+            initialPasswordFile = pkgs.writeText "pgadmin4-password.txt" "testoar";
+            settings = {
+                DEFAULT_SERVER = "0.0.0.0";
+            };
+        };
+      } else { ... }: {
         imports = [ commonConfig nfsConfigs.server ];
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
