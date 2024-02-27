@@ -9,7 +9,7 @@ See main [README](../README.md) for more information about setting.
 ## For Docker
 1. Download the OAR3 code and the Nix composition:
 ```bash
-git clone -b docker https://github.com/cslab-ntua/regale-nixos-compose.git
+git clone -b devel https://github.com/cslab-ntua/regale-nixos-compose.git
 git clone -b devel https://github.com/cslab-ntua/oar3
 ```
 2. Modify the path of OAR3 src in `regale-nixos-compose/oar-iccs/setup.toml` to the absolute path of the download version of OAR3.
@@ -54,7 +54,7 @@ in order to deploy all virtual nodes. Use `nxc stop` to remove them.
 ## For Grid5000 (g5k):
 1. Download the OAR3 code and the Nix composition (main branch):
 ```bash
-git clone https://github.com/cslab-ntua/regale-nixos-compose.git
+git clone -b 4011ca5e5a255480b751ace9c340ad56a1aafb1f https://github.com/cslab-ntua/regale-nixos-compose.git
 git clone -b devel https://github.com/cslab-ntua/oar3
 ```
 Follow the rest of the Docker-built steps apart from 3 and 8. If nxc not found export path by typing: `export PATH=$PATH:~/.local/bin;`
