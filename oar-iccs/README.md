@@ -83,6 +83,9 @@ Steps:
 ```
 export PATH=$PATH:~/.local/bin;
 oarsub -l nodes=10,walltime=01:30:10 -t deploy -p "cluster='dahu'" "sleep 90m"
+# or
+# oarsub -l nodes=10,walltime=03:00:10 -t deploy -p "cluster='grvingt'" -q production "sleep 180m"
+
 oarstat -u -J | jq --raw-output 'to_entries | .[0].value.assigned_network_address | .[]' > machines
 nxc start -s iccs -m machines -f g5k-image
 ```
