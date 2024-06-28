@@ -216,7 +216,7 @@ in {
     pkgs.linuxPackages_latest.perf
     pkgs.python3 pkgs.nano pkgs.vim pkgs.python3Packages.joblib
     oar_override pkgs.jq
-    pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk];
+    pkgs.nur.repos.kapack.npb pkgs.openmpi pkgs.taktuk pkgs.nur.repos.kapack.netpipe];
 
   # Allow root yo use open-mpi
   environment.variables.OMPI_ALLOW_RUN_AS_ROOT = "1";
