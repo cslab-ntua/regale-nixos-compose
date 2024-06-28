@@ -8,17 +8,18 @@ in {
   nodes =
     let
       nodes_number = compute_nodes;
-      nfsConfigs = import ./nfs.nix { inherit flavour; };
       commonConfig = import ./common_config.nix { inherit pkgs modulesPath nur flavour; };
       node = { ... }: {
-        imports = [ commonConfig nfsConfigs.client ];
+        imports = [ commonConfig ];
+        nxc.sharedDirs."/users".server = "server";
         services.oar.node = { enable = true; };
       };
     in
     {
       frontend = { ... }: {
-        imports = [ commonConfig nfsConfigs.client ];
+        imports = [ commonConfig ];
         # services.phpfpm.phpPackage = pkgs.php74;
+        nxc.sharedDirs."/users".server = "server";
         services.oar.client.enable = true;
         services.oar.web.enable = true;
         services.oar.web.drawgantt.enable = true;
@@ -26,7 +27,8 @@ in {
 
       };
       server = { ... }: {
-        imports = [ commonConfig nfsConfigs.server ];
+        imports = [ commonConfig ];
+        nxc.sharedDirs."/users".export = true;
         services.oar.server.enable = true;
         services.oar.dbserver.enable = true;
       };

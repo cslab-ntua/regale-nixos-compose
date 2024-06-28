@@ -224,6 +224,10 @@ in {
 
   networking.firewall.enable = false;
 
+  nxc.users = {
+      names = ["user1" "user2"];
+      prefixHome = "/users";
+    };
   users.users.user1 = { isNormalUser = true; };
   users.users.user2 = { isNormalUser = true; };
 
@@ -236,7 +240,7 @@ in {
     wantedBy = [ "multi-user.target" "network-online.target" ];
     serviceConfig.Type = "oneshot";
     script = ''
-  	  ${pkgs.iproute2}/bin/ip link set dev eno2np1 down
+	  ${pkgs.iproute2}/bin/ip link set dev eno2np1 down
     '';
   };
 
