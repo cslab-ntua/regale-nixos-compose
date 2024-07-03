@@ -9,7 +9,7 @@ See main [README](../README.md) for more information about setting.
 ## For Docker
 1. Download the OAR3 code and the Nix composition:
 ```bash
-git clone -b docker https://github.com/cslab-ntua/regale-nixos-compose.git
+git clone -b devel https://github.com/cslab-ntua/regale-nixos-compose.git
 git clone -b devel https://github.com/cslab-ntua/oar3
 ```
 2. Modify the path of OAR3 src in `regale-nixos-compose/oar-iccs/setup.toml` to the absolute path of the download version of OAR3.
@@ -51,10 +51,10 @@ in order to deploy all virtual nodes. Use `nxc stop` to remove them.
 10. Use  `nxc connect frontend; su user1; oarsub -l /core=5 'sleep 60' type=spread`
 11. Observe Monika and DrawGantt from: http://localhost:8000/monika and http://localhost:8000/drawgantt respectively.
 
-## For Grid5000 (g5k):
+## For Grid5000 (g5k) nfs-store:
 1. Download the OAR3 code and the Nix composition (main branch):
 ```bash
-git clone https://github.com/cslab-ntua/regale-nixos-compose.git
+git clone -b 4011ca5e5a255480b751ace9c340ad56a1aafb1f https://github.com/cslab-ntua/regale-nixos-compose.git
 git clone -b devel https://github.com/cslab-ntua/oar3
 ```
 Follow the rest of the Docker-built steps apart from 3 and 8. If nxc not found export path by typing: `export PATH=$PATH:~/.local/bin;`
@@ -72,3 +72,22 @@ export $(oarsub -l nodes=4,walltime=1:0:0 "$(nxc helper g5k_script) 1h" | grep O
 nxc start -s iccs -m OAR.$OAR_JOB_ID.stdout -W -f g5k-nfs-store
 ```
 * Observe Monika and DrawGantt from: https://machine.site.http.proxy.grid5000.fr/monika and https://machine.site.http.proxy.grid5000.fr/drawgantt respectively, where the machine is the first node allocated at step 9.
+
+* ## For Grid5000 (g5k) image:
+You have to use the latest nixos-compose: https://github.com/oar-team/nixos-compose/tree/c1445485285566bd5b3236c350199cfde15a2489
+```
+pip -U install https://github.com/oar-team/nixos-compose
+```
+and add `-t deploy` when reserving nodes, following a sleep command similar to the walltime. Then you have to create the machines file and `nxc start`.
+Steps:
+```
+export PATH=$PATH:~/.local/bin;
+oarsub -l nodes=10,walltime=01:30:10 -t deploy -p "cluster='dahu'" "sleep 90m"
+# or
+# oarsub -l nodes=10,walltime=03:00:10 -t deploy -p "cluster='grvingt'" -q production "sleep 180m"
+
+oarstat -u -J | jq --raw-output 'to_entries | .[0].value.assigned_network_address | .[]' > machines
+nxc start -s iccs -m machines -f g5k-image
+```
+* In case of errors in kedeploy you can monitor the allocated nodes by running the below command and resubmitting the `nxc start` command:
+`kaconsole3 -m dahu-32`

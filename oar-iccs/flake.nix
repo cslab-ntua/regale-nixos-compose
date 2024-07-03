@@ -2,7 +2,7 @@
   description = "OAR - basic setup";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/23.05";
-    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=nixpkgs-2305";
+    nxc.url = "git+https://gitlab.inria.fr/nixos-compose/nixos-compose.git?ref=23.05";
     nxc.inputs.nixpkgs.follows = "nixpkgs";
     NUR.url = "github:nix-community/NUR";
     NUR.inputs.nixpkgs.follows = "nixpkgs";
