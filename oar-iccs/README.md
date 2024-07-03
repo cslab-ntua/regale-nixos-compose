@@ -89,4 +89,5 @@ oarsub -l nodes=10,walltime=01:30:10 -t deploy -p "cluster='dahu'" "sleep 90m"
 oarstat -u -J | jq --raw-output 'to_entries | .[0].value.assigned_network_address | .[]' > machines
 nxc start -s iccs -m machines -f g5k-image
 ```
-
+* In case of errors in kedeploy you can monitor the allocated nodes by running the below command and resubmitting the `nxc start` command:
+`kaconsole3 -m dahu-32`
